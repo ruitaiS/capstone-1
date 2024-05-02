@@ -1,32 +1,34 @@
-##########################################################
-# Create edx and final_holdout_test sets 
-##########################################################
-
-# Note: this process could take a couple of minutes
+###############
+# Initial Setup
+###############
 
 if(!require(tidyverse)) install.packages("tidyverse", repos = "http://cran.us.r-project.org")
 if(!require(caret)) install.packages("caret", repos = "http://cran.us.r-project.org")
 
 library(tidyverse)
 library(caret)
-
-# MovieLens 10M dataset:
-# https://grouplens.org/datasets/movielens/10m/
-# http://files.grouplens.org/datasets/movielens/ml-10m.zip
-
 options(timeout = 120)
 
-dl <- "ml-10M100K.zip"
-if(!file.exists(dl))
-  download.file("https://files.grouplens.org/datasets/movielens/ml-10m.zip", dl)
+# Set working directory to the directory containing this script
+setwd(dirname(rstudioapi::getSourceEditorContext()$path))
 
-ratings_file <- "ml-10M100K/ratings.dat"
-if(!file.exists(ratings_file))
-  unzip(dl, ratings_file)
+# Check for movies and ratings files
+ratings_file = "../datasets/ml-10M100K/ratings.dat"
+movies_file = "../datasets/ml-10M100K/movies.dat"
+if(!(file.exists(ratings_file) & file.exists(movies_file))){
+  # Download MovieLens 10M dataset:
+  # https://grouplens.org/datasets/movielens/10m/
+  # http://files.grouplens.org/datasets/movielens/ml-10m.zip
+  download.file("https://files.grouplens.org/datasets/movielens/ml-10m.zip", "ml-10M100K.zip")
+  unzip("ml-10M100K.zip", exdir = "../datasets/", files = "ml-10M100K/ratings.dat")
+  unzip("ml-10M100K.zip", exdir = "../datasets/", files = "ml-10M100K/movies.dat")
+  file.remove("ml-10M100K.zip")
+}
 
-movies_file <- "ml-10M100K/movies.dat"
-if(!file.exists(movies_file))
-  unzip(dl, movies_file)
+###################################################
+# Create edx and final_holdout_test sets 
+# Note: this process could take a couple of minutes
+###################################################
 
 ratings <- as.data.frame(str_split(read_lines(ratings_file), fixed("::"), simplify = TRUE),
                          stringsAsFactors = FALSE)
@@ -61,4 +63,6 @@ final_holdout_test <- temp %>%
 removed <- anti_join(temp, final_holdout_test)
 edx <- rbind(edx, removed)
 
-rm(dl, ratings, movies, test_index, temp, movielens, removed)
+rm(ratings, movies, test_index, temp, movielens, removed)
+
+
