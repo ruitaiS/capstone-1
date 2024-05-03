@@ -26,7 +26,7 @@ if(!(file.exists(ratings_file) & file.exists(movies_file))){
 }
 
 ###################################################
-# Create edx and final_holdout_test sets 
+# Create main and final_holdout_test sets 
 # Note: this process could take a couple of minutes
 ###################################################
 
@@ -51,10 +51,11 @@ movielens <- left_join(ratings, movies, by = "movieId")
 set.seed(1, sample.kind="Rounding") # if using R 3.6 or later
 # set.seed(1) # if using R 3.5 or earlier
 test_index <- createDataPartition(y = movielens$rating, times = 1, p = 0.1, list = FALSE)
-edx <- movielens[-test_index,]
+df <- movielens[-test_index,]
 temp <- movielens[test_index,]
 
-# Make sure userId and movieId in final hold-out test set are also in edx set
+# Make sure userId and movieId in final hold-out test set are also in main set
+# TODO: Why is this something we want? Shouldn't we make sure they're not in here?
 final_holdout_test <- temp %>% 
   semi_join(edx, by = "movieId") %>%
   semi_join(edx, by = "userId")
@@ -66,5 +67,9 @@ edx <- rbind(edx, removed)
 rm(ratings, movies, test_index, temp, movielens, removed)
 
 #########################################################
+
+#Scrap / Test Code:
+names(edx)
+head(edx, 10)
 
 
