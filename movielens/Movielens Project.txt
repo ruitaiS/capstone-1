@@ -1,0 +1,57 @@
+Right now I'm thinking:
+
+look over the exercises on machine learning specifically.
+
+different ML algorithms
+ensemble algorithms
+
+>> Look at which ones are individually most effective, and then check which ones combined are the most effective
+
+To eliminate individual tendencies to over or underrate movies, consider normalizing the ratings so that they are standard deviations from the mean of that user.
+
+---
+
+- Clean out rating tendencies. Try as much as possible to make the rating system consistent, and be able to identify / remove any across the board tendencies that the user might have when it comes to movies.
+
+- Visually check for outliers.
+	Stratified per-genre output, for 
+
+- Preserve genre-specific preferences.
+
+---
+
+Thoughts / Assumptions
+
+(You can try testing all of these)
+
+Some people will tend towards over or underrating all movies.
+
+Some people will tend to have extreme likes or dislikes
+
+People generally have consistent tastes for each genre
+
+People generally feel the same way about all the movies in a series
+
+People with the same tastes will generally rate movies the same way. 
+
+Some movies are liked or disliked across the board. You have to take into account the average rating of the movie, and the variability in ratings for that movie.
+
+We need to be able to distinguish between "this is a bad movie" vs. "this is not the kind of movie the user likes" vs. "this user rates all movies poorly." Each of these will be a factor in how the user rates a movie, and once we have removed those "across the board" factors, we can get a clearer view into what the user's preferences may be.
+
+We also want to discount the learning rate on users or movies which have very few ratings associated with them. A simple way might be to cut off all by a certain threshold - you can find the ideal threshold by graphing the prediction accuracy vs. the threshold
+
+Consider the effect of "hidden" genres - blockbusters or niche films, for example (movies which everyone has watched, or movies that very few people have watched), or action-comedy, niche-horror, etc.
+
+Certain genres of movie might have a large amount of correlation, and others very few. For example, action movie watchers might also tend to watch blockbusters and comedy movies, while a fan of horror movies might not necessarily be very predictive of whether they are a rom-com fan (or they may negatively correlate with rom-com lovers).
+---
+
+
+
+For each genre, find clusters of users that tend to rate the same movies the same.
+
+
+
+
+
+
+

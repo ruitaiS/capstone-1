@@ -57,19 +57,22 @@ temp <- movielens[test_index,]
 # Make sure userId and movieId in final hold-out test set are also in main set
 # TODO: Why is this something we want? Shouldn't we make sure they're not in here?
 final_holdout_test <- temp %>% 
-  semi_join(edx, by = "movieId") %>%
-  semi_join(edx, by = "userId")
+  semi_join(df, by = "movieId") %>%
+  semi_join(df, by = "userId")
 
-# Add rows removed from final hold-out test set back into edx set
+# Add rows removed from final hold-out test set back into main set
 removed <- anti_join(temp, final_holdout_test)
-edx <- rbind(edx, removed)
+df <- rbind(df, removed)
 
 rm(ratings, movies, test_index, temp, movielens, removed)
 
 #########################################################
 
 #Scrap / Test Code:
-names(edx)
-head(edx, 10)
+
+#names(df)
+#head(df, 10)
+#length(unique(df$movieId))
+
 
 
