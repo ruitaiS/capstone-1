@@ -1,3 +1,4 @@
 datasets/ml-10M100K/*
 !datasets/ml-10M100K/.gitkeep
+*.zip
 .Rhistory
