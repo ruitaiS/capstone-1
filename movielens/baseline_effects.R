@@ -1,3 +1,8 @@
+#TODO:
+#Caching results
+#Genre specific effects
+#Code for time binning
+
 mu <- mean(train_df$rating)
 
 #Regularization Parameters for b_i and b_u respectively
@@ -19,11 +24,12 @@ predict_baseline <- function(movieId, userId){
 }
 
 baseline_predictions <- apply(test_df, 1, function (row){
-  #print(row[['movieId']])
-  #print(row[['userId']])
+  print(row[['movieId']])
+  print(row[['userId']])
   #print(predict_baseline('1527', '6'))
   #print(predict_baseline(as.integer(row[['movieId']]), as.integer(row[['userId']])))
   return (predict_baseline(as.integer(row[['movieId']]), as.integer(row[['userId']])))
 })
 
-baseline_rmse <- calculate_rmse(baseline_predictions, test_df$ratings)
+baseline_rmse <- calculate_rmse(baseline_predictions, test_df[order(test_df$userId), 'rating'])
+#RMSE ~ 0.895
