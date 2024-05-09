@@ -90,7 +90,9 @@ partition <- function (seed){
 
 partitions <- partition(1)
 train_df <- partitions$train
+train_df$genre_list <- strsplit(train_df$genres, "\\|")
 test_df <- partitions$test
+test_df$genre_list <- strsplit(test_df$genres, "\\|")
 unique_movieIds <- partitions$movieIds
 unique_userIds <- partitions$userIds
 # ---------------------------------------------------------------------------------

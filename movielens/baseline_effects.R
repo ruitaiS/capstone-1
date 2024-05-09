@@ -1,7 +1,8 @@
 #TODO:
-#Caching results
 #Genre specific effects
 #Code for time binning
+
+#Figure out why caching results changed the RMSE
 
 mu <- mean(train_df$rating)
 
