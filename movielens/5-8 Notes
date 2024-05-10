@@ -1,0 +1,39 @@
+
+RMSE varies quite a lot depending on how much of the sample you use.
+
+Is nzv really useful for movie rec context?
+	- Users with nzv's opinions basically don't matter, since they rate all movies the same
+	- Movies with nz or low variance should be taken into account more
+	
+Scale the learning effect of a user / movie based on their variance? But then what about a user with very high variance? Should we weight their opinions more?
+	- We should factor their personal preferences more. Eg. they should have very strong likes and dislikes
+	- But for models which generalize across users, eg. if we made every prediction based on the movie average, users with very high variance should be scored lower? .. Yes. Because their rating is based on their particular preferences, and not as much to do with the movie's good or badness.
+	
+	
+---
+
+I'm not actually using any of the algorithms learned in the course yet which probably isn't great. Just randomly thinking about what might be related...
+
+---
+
+"userId"    "movieId"   "rating"    "timestamp" "title"     "genres" 
+
+
+---
+
+Is there a way to use KNN to find the "preference-neighbors" of a user?
+
+Given a user and a movie:
+	We have a list of that user's past ratings
+	Selecting from other users that have viewed the movie
+	Find N other users with the most similar taste profile
+		(based on movies? genre?)
+	Predict the average of their ratings
+	
+	Tune values of N
+	
+How would you represent this though?
+
+For every movie, create clusters of users that rank it, and other movies similarly?
+
+
