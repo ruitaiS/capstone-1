@@ -1,0 +1,122 @@
+Right now I'm thinking:
+
+look over the exercises on machine learning specifically.
+
+different ML algorithms
+ensemble algorithms
+
+>> Look at which ones are individually most effective, and then check which ones combined are the most effective
+
+To eliminate individual tendencies to over or underrate movies, consider normalizing the ratings so that they are standard deviations from the mean of that user.
+
+---
+
+- Clean out rating tendencies. Try as much as possible to make the rating system consistent, and be able to identify / remove any across the board tendencies that the user might have when it comes to movies.
+
+- Visually check for outliers.
+	Stratified per-genre output, for 
+
+- Preserve genre-specific preferences.
+
+---
+
+Discussion of the Influence from Various Factors
+
+
+User tendencies:
+----------------
+
+- Some people will tend towards over or underrating all movies.
+
+- Some people will tend to have extreme likes or dislikes
+
+- People generally have consistent tastes for each genre
+
+- People generally feel the same way about all the movies in a series
+
+- People with similar tastes to one another will generally rate movies the same way.
+
+
+Rating Variations over Time:
+----------------------------
+
+The average rating of a movie might change over time. I don't think this is necessarily linear - my feeling is that some movies might be well liked at the time of their release, and then drastically drop off as their cultural relevance disappears. On the other hand, you might have movies that were poorly rated at the time of their release, but turn into cult classics.
+
+The popularity of a movie:
+--------------------------
+
+Popularity can be parameterized as the number of ratings per set unit time, if we want to try to capture the fluctuations in popularity, or as the total number of ratings / total amount of time elapsed between the release date of the movie and the final rating (TODO: Consider non-inclusive ratings counts between the first and last rating, since release date isn't down to the second. We can chop of the start and end of the dataset and assume the average remains largely consistent in between).
+
+Popularity over time and ratings over time I think will be very strongly correlated. My feeling is that high or rising popularity of a movie will positively impact the ratings, but a waning popularity would not necessarily be predictive of lower ratings. Maybe it needs to be on a case by case basis.
+
+Simplest version of this is to check average rating vs. total ratings / total time. That initial exploration should tell us if this is a worthwhile area to pursue.
+
+
+
+
+Some movies are liked or disliked across the board. You have to take into account the average rating of the movie, and the variability in ratings for that movie.
+
+We need to be able to distinguish between "this is a bad movie" vs. "this is not the kind of movie the user likes" vs. "this user rates all movies poorly." Each of these will be a factor in how the user rates a movie, and once we have removed those "across the board" factors, we can get a clearer view into what the user's preferences may be.
+
+We also want to discount the learning rate on users or movies which have very few ratings associated with them. A simple way might be to cut off all by a certain threshold - you can find the ideal threshold by graphing the prediction accuracy vs. the threshold
+
+Consider the effect of "hidden" genres - blockbusters or niche films, for example (movies which everyone has watched, or movies that very few people have watched), or action-comedy, niche-horror, etc.
+
+Certain genres of movie might have a large amount of correlation, and others very few. For example, action movie watchers might also tend to watch blockbusters and comedy movies, while a fan of horror movies might not necessarily be very predictive of whether they are a rom-com fan (or they may negatively correlate with rom-com lovers).
+---
+
+
+
+For each genre, find clusters of users that tend to rate the same movies the same.
+
+
+---
+
+Thoughts / Notes:
+
+Every hypothesis is worth exploring, and they all fracture infinitely into more and more detailed versions of the same idea. You can test total average rating vs. total normalized number of ratings, or you can do the same analysis by year, month, week, or day.
+
+After you actually find the relationship, you need to find a way to add them to your model in a meaningful way. This is more of a coding / engineering issue than it is a statistical / scientific one. But it's not enough to say that the corrlation is 0.8; you have to figure out how you're going to modify your code to capture the inputs and produce the modified output.
+
+Ultimately I think it comes down to time, and refinement. Leaving this with only one month to do it was maybe not a great idea on my part, but it's highlighted to me the importance of prioritization and the diminishing returns vs. time consumed. It might take three times as long to figure out a more nuanced version of the same model, but that first pass will probably capture 80% of the variance and your 3X as time consuming second version will really only get you another 10 or 15%.
+
+So my plan right now is to:
+
+1. Code up a test bed, run some very simple algorithms on it and get it spitting out RMSEs. Once you establish that framework, you can get a baseline of what a very basic model will achieve, and you can start refining.
+
+2. Take a look at the very basic, obvious factors first, then start getting into the nested layers. You don't want to dive right into analysis of different factors down into the extremely minute details; it'll be very very time consuming and potentially not very fruitful. Start with the dumb stuff that'll capture big chunks of variance, and only after you've exhausted those options should you start getting into the weeds.
+
+*Crucially* you need to review the textbook sections where you actually combine these values.
+
+
+	- Movie average
+	- User Average
+		- User Average by Genre
+	- 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
