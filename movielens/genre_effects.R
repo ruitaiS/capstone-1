@@ -23,8 +23,8 @@ plot <- ggplot(genre_counts, aes(x = reorder(Genre, Count), y = Count)) +
   geom_text(aes(label = signif(Count, digits = 3)), nudge_y = 1000) +  # Corrected label assignment
   labs(x = "Genre", y = "Count", title = "Genre Counts Barplot")
 
-# Save as PDF
-pdf(file = "Graphs/genre_counts_barplot.pdf", height = 8, width = 15)
+# Save as pdf
+pdf(file = "graphs/genre_counts_barplot.pdf", height = 8, width = 15)
 print(plot)
 dev.off()
 #----------
@@ -35,7 +35,7 @@ dev.off()
 #             aes(Genre,Count)) + 
 #  geom_bar(stat = "identity")+
 #  geom_text(aes(label = signif(Count)), nudge_y = 1000)
-#pdf(file ="Graphs/genre_counts_barplot.pdf",
+#pdf(file ="graphs/genre_counts_barplot.pdf",
 #    height = 8,
 #    width = 12)
 #plot
@@ -84,7 +84,7 @@ for (sublist in co_occurrence_genre_list) {
 
 # Plot heatmap
 #heatmap(co_occurrence_matrix, Rowv = NA, Colv = NA,col = heat.colors(10), scale = "none", margins = c(5, 10))
-#pdf(file = "Graphs/genre_co_occurrence_heatmap.pdf",
+#pdf(file = "graphs/genre_co_occurrence_heatmap.pdf",
 #    width = 12,
 #    height = 12)
 #heatmap(co_occurrence_matrix, Rowv = NA, Colv = NA, col = cm.colors(max(co_occurrence_matrix)), scale = "none", main = "Co-occurrence of Genres")
@@ -92,7 +92,7 @@ for (sublist in co_occurrence_genre_list) {
 
 
 #-------
-pdf(file = "Graphs/genre_co_occurrence_heatmap.pdf",
+pdf(file = "graphs/genre_co_occurrence_heatmap.pdf",
     width = 12,
     height = 12)
 heatmap(log10(co_occurrence_matrix + 1), 
