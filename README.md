@@ -26,6 +26,9 @@ Introduction:
 
 Methods / Analysis
 
+<img src="/movielens/graphs/genre_counts_barplot.png" align="left" alt="Genre Counts"
+	title="Genre Counts"/>
+
 Results
 
 Conclusion
