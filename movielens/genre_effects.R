@@ -58,6 +58,7 @@ co_occurrence_genre_list <- train_df$genre_list %>% lapply(function(sublist) {
 
 # Initialize co-occurrence matrix
 co_occurrence_matrix <- matrix(0, nrow = length(unique_genres), ncol = length(unique_genres), dimnames = list(rev(unique_genres), unique_genres))
+co_occurrence_half_matrix <- matrix(0, nrow = length(unique_genres), ncol = length(unique_genres), dimnames = list(rev(unique_genres), unique_genres))
 
 # Populate co-occurrence matrix
 for (sublist in co_occurrence_genre_list) {
@@ -65,6 +66,8 @@ for (sublist in co_occurrence_genre_list) {
   if (length(sublist) == 2){
     co_occurrence_matrix[sublist[1], sublist[2]] <- co_occurrence_matrix[sublist[1], sublist[2]] + 1
     co_occurrence_matrix[sublist[2], sublist[1]] <- co_occurrence_matrix[sublist[2], sublist[1]] + 1
+    
+    co_occurrence_half_matrix[sublist[1], sublist[2]] <- co_occurrence_half_matrix[sublist[1], sublist[2]] + 1
   }else{
     for (i in 1:(length(sublist) - 1)) {
       for (j in (i+1):length(sublist)) {
@@ -72,6 +75,8 @@ for (sublist in co_occurrence_genre_list) {
         print(sublist[j])
         co_occurrence_matrix[sublist[i], sublist[j]] <- co_occurrence_matrix[sublist[i], sublist[j]] + 1
         co_occurrence_matrix[sublist[j], sublist[i]] <- co_occurrence_matrix[sublist[j], sublist[i]] + 1
+        
+        co_occurrence_half_matrix[sublist[i], sublist[j]] <- co_occurrence_half_matrix[sublist[i], sublist[j]] + 1
       }
     } 
   }
@@ -99,3 +104,10 @@ heatmap(log10(co_occurrence_matrix + 1),
         main = "Co-occurrence of Genres")
 dev.off()
 
+#------
+#Most Frequently Co-Occurring Genres
+co_occurrence_df <- as.data.frame(as.table(co_occurrence_half_matrix))
+colnames(co_occurrence_df) <- c("Genre1", "Genre2", "Count")
+co_occurrence_df <- co_occurrence_df[order(-co_occurrence_df$Count), ]
+co_occurrence_df <- co_occurrence_df[co_occurrence_df$Count != 0, ]
+print(tail(co_occurrence_df, 10))
