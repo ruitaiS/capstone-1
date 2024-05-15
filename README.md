@@ -29,6 +29,9 @@ Methods / Analysis
 <img src="/movielens/graphs/genre_counts_barplot.png" align="left" alt="Genre Counts"
 	title="Genre Counts"/>
 
+ <img src="/movielens/graphs/genre_co_occurrence_heatmap_sqrt_transform.png" align="left" alt="Genre Co-Occurrence"
+	title="Genre Co-Occurrence"/>
+
 Results
 
 Conclusion
