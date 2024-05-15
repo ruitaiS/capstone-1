@@ -1,4 +1,6 @@
 datasets/ml-10M100K/*
 !datasets/ml-10M100K/.gitkeep
+datasets/vehicle_insurance_data/*
+!datasets/vehicle_insurance_data/.gitkeep
 *.zip
 .Rhistory
