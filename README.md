@@ -32,6 +32,12 @@ Methods / Analysis
  <img src="/movielens/graphs/genre_co_occurrence_heatmap_sqrt_transform.png" align="left" alt="Genre Co-Occurrence"
 	title="Genre Co-Occurrence"/>
 
+### Tuneable Parameters:
+
+### Ignore Low Activity Users (bottom n, bottom percentile)
+
+### Ignore Low Activity Movies (bottom n, bottom percentile)
+
 Results
 
 Conclusion
