@@ -1,4 +1,4 @@
-# Movielens Project:
+# Movie Recommendations:
 
 * 0 points: The report is either not uploaded or contains very minimal information AND/OR the report is not written in English AND/OR the report appears to violate the edX Honor Code.
 
