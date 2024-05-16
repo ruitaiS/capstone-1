@@ -1,28 +1,24 @@
-### Movielens Dataset:
-https://grouplens.org/datasets/movielens/10m/
-
 # Movielens Project:
 
-0 points: The report is either not uploaded or contains very minimal information AND/OR the report is not written in English AND/OR the report appears to violate the edX Honor Code.
-<br>
-10 points: Multiple required sections of the report are missing.
-<br>
-15 points: The methods/analysis or the results section of the report is missing or missing significant supporting details. Other sections of the report are present.
-<br>
-20 points: The introduction/overview or the conclusion section of the report is missing, not well-presented or not consistent with the content.
-<br>
-20 points: The report includes all required sections, but the report is significantly difficult to follow or missing supporting detail in multiple sections.
-<br>
-25 points: The report includes all required sections, but the report is difficult to follow or missing supporting detail in one section.
-<br>
-25 points: The report is otherwise well-written, but is based on code that simply copies from previous code in the course series without further developing it.
-<br>
-30 points: The report includes all required sections and is well-drafted and easy to follow, but with minor flaws in multiple sections.
-<br>
-35 points: The report includes all required sections and is easy to follow, but with minor flaws in one section.
-<br>
-40 points: The report includes all required sections, is easy to follow with good supporting detail throughout, and is insightful and innovative. 
-<br>
+* 0 points: The report is either not uploaded or contains very minimal information AND/OR the report is not written in English AND/OR the report appears to violate the edX Honor Code.
+
+* 10 points: Multiple required sections of the report are missing.
+
+* 15 points: The methods/analysis or the results section of the report is missing or missing significant supporting details. Other sections of the report are present.
+
+* 20 points: The introduction/overview or the conclusion section of the report is missing, not well-presented or not consistent with the content.
+
+* 20 points: The report includes all required sections, but the report is significantly difficult to follow or missing supporting detail in multiple sections.
+
+* 25 points: The report includes all required sections, but the report is difficult to follow or missing supporting detail in one section.
+
+* 25 points: The report is otherwise well-written, but is based on code that simply copies from previous code in the course series without further developing it.
+
+* 30 points: The report includes all required sections and is well-drafted and easy to follow, but with minor flaws in multiple sections.
+
+* 35 points: The report includes all required sections and is easy to follow, but with minor flaws in one section.
+
+* 40 points: The report includes all required sections, is easy to follow with good supporting detail throughout, and is insightful and innovative. 
 
 ## Introduction:
 
@@ -108,3 +104,7 @@ a results section that presents the modeling results and discusses the model per
 ## Conclusion
 
 a conclusion section that gives a brief summary of the report, its limitations and future work
+
+## References
+Movielens Dataset:
+https://grouplens.org/datasets/movielens/10m/
