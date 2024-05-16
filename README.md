@@ -43,6 +43,26 @@ a methods/analysis section that explains the process and techniques used, includ
  <img src="/movielens/graphs/genre_co_occurrence_heatmap_sqrt_transform.png" align="left" alt="Genre Co-Occurrence"
 	title="Genre Co-Occurrence"/>
 
+ <br>
+
+[Discussion of get_ratings_count_percentile function, how it works, why I started in this direction]
+
+[Is it worth talking about the pareto distribution here? Do you know enough about it? It does seem to follow the same natural law but idk too much about it mathematically]
+
+Using `get_ratings_count_percentile`, I found that more than half of the users in the training set have fewer than 2 ratings, and fewer than 20% have more than 5. This I could not follow my original plan to develop a taste profile for each user's genre preferences and predict their ratings based on the activity of other users with similar tastes. With the vast majority of users having fewer than 5 ratings, creating such a profile would be infeasible.
+
+| Ratings Count    | Percentile |
+| -------- | ------- |
+| 1  | 35.55505    |
+| 2 | 56.60346     |
+| 3    | 68.94254    |
+| 4    | 76.73673    |
+| 4    | 81.96849    |
+
+Conversely, the most prolific users had a disproportionately large number of ratings. Whatever approach I took, I would need to take care not to force the preferences of the more actve users onto the more infrequent ones.
+
+[Movie specific predictions?]
+
 ### Tuneable Parameters:
 
 Ignore Low Activity Users (bottom n, bottom percentile)
