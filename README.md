@@ -43,7 +43,7 @@ I originally intended to develop a taste profile for each user's genre preferenc
 I did some initial exploration to see if I actually had enough movie ratings per user in order to do this. I created a `ratings_count` column which associated each unique userId with the number of movies that they rated, and I wrote the `get_ratings_count_percentile` function to calculate, given N ratings, what percentile of users had recorded that many ratings or fewer.
 
 <br>
-
+<br>
 Using `get_ratings_count_percentile`, I found that more than half of the users in the training set have fewer than 2 ratings, and less than 20% have more than 5. This I meant could not follow my original plan - with the vast majority of users having fewer than 5 ratings, I would have a very hard time determining their preferences with such a small sample.
 
 <div align="center">
