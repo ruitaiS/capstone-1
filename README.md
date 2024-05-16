@@ -1,30 +1,41 @@
-Movielens Dataset:
+### Movielens Dataset:
 https://grouplens.org/datasets/movielens/10m/
 
-Vehicle Insurance Dataset:
+### Vehicle Insurance Dataset:
 https://www.kaggle.com/datasets/imtkaggleteam/vehicle-insurance-data
 
-Movielens Project:
-
-an introduction/overview/executive summary section that describes the dataset and summarizes the goal of the project and key steps that were performed
-a methods/analysis section that explains the process and techniques used, including data cleaning, data exploration and visualization, insights gained, and your modeling approach
-a results section that presents the modeling results and discusses the model performance
-a conclusion section that gives a brief summary of the report, its limitations and future work
+# Movielens Project:
 
 0 points: The report is either not uploaded or contains very minimal information AND/OR the report is not written in English AND/OR the report appears to violate the edX Honor Code.
+<br>
 10 points: Multiple required sections of the report are missing.
+<br>
 15 points: The methods/analysis or the results section of the report is missing or missing significant supporting details. Other sections of the report are present.
+<br>
 20 points: The introduction/overview or the conclusion section of the report is missing, not well-presented or not consistent with the content.
+<br>
 20 points: The report includes all required sections, but the report is significantly difficult to follow or missing supporting detail in multiple sections.
+<br>
 25 points: The report includes all required sections, but the report is difficult to follow or missing supporting detail in one section.
+<br>
 25 points: The report is otherwise well-written, but is based on code that simply copies from previous code in the course series without further developing it.
+<br>
 30 points: The report includes all required sections and is well-drafted and easy to follow, but with minor flaws in multiple sections.
+<br>
 35 points: The report includes all required sections and is easy to follow, but with minor flaws in one section.
+<br>
 40 points: The report includes all required sections, is easy to follow with good supporting detail throughout, and is insightful and innovative. 
+<br>
 
-Introduction:
+## Introduction:
 
-Methods / Analysis
+an introduction/overview/executive summary section that describes the dataset and summarizes the goal of the project and key steps that were performed
+
+## Methods / Analysis
+
+a methods/analysis section that explains the process and techniques used, including data cleaning, data exploration and visualization, insights gained, and your modeling approach
+
+<br>
 
 <img src="/movielens/graphs/genre_counts_barplot.png" align="left" alt="Genre Counts"
 	title="Genre Counts"/>
@@ -34,13 +45,17 @@ Methods / Analysis
 
 ### Tuneable Parameters:
 
-### Ignore Low Activity Users (bottom n, bottom percentile)
+Ignore Low Activity Users (bottom n, bottom percentile)
 
-### Ignore Low Activity Movies (bottom n, bottom percentile)
+Ignore Low Activity Movies (bottom n, bottom percentile)
 
-Results
+## Results
 
-Conclusion
+a results section that presents the modeling results and discusses the model performance
+
+## Conclusion
+
+a conclusion section that gives a brief summary of the report, its limitations and future work
 
 
 Vehicle Insurance Project:
