@@ -51,13 +51,17 @@ a methods/analysis section that explains the process and techniques used, includ
 
 Using `get_ratings_count_percentile`, I found that more than half of the users in the training set have fewer than 2 ratings, and fewer than 20% have more than 5. This I could not follow my original plan to develop a taste profile for each user's genre preferences and predict their ratings based on the activity of other users with similar tastes. With the vast majority of users having fewer than 5 ratings, creating such a profile would be infeasible.
 
+<center>
+
 | Ratings Count    | Percentile |
-| -------- | ------- |
+| :-: | :-: |
 | 1  | 35.55505    |
 | 2 | 56.60346     |
 | 3    | 68.94254    |
 | 4    | 76.73673    |
-| 4    | 81.96849    |
+| 5    | 81.96849    |
+
+</center>
 
 Conversely, the most prolific users had a disproportionately large number of ratings. Whatever approach I took, I would need to take care not to force the preferences of the more actve users onto the more infrequent ones.
 
