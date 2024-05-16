@@ -58,16 +58,16 @@ Using `get_ratings_count_percentile`, I found that more than half of the users i
 
 </div>
 
-Conversely, the most prolific users had a disproportionately large number of ratings. Whatever approach I took, I would need to take care not to force the preferences of the more actve users onto the more infrequent ones.
+Conversely, the most prolific users had a disproportionately large number of ratings. Whatever approach I took, I would need to take care not to force the preferences of the more actve users onto the more infrequent ones. I decided to shift my focus away from the users and examine the movies themselves.
 
 [Is it worth talking about the pareto distribution here? Do you know enough about it? It does seem to follow the same natural law but idk too much about it mathematically]
 
-[Movie-specific effects for low count users]
+[Movie-genre effects for low count users]
 [Preference / Movie genre alignment for higher count users]
 
 [Genre specific predictions]
 
-Similar to what I saw with users, certain movie genres had a much higher number of ratings, and others very few. However the skew was not quite as dramatic, so I continued in this direction.
+I started with the genres. Similar to what I saw with users, certain movie genres had a much higher number of ratings, and others very few. However the skew was not nearly as dramatic, so I continued in this direction.
 
 <br>
 
@@ -85,11 +85,19 @@ Many movies have more than one genre associated with it, and I wanted to see if 
 
  <br>
 
+ [movieId averages]
+ [userId averages (ignore for majority of users who have low rating counts)]
+
+ [Changes in ratings over time]
+ 
+
 ### Tuneable Parameters:
 
 Ignore Low Activity Users (bottom n, bottom percentile)
 
 Ignore Low Activity Movies (bottom n, bottom percentile)
+
+Effect strength weighting
 
 ## Results
 
