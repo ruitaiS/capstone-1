@@ -6,21 +6,9 @@
 # 20 points: 0.86490 <= RMSE <= 0.86499
 # 25 points: RMSE < 0.86490
 
-#-------- Data Exploration
-
-#Most Prolific Raters:
-userId_counts <- table(train_df$userId)
-head(sort(userId_counts, decreasing = TRUE), 10)
-
 
 
 #-----------------Specific Models----------------------------
-
-#Random Guess
-#RMSE ~ 2.156
-set.seed(3)
-random_guess <- sample(seq(0, 5, 0.5), nrow(test_df), replace = TRUE)
-guessing_rmse <- calculate_rmse(random_guess, test_df$rating)
 
 #Predict by Movie Average------------------------------------------------
 # Full Train Set   RMSE ~ 0.944

@@ -7,11 +7,7 @@ count_user_ratings <- function(userId){
   return (length(ratings))
 }
 
-calc_user_avg <- function(userId){
-  ratings <- train_df[train_df$userId == userId, "rating"]
-  print(paste(userId, " avg : ", mean(ratings)))
-  return (mean(ratings))
-}
+
 
 calc_genre_avg <- function(userId, genre){
   ratings <- train_df %>%

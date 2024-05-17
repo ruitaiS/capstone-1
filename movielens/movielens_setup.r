@@ -71,7 +71,7 @@ rm(ratings, movies, test_index, temp, movielens, removed)
 
 # Train / Test DF Creation: -------------------------------------------------------
 
-partition <- function (seed, subset_p, test_p = 0.2){
+partition <- function (seed, subset_p = 1, test_p = 0.2){
   set.seed(seed)
   #Create a subset of the full training set to save calculation time
   subset_index <- createDataPartition(y = df$rating, times = 1, p = subset_p, list = FALSE)
