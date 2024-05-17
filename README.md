@@ -83,12 +83,37 @@ Many movies have more than one genre associated with it, and I wanted to see if 
 
  <br>
 
+ [RMSEs for Simple Algorithms]
+ | Algorithm    | RMSE |
+ | :-: | :-: |
+| Random Guess | 0.0    |
+| All Rating Avg | 0.0 |
+| User Avg | 0.0     |
+| Movie Avg    | 0.0    |
+| Genre Avg | 0.0 |
+| User / Movie Ensemble    | 0.0    |
+|     | 81.96849    |
+
+[Genre Avg in Depth]
+[
+- Basic model is that the observed rating is a Linear combination of genre averages
+- Advanced model should Boost or decrement weightings, based on heat map's indication that certain genres go together. Eg. If Horror and Romance are not frequently co-occurring, and this is a horror movie, then we should decrease the weight of romance movie averages. Do this for all the genres that a movie has, vs. all the other genres.
+- Split boosting / decrementing effects among each genre that the movie is tagged with. Start with even splits; you can play around with tweaking the splits to give more weight to certain genres if you have time
+]
+
+[ User / Movie ensemble in depth]
+[
+- User / movie ensemble parameters: Effect weighting, Rating count cutoff
+- Keeping weighting constant, is there a rating count at which we start to see improvements over the movie avg?
+-  If yes, then worth exploring user effects more in detail (eg. write the algorithm which looks at their genre averages, but only ensemble it if there are more than N ratings by that user)
+]
+
  [movieId averages]
  [userId averages (ignore for majority of users who have low rating counts)]
 
  [Changes in ratings over time]
  
-
+ [Can ignore sentivity / specificity I think, because we're not predicting binary output?]
 ### Tuneable Parameters:
 
 Ignore Low Activity Users (bottom n, bottom percentile)

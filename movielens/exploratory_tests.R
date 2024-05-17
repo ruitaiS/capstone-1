@@ -31,9 +31,9 @@ learn_movie_avg <- function(movieId) {
   print(movieId)
   return(mean(train_df[train_df$movieId == movieId, "rating"])) 
 }
-mean_ratings <- sapply(unique_movieIds, learn_movie_avg)
-movie_avg_lookups <- data.frame(movieId = unique_movieIds, avg_rating = mean_ratings)
-predictions <- left_join(test_df, movie_avg_lookups, by = "movieId")
+movie_avgs <- data.frame(movieId = unique_movieIds,
+                         avg_rating = sapply(unique_movieIds, learn_movie_avg))
+predictions <- left_join(test_df, movie_avgs, by = "movieId")
 movie_avg_rmse <- calculate_rmse(predictions$avg_rating, test_df$rating)
 
 #User Average--------------------------------------------------------
@@ -43,9 +43,8 @@ learn_user_avg <- function(userId) {
   print(userId)
   return(mean(train_df[train_df$userId == userId, "rating"])) 
 }
-mean_ratings <- sapply(unique_userIds, learn_user_avg)
-user_avg_lookups <- data.frame(userId = unique_userIds, avg_rating = mean_ratings)
-predictions <- left_join(test_df, user_avg_lookups, by = "userId")
+user_avgs <- data.frame(userId = unique_userIds, avg_rating = sapply(unique_userIds, learn_user_avg))
+predictions <- left_join(test_df, user_avgs, by = "userId")
 user_avg_rmse <- calculate_rmse(predictions$avg_rating, test_df$rating)
 
 #Movie / User Ensembling----------

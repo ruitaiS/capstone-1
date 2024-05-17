@@ -4,3 +4,4 @@ datasets/vehicle_insurance_data/*
 !datasets/vehicle_insurance_data/.gitkeep
 *.zip
 .Rhistory
+*.swp
