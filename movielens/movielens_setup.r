@@ -8,6 +8,7 @@ if(!require(caret)) install.packages("caret", repos = "http://cran.us.r-project.
 library(tidyverse)
 library(caret)
 library("ggplot2")
+library(tidyr)
 options(timeout = 120)
 
 # Set working directory to the directory containing this script
@@ -94,10 +95,10 @@ train_df$genre_list <- strsplit(train_df$genres, "\\|")
 test_df$genre_list <- strsplit(test_df$genres, "\\|")
 
 #Create dfs for movies, users, and genres
-movies <- as.data.frame(sort(unique(train_df$movieId)))
+movies <- distinct(train_df, movieId, title, .keep_all=FALSE) %>% arrange(movieId)
+movies$year <- as.integer(str_extract(movies$title, "(?<=\\()\\d{4}(?=\\))"))
 users <- as.data.frame(sort(unique(train_df$userId)))
 genres <- as.data.frame(sort(unique(unlist(train_df$genre_list))))
-colnames(movies) <- "movieId"
 colnames(users) <- "userId"
 colnames(genres) <- "genre"
 
@@ -109,6 +110,47 @@ colnames(genres) <- "genre"
 # Clear out partitions, df and final holdout (until needed)
 rm(movies_file, ratings_file, partition, partitions, df)
 rm(final_holdout_test)
+
+#--------------------------
+# Movie, User, and Genre Statistics
+#TODO: If time, fix this code so that it doesn't re-add the columns if they already exist
+
+#TODO: Might need to do the full list 
+genre_count <- as.data.frame(table(unlist(train_df$genre_list)))
+colnames(genre_count) <- c("genre", "count")
+genres <- merge(genres, genre_count, by = "genre", all.x = TRUE)
+rm(genre_count)
+
+genre_rating_avg <- aggregate(
+  data = train_df %>%
+    unnest(genre_list),
+  rating ~ genre_list,
+  FUN = mean)
+colnames(genre_rating_avg) <- c("genre", "avg_rating")
+genres <- merge(genres, genre_rating_avg, by = "genre", all.x = TRUE)
+rm(genre_rating_avg)
+
+user_rating_count <- as.data.frame(table(train_df$userId))
+colnames(user_rating_count) <- c("userId", "count")
+users <- merge(users, user_rating_count, by = "userId", all.x = TRUE)
+rm(user_rating_count)
+
+user_rating_avg <- aggregate(rating ~ userId, data = train_df, FUN = mean)
+colnames(user_rating_avg) <- c("userId", "avg_rating")
+users <- merge(users, user_rating_avg, by = "userId", all.x = TRUE)
+rm(user_rating_avg)
+
+movie_rating_counts <- as.data.frame(table(train_df$movieId))
+colnames(movie_rating_counts) <- c("movieId", "count")
+movies <- merge(movies, movie_rating_counts, by = "movieId", all.x = TRUE)
+rm(movie_rating_counts)
+
+movie_rating_avg <- aggregate(rating ~ movieId, data = train_df, FUN = mean)
+colnames(movie_rating_avg) <- c("movieId", "avg_rating")
+movies <- merge(movies, movie_rating_avg, by = "movieId", all.x = TRUE)
+rm(movie_rating_avg)
+
+
 # ---------------------------------------------------------------------------------
 
 #RMSE Calculation Function:

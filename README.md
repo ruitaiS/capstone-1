@@ -114,6 +114,11 @@ Many movies have more than one genre associated with it, and I wanted to see if 
  [Changes in ratings over time]
  
  [Can ignore sentivity / specificity I think, because we're not predicting binary output?]
+
+[There's some movies with very high/low average ratings because they don't have very many ratings to start with. There's a class section on why this happens]
+
+[popularity seems to be correlated with rating. pretty sure there's a section talking about this too]
+
 ### Tuneable Parameters:
 
 Ignore Low Activity Users (bottom n, bottom percentile)

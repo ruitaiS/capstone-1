@@ -1,12 +1,6 @@
 #library("ggplot2")
 
 # Bar Plot of Occurrence Counts for Each Genre------------------------------------------
-# Store counts as new column in genre df
-genre_counts <- as.data.frame(table(unlist(train_df$genre_list)))
-colnames(genre_counts) <- c("genre", "count")
-genres <- merge(genres, genre_counts, by = "genre", all.x = TRUE)
-rm(genre_counts)
-
 # Plot and save pdf
 plot <- ggplot(genres, aes(x = reorder(genre, count), y = count)) + 
   geom_bar(stat = "identity") +
@@ -76,8 +70,5 @@ dev.off()
 #co_occurrence_df <- co_occurrence_df[order(-co_occurrence_df$Count), ]
 #co_occurrence_df <- co_occurrence_df[co_occurrence_df$Count != 0, ]
 #print(tail(co_occurrence_df, 10))
-<<<<<<< HEAD
 
 rm(co_occurrence_genre_list, co_occurrence_matrix)
-=======
->>>>>>> 6ca09c173e554694ab0b327143cf3e07d3ac0a3a
