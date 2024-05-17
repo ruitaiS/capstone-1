@@ -86,8 +86,8 @@ Many movies have more than one genre associated with it, and I wanted to see if 
  [RMSEs for Simple Algorithms]
  | Algorithm    | RMSE |
  | :-: | :-: |
-| Random Guess | 0.0    |
-| All Rating Avg | 0.0 |
+| Random Guess | 2.138071    |
+| All Rating Avg | 1.062161 |
 | User Avg | 0.0     |
 | Movie Avg    | 0.0    |
 | Genre Avg | 0.0 |

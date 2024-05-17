@@ -94,11 +94,11 @@ train_df$genre_list <- strsplit(train_df$genres, "\\|")
 test_df$genre_list <- strsplit(test_df$genres, "\\|")
 
 #Create dfs for movies, users, and genres
-movieIds <- as.data.frame(sort(unique(train_df$movieId)))
-userIds <- as.data.frame(sort(unique(train_df$userId)))
+movies <- as.data.frame(sort(unique(train_df$movieId)))
+users <- as.data.frame(sort(unique(train_df$userId)))
 genres <- as.data.frame(sort(unique(unlist(train_df$genre_list))))
-colnames(movieIds) <- "movieId"
-colnames(userIds) <- "userId"
+colnames(movies) <- "movieId"
+colnames(users) <- "userId"
 colnames(genres) <- "genre"
 
 # Code to check for missing or empty values in genres
