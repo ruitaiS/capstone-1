@@ -7,6 +7,7 @@ if(!require(caret)) install.packages("caret", repos = "http://cran.us.r-project.
 
 library(tidyverse)
 library(caret)
+library("ggplot2")
 options(timeout = 120)
 
 # Set working directory to the directory containing this script
@@ -69,32 +70,45 @@ rm(ratings, movies, test_index, temp, movielens, removed)
 
 # Train / Test DF Creation: -------------------------------------------------------
 
-partition <- function (seed){
+partition <- function (seed, subset_p, test_p = 0.2){
   set.seed(seed)
-  subset_index <- createDataPartition(y = df$rating, times = 1, p = 0.02, list = FALSE)
+  #Create a subset of the full training set to save calculation time
+  subset_index <- createDataPartition(y = df$rating, times = 1, p = subset_p, list = FALSE)
   subset <- df[subset_index,]
-  test_index <- createDataPartition(y = subset$rating, times = 1, p = 0.2, list = FALSE)
+  test_index <- createDataPartition(y = subset$rating, times = 1, p = test_p, list = FALSE)
   
   train_df <- subset[-test_index,]
   test_df <- subset[test_index,] %>% 
     semi_join(train_df, by = "movieId") %>%
     semi_join(train_df, by = "userId")
   train_df <- rbind(train_df, anti_join(subset[test_index,], final_holdout_test))
-  
-  #Unique Ids
-  unique_movieIds <- sort(unique(subset$movieId))
-  unique_userIds <- sort(unique(subset$userId))
-  
-  return(list(train = train_df, test = test_df, movieIds = unique_movieIds, userIds = unique_userIds))
+  return(list(train = train_df, test = test_df))
 }
 
-partitions <- partition(1)
+
+#Create train + test sets from a subset of the full train set
+partitions <- partition(seed = 1, subset_p = 0.02)
 train_df <- partitions$train
-train_df$genre_list <- strsplit(train_df$genres, "\\|")
 test_df <- partitions$test
+train_df$genre_list <- strsplit(train_df$genres, "\\|")
 test_df$genre_list <- strsplit(test_df$genres, "\\|")
-unique_movieIds <- partitions$movieIds
-unique_userIds <- partitions$userIds
+
+#Create dfs for movies, users, and genres
+movieIds <- as.data.frame(sort(unique(train_df$movieId)))
+userIds <- as.data.frame(sort(unique(train_df$userId)))
+genres <- as.data.frame(sort(unique(unlist(train_df$genre_list))))
+colnames(movieIds) <- "movieId"
+colnames(userIds) <- "userId"
+colnames(genres) <- "genre"
+
+# Code to check for missing or empty values in genres
+# Not needed b/c we already confirmed same movieIds in both
+#missing_values <- sum(sapply(train_df$genre_list, function(x) any(is.na(x))))
+#empty_values <- sum(sapply(train_df$genre_list, function(x) length(x) == 0))
+
+# Clear out partitions, df and final holdout (until needed)
+rm(partitions, df)
+rm(final_holdout_test)
 # ---------------------------------------------------------------------------------
 
 #RMSE Calculation Function:
