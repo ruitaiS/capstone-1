@@ -69,7 +69,7 @@ for (k in k_values) {
 }
 
 # Cleanup and Display ---
-rm(predicted, movie_avg, user_avg, k, k_values)
+rm(predicted, movie_avg, user_avg, k, k_values, movie_rating_count, user_rating_count, w, w_values)
 rmse_df
 
 

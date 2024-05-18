@@ -49,6 +49,12 @@ movies <- movies %>%
 
 movielens <- left_join(ratings, movies, by = "movieId")
 
+# One-Hot Encode the Genres:
+movielens$genre_list <- strsplit(movielens$genres, "\\|")
+all_genres <- sort(unique(unlist(movielens$genre_list)))
+movielens$genres_one_hot <- lapply(movielens$genre_list,
+                                  function(genre_list){as.integer(all_genres %in% genre_list)})
+
 # Final hold-out test set will be 10% of MovieLens data
 set.seed(1, sample.kind="Rounding") # if using R 3.6 or later
 # set.seed(1) # if using R 3.5 or earlier
@@ -65,7 +71,7 @@ final_holdout_test <- temp %>%
 removed <- anti_join(temp, final_holdout_test)
 df <- rbind(df, removed)
 
-rm(ratings, movies, test_index, temp, movielens, removed)
+rm(ratings, movies, test_index, temp, movielens, removed, all_genres)
 
 #########################################################
 
@@ -73,7 +79,7 @@ rm(ratings, movies, test_index, temp, movielens, removed)
 
 partition <- function (seed, subset_p = 1, test_p = 0.2){
   set.seed(seed)
-  #Create a subset of the full training set to save calculation time
+  #Create a subset of the full training set to save calculation time if necessary
   subset_index <- createDataPartition(y = df$rating, times = 1, p = subset_p, list = FALSE)
   subset <- df[subset_index,]
   test_index <- createDataPartition(y = subset$rating, times = 1, p = test_p, list = FALSE)
@@ -91,8 +97,6 @@ partition <- function (seed, subset_p = 1, test_p = 0.2){
 partitions <- partition(seed = 1, subset_p = 1)
 train_df <- partitions$train
 test_df <- partitions$test
-train_df$genre_list <- strsplit(train_df$genres, "\\|")
-test_df$genre_list <- strsplit(test_df$genres, "\\|")
 
 #Create dfs for movies, users, and genres
 movies <- distinct(train_df, movieId, title, .keep_all=FALSE) %>% arrange(movieId)
