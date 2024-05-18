@@ -1,13 +1,9 @@
-# Genre Average Rating by User
-unique_genres <- unique(unlist(train_df$genre_list))
-
-count_user_ratings <- function(userId){
-  ratings <- train_df[train_df$userId == userId, "rating"]
-  print(paste("Ratings by ", userId, " : ", length(ratings)))
-  return (length(ratings))
-}
+# Ratings Count Analysis
 
 
+
+
+# BS / Scrap------------------------
 
 calc_genre_avg <- function(userId, genre){
   ratings <- train_df %>%

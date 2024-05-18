@@ -32,6 +32,14 @@ a methods/analysis section that explains the process and techniques used, includ
 
 ### Planning / Data Exploration
 
+[This basically all needs to be redone]
+* Percentile section is wrong b/c I was looking at a subset of the training set. It's a lot more than 5.
+
+* both Charts need to be redone with the full dataset
+
+
+
+
 I originally intended to develop a taste profile for each user's genre preferences, predicting their ratings by looking at how similarly a movie aligned with those preferences, as well as the rating of that movie by other users with similar tastes. This most closely approximates how I would approach this problem in everyday life - if a friend asked me for movie recommendations, I might suggest to them movies similar to ones I know they like, or I might refer them to another friend who I know has similar interests in movies.
 
 <br>

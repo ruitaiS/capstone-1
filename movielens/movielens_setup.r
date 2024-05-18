@@ -88,7 +88,7 @@ partition <- function (seed, subset_p = 1, test_p = 0.2){
 
 
 #Create train + test sets from a subset of the full train set
-partitions <- partition(seed = 1, subset_p = 0.02)
+partitions <- partition(seed = 1, subset_p = 1)
 train_df <- partitions$train
 test_df <- partitions$test
 train_df$genre_list <- strsplit(train_df$genres, "\\|")
@@ -149,9 +149,12 @@ movie_rating_avg <- aggregate(rating ~ movieId, data = train_df, FUN = mean)
 colnames(movie_rating_avg) <- c("movieId", "avg_rating")
 movies <- merge(movies, movie_rating_avg, by = "movieId", all.x = TRUE)
 rm(movie_rating_avg)
-
-
 # ---------------------------------------------------------------------------------
+
+# DF for Storing RMSE Results:
+rmse_df <- data.frame(Algorithm = character(),
+                      RMSE = numeric(),
+                      stringsAsFactors = FALSE)
 
 #RMSE Calculation Function:
 calculate_rmse <- function(predicted_ratings, actual_ratings) {
