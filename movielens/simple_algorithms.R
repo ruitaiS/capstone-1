@@ -38,12 +38,34 @@ rmse_df <- rbind(rmse_df, data.frame(
 
 # User Movie Weighted Average Exploration
 # Turns out that equal weighting, k = 0.5, is actually about as good as it gets
-k_values <- seq(0, 1, 0.1)
-for (k in k_values) {
-  predicted <- k*user_avg + (1-k)*movie_avg
+# did some more fine tuning, and 0.425, 0.426 gives rmse 0.9076020
+# progress is progress
+w_values <- seq(0.42, 0.44, 0.001)
+for (w in w_values) {
+  predicted <- w*user_avg + (1-w)*movie_avg
   rmse_df <- rbind(rmse_df, data.frame(
-    Algorithm = paste("User / Movie Avg, k = ", k),
+    Algorithm = paste("User / Movie Avg, w = ", w),
     RMSE = calculate_rmse(predicted, test_df$rating)))
+}
+
+# User Movie Average Cutoff Exploration:
+# Use equal weights, unless fewer than k ratings (can use percentile instead of a number)
+# Then switch over to movie or user avg
+
+# Cutoffs don't seem to be very fruitful. Increasing just seems to increase the error.
+# Might be a consequence of the data, but I'm a lil short on time to explore this rabbit hole
+user_rating_count <- users$count[match(test_df$userId, users$userId)]
+movie_rating_count <- movies$count[match(test_df$movieId, movies$movieId)]
+k_values = seq(0, 30,1)
+w_values <- seq(0, 1, 0.1)
+
+for (k in k_values) {
+  for (w in w_values) {
+  predicted <- ifelse(movie_rating_count > k, w*user_avg + (1-w)*movie_avg, user_avg)
+  rmse_df <- rbind(rmse_df, data.frame(
+    Algorithm = paste("User / Movie Avg, w = ", w, " cutoff = ", k),
+    RMSE = calculate_rmse(predicted, test_df$rating)))
+  }
 }
 
 # Cleanup and Display ---
