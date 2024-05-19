@@ -11,6 +11,9 @@ pdf(file = "graphs/genre_counts_barplot.pdf", height = 8, width = 15)
 print(plot)
 dev.off()
 rm(plot)
+
+
+
 #----------
 
 # Co-occurrence Heatmap----------------------------------

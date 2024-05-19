@@ -9,6 +9,7 @@ library(tidyverse)
 library(caret)
 library("ggplot2")
 library(tidyr)
+library(dplyr)
 options(timeout = 120)
 
 # Set working directory to the directory containing this script
@@ -99,7 +100,7 @@ train_df <- partitions$train
 test_df <- partitions$test
 
 #Create dfs for movies, users, and genres
-movies <- distinct(train_df, movieId, title, .keep_all=FALSE) %>% arrange(movieId)
+movies <- distinct(train_df, movieId, title, genres_one_hot, .keep_all=FALSE) %>% arrange(movieId)
 movies$year <- as.integer(str_extract(movies$title, "(?<=\\()\\d{4}(?=\\))"))
 users <- as.data.frame(sort(unique(train_df$userId)))
 genres <- as.data.frame(sort(unique(unlist(train_df$genre_list))))
