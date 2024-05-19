@@ -67,9 +67,11 @@ Using `get_ratings_count_percentile`, I found that more than half of the users i
 Conversely, the most prolific users had a disproportionately large number of ratings. One user in the training set had rated over 6500 movies.
 
 <div align = "center">
+
 |userId | count | avg_rating |
 |:-: | :-: | :-: |
 |57960 | 59269 | 6616 |  3.264586 |
+
 </div>
 
  Whatever approach I took, I would need to take care not to force the preferences of the more actve users onto the more infrequent ones. I decided to shift my focus away from the users and examine the movies themselves.
