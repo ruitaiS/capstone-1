@@ -195,5 +195,7 @@ calculate_rmse <- function(predicted_ratings, actual_ratings) {
   return(rmse)
 }
 
+# Remove a column
+# df <- subset(df, select = -column_name)
 
 
