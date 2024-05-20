@@ -154,6 +154,11 @@ movie_rating_avg <- aggregate(rating ~ movieId, data = train_df, FUN = mean)
 colnames(movie_rating_avg) <- c("movieId", "avg_rating")
 movies <- merge(movies, movie_rating_avg, by = "movieId", all.x = TRUE)
 rm(movie_rating_avg)
+
+# Remove one-hot encodings for now (comment out when needed)
+movies <- movies %>%
+  select(-genres_one_hot)
+
 # ---------------------------------------------------------------------------------
 
 # DF for Storing RMSE Results:

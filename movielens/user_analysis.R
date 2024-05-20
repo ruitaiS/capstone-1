@@ -23,14 +23,41 @@ user_genre_avgs <- data.frame(
 
 
 user_genre_avgs$ratings_count = sapply(user_genre_avgs$userId, count_user_ratings)
-user_genre_avgs$ratings_count_percentile <- ecdf(user_genre_avgs$ratings_count)(user_genre_avgs$ratings_count) * 100
 
-ratings_count_percentile <- function(n){
-  ecdf_values <- ecdf(user_genre_avgs$ratings_count)
-  print(ecdf_values(n) * 100) 
+#----------
+# Percentile Analysis
+user_percentiles <- users %>%
+  mutate(percentile = percent_rank(count) * 100)
+
+
+
+#---------
+# user_percentile <- users
+# user_percentiles$percentile <- ecdf(users$count)(users$count) * 100
+
+ratings_count_percentile <- function(n) {
+  ecdf_values <- ecdf(users$count)
+  return(ecdf_values(n) * 100)
 }
 
-ratings_count_percentile(5)
+# Plot rating counts against percentile
+n <- seq(0, max(users$count), by = 1)
+percentiles <- sapply(n, ratings_count_percentile)
+plot_data <- data.frame(
+  n = n,
+  percentile = percentiles)
+
+ggplot(plot_data, aes(x = n, y = percentile)) +
+  geom_line(color = "blue") +
+  labs(title = "Percentile of Rating Counts",
+       x = "Rating Count",
+       y = "Percentile") +
+  theme_minimal()
+
+
+
+
+#-------
 
 # Get the top 10 highest values
 sorted_df <- user_genre_avgs[order(user_genre_avgs$ratings_count, decreasing = TRUE), ]
