@@ -55,10 +55,10 @@ movielens <- left_join(ratings, movies, by = "movieId")
 movielens$date <- as_datetime(movielens$timestamp)
 
 # One-Hot Encode the Genres:
-movielens$genre_list <- strsplit(movielens$genres, "\\|")
-all_genres <- sort(unique(unlist(movielens$genre_list)))
-movielens$genres_one_hot <- lapply(movielens$genre_list,
-                                  function(genre_list){as.integer(all_genres %in% genre_list)})
+#movielens$genre_list <- strsplit(movielens$genres, "\\|")
+#all_genres <- sort(unique(unlist(movielens$genre_list)))
+#movielens$genres_one_hot <- lapply(movielens$genre_list,
+#                                  function(genre_list){as.integer(all_genres %in% genre_list)})
 
 # Final hold-out test set will be 10% of MovieLens data
 set.seed(1, sample.kind="Rounding") # if using R 3.6 or later
@@ -104,13 +104,14 @@ train_df <- partitions$train
 test_df <- partitions$test
 
 #Create dfs for movies, users, and genres
-movies <- distinct(train_df, movieId, title, genres_one_hot, .keep_all=FALSE) %>% arrange(movieId)
+#movies <- distinct(train_df, movieId, title, genres_one_hot, .keep_all=FALSE) %>% arrange(movieId)
+movies <- distinct(train_df, movieId, title, .keep_all=FALSE) %>% arrange(movieId)
 movies$year <- as.integer(str_extract(movies$title, "(?<=\\()\\d{4}(?=\\))"))
 users <- as.data.frame(sort(unique(train_df$userId)))
-genres <- as.data.frame(sort(unique(unlist(train_df$genre_list))))
+#genres <- as.data.frame(sort(unique(unlist(train_df$genre_list))))
 genre_groups <- as.data.frame(sort(unique(unlist(train_df$genres))))
 colnames(users) <- "userId"
-colnames(genres) <- "genre"
+#colnames(genres) <- "genre"
 colnames(genre_groups) <- "genre"
 
 # Code to check for missing or empty values in genres
@@ -145,19 +146,19 @@ genre_groups <- merge(genre_groups, genre_group_rating_avg, by = "genre", all.x 
 rm(genre_group_rating_avg)
 
 # Individual Genres 
-genre_count <- as.data.frame(table(unlist(train_df$genre_list)))
-colnames(genre_count) <- c("genre", "count")
-genres <- merge(genres, genre_count, by = "genre", all.x = TRUE)
-rm(genre_count)
+#genre_count <- as.data.frame(table(unlist(train_df$genre_list)))
+#colnames(genre_count) <- c("genre", "count")
+#genres <- merge(genres, genre_count, by = "genre", all.x = TRUE)
+#rm(genre_count)
 
-genre_rating_avg <- aggregate(
-  data = train_df %>%
-    unnest(genre_list),
-  rating ~ genre_list,
-  FUN = mean)
-colnames(genre_rating_avg) <- c("genre", "avg_rating")
-genres <- merge(genres, genre_rating_avg, by = "genre", all.x = TRUE)
-rm(genre_rating_avg)
+#genre_rating_avg <- aggregate(
+#  data = train_df %>%
+#    unnest(genre_list),
+#  rating ~ genre_list,
+#  FUN = mean)
+#colnames(genre_rating_avg) <- c("genre", "avg_rating")
+#genres <- merge(genres, genre_rating_avg, by = "genre", all.x = TRUE)
+#rm(genre_rating_avg)
 
 user_rating_count <- as.data.frame(table(train_df$userId))
 colnames(user_rating_count) <- c("userId", "count")
@@ -178,11 +179,6 @@ movie_rating_avg <- aggregate(rating ~ movieId, data = train_df, FUN = mean)
 colnames(movie_rating_avg) <- c("movieId", "avg_rating")
 movies <- merge(movies, movie_rating_avg, by = "movieId", all.x = TRUE)
 rm(movie_rating_avg)
-
-# Remove one-hot encodings for now (comment out when needed)
-movies <- movies %>%
-  select(-genres_one_hot)
-
 # ---------------------------------------------------------------------------------
 
 # DF for Storing RMSE Results:

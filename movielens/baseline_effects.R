@@ -1,12 +1,12 @@
 # Movie Bias b_i
 movie_bias <- aggregate((rating-mu) ~ movieId, data = train_df, FUN = mean)
 colnames(movie_bias) <- c("movieId", "b_i")
-train_df <- merge(train_df, movie_bias, by = "movieId", all.x = TRUE)
 movies <- merge(movies, movie_bias, by = "movieId", all.x = TRUE)
 # Filter:
 movies <- movies %>%
   mutate(b_i = ifelse(count < 100, 0, b_i))
 rm(movie_bias)
+#train_df <- merge(train_df, movie_bias, by = "movieId", all.x = TRUE)
 # TODO: make a graph of this
 
 # User Bias b_u
