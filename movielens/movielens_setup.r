@@ -10,6 +10,7 @@ library(caret)
 library("ggplot2")
 library(tidyr)
 library(dplyr)
+library(lubridate)
 options(timeout = 120)
 
 # Set working directory to the directory containing this script
@@ -49,6 +50,9 @@ movies <- movies %>%
   mutate(movieId = as.integer(movieId))
 
 movielens <- left_join(ratings, movies, by = "movieId")
+
+# Create a rating Date column
+movielens$date <- as_datetime(movielens$timestamp)
 
 # One-Hot Encode the Genres:
 movielens$genre_list <- strsplit(movielens$genres, "\\|")
@@ -114,11 +118,15 @@ colnames(genres) <- "genre"
 
 # Clear out partitions, df and final holdout (until needed)
 rm(movies_file, ratings_file, partition, partitions, df)
-rm(final_holdout_test)
+#rm(final_holdout_test)
 
 #--------------------------
 # Movie, User, and Genre Statistics
 #TODO: If time, fix this code so that it doesn't re-add the columns if they already exist
+#TODO: Textbook uses movies rated five times or more, and users that with 100 ratings or more (Implement if time)
+
+# Average of All Ratings
+mu <- mean(train_df$rating)
 
 #TODO: Might need to do the full list 
 genre_count <- as.data.frame(table(unlist(train_df$genre_list)))
