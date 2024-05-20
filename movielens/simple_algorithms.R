@@ -72,10 +72,10 @@ for (k in k_values) {
 # Predict with Effects instead of Averages
 movie_bias <- movies$b_i[match(test_df$movieId, movies$movieId)]
 user_bias <- users$b_u[match(test_df$userId, users$userId)]
-genre_bias <- train_df$b_g[match(test_df$genres, train_df$genres)]
-predicted <- mu + movie_bias + user_bias# + genre_bias
+genre_bias <- genre_groups$b_g[match(test_df$genres, genre_groups$genre)]
+predicted <- mu + movie_bias + user_bias + genre_bias
 rmse_df <- rbind(rmse_df, data.frame(
-  Algorithm = "Simple User, Movie Effects",
+  Algorithm = "Filtered User, Movie, Genre Effects",
   RMSE = calculate_rmse(predicted, test_df$rating)))
 
 # Tweak effect weighting

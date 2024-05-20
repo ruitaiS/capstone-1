@@ -108,8 +108,10 @@ movies <- distinct(train_df, movieId, title, genres_one_hot, .keep_all=FALSE) %>
 movies$year <- as.integer(str_extract(movies$title, "(?<=\\()\\d{4}(?=\\))"))
 users <- as.data.frame(sort(unique(train_df$userId)))
 genres <- as.data.frame(sort(unique(unlist(train_df$genre_list))))
+genre_groups <- as.data.frame(sort(unique(unlist(train_df$genres))))
 colnames(users) <- "userId"
 colnames(genres) <- "genre"
+colnames(genre_groups) <- "genre"
 
 # Code to check for missing or empty values in genres
 # Not needed b/c we already confirmed same movieIds in both
@@ -128,7 +130,21 @@ rm(movies_file, ratings_file, partition, partitions, df)
 # Average of All Ratings
 mu <- mean(train_df$rating)
 
-#TODO: Might need to do the full list 
+# Grouped genres
+genre_group_count <- as.data.frame(table(unlist(train_df$genres)))
+colnames(genre_group_count) <- c("genre", "count")
+genre_groups <- merge(genre_groups, genre_group_count, by = "genre", all.x = TRUE)
+rm(genre_group_count)
+
+genre_group_rating_avg <- aggregate(
+  data = train_df,
+  rating ~ genres,
+  FUN = mean)
+colnames(genre_group_rating_avg) <- c("genre", "avg_rating")
+genre_groups <- merge(genre_groups, genre_group_rating_avg, by = "genre", all.x = TRUE)
+rm(genre_group_rating_avg)
+
+# Individual Genres 
 genre_count <- as.data.frame(table(unlist(train_df$genre_list)))
 colnames(genre_count) <- c("genre", "count")
 genres <- merge(genres, genre_count, by = "genre", all.x = TRUE)
