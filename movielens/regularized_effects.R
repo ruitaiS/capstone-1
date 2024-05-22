@@ -1,7 +1,7 @@
 # Regularized Movie Bias b_i with regularization parameter l1
-movie_bias <- aggregate((rating-mu) ~ movieId, data = train_df, FUN = sum)
-colnames(movie_bias) <- c("movieId", "sum")
-movie_bias <- merge(movie_bias, movies[, c("movieId", "count")], by="movieId")
+movie_bias <- aggregate((rating-mu) ~ movieId, data = train_df, FUN = sum) %>%
+  setNames(c("movieId", "sum")) %>%
+  merge(movies[, c("movieId", "count")], by="movieId")
 
 # Tuning L1
 l1_plot <- data.frame(Lambda = character(),

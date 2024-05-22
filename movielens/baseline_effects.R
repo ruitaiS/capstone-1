@@ -6,7 +6,7 @@ movies <- merge(movies, movie_bias, by = "movieId", all.x = TRUE)
 movies <- movies %>%
   mutate(b_i = ifelse(count < 100, 0, b_i))
 rm(movie_bias)
-#train_df <- merge(train_df, movie_bias, by = "movieId", all.x = TRUE)
+train_df <- merge(train_df, movie_bias, by = "movieId", all.x = TRUE)
 # TODO: make a graph of this
 
 # User Bias b_u

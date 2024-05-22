@@ -54,6 +54,17 @@ movielens <- left_join(ratings, movies, by = "movieId")
 # Create a rating Date column
 movielens$date <- as_datetime(movielens$timestamp)
 
+# Test Only: Remove Movies with Fewer Than 5
+movielens <- movielens %>%
+  group_by(movieId) %>%
+  filter(n() >= 5) %>%
+  ungroup()
+# Test Only: Remove Users with Fewer than 100
+movielens <- movielens %>%
+  group_by(userId) %>%
+  filter(n() >= 100) %>%
+  ungroup()
+
 # One-Hot Encode the Genres:
 #movielens$genre_list <- strsplit(movielens$genres, "\\|")
 #all_genres <- sort(unique(unlist(movielens$genre_list)))
