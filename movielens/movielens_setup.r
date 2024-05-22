@@ -54,16 +54,17 @@ movielens <- left_join(ratings, movies, by = "movieId")
 # Create a rating Date column
 movielens$date <- as_datetime(movielens$timestamp)
 
-# Test Only: Remove Movies with Fewer Than 5
-movielens <- movielens %>%
-  group_by(movieId) %>%
-  filter(n() >= 5) %>%
-  ungroup()
-# Test Only: Remove Users with Fewer than 100
-movielens <- movielens %>%
-  group_by(userId) %>%
-  filter(n() >= 100) %>%
-  ungroup()
+# Exploratory Test: Remove Movies with Fewer Than 5
+#movielens <- movielens %>%
+#  group_by(movieId) %>%
+#  filter(n() >= 5) %>%
+#  ungroup()
+
+# Exploratory Test: Remove Users with Fewer than 100
+#movielens <- movielens %>%
+#  group_by(userId) %>%
+#  filter(n() >= 100) %>%
+#  ungroup()
 
 # One-Hot Encode the Genres:
 #movielens$genre_list <- strsplit(movielens$genres, "\\|")
@@ -119,16 +120,11 @@ test_df <- partitions$test
 movies <- distinct(train_df, movieId, title, .keep_all=FALSE) %>% arrange(movieId)
 movies$year <- as.integer(str_extract(movies$title, "(?<=\\()\\d{4}(?=\\))"))
 users <- as.data.frame(sort(unique(train_df$userId)))
-#genres <- as.data.frame(sort(unique(unlist(train_df$genre_list))))
-genre_groups <- as.data.frame(sort(unique(unlist(train_df$genres))))
 colnames(users) <- "userId"
-#colnames(genres) <- "genre"
+genre_groups <- as.data.frame(sort(unique(unlist(train_df$genres))))
 colnames(genre_groups) <- "genre"
-
-# Code to check for missing or empty values in genres
-# Not needed b/c we already confirmed same movieIds in both
-#missing_values <- sum(sapply(train_df$genre_list, function(x) any(is.na(x))))
-#empty_values <- sum(sapply(train_df$genre_list, function(x) length(x) == 0))
+#genres <- as.data.frame(sort(unique(unlist(train_df$genre_list))))
+#colnames(genres) <- "genre"
 
 # Clear out partitions, df and final holdout (until needed)
 rm(movies_file, ratings_file, partition, partitions, df)
@@ -137,12 +133,12 @@ rm(movies_file, ratings_file, partition, partitions, df)
 #--------------------------
 # Movie, User, and Genre Statistics
 #TODO: If time, fix this code so that it doesn't re-add the columns if they already exist
-#TODO: Textbook uses movies rated five times or more, and users that with 100 ratings or more (Implement if time)
 
 # Average of All Ratings
 mu <- mean(train_df$rating)
 
-# Grouped genres
+# Add ratings counts and average ratings by genre group, user, and movie
+
 genre_group_count <- as.data.frame(table(unlist(train_df$genres)))
 colnames(genre_group_count) <- c("genre", "count")
 genre_groups <- merge(genre_groups, genre_group_count, by = "genre", all.x = TRUE)
