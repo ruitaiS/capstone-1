@@ -122,7 +122,7 @@ movies$year <- as.integer(str_extract(movies$title, "(?<=\\()\\d{4}(?=\\))"))
 users <- as.data.frame(sort(unique(train_df$userId)))
 colnames(users) <- "userId"
 genre_groups <- as.data.frame(sort(unique(unlist(train_df$genres))))
-colnames(genre_groups) <- "genre"
+colnames(genre_groups) <- "genres"
 #genres <- as.data.frame(sort(unique(unlist(train_df$genre_list))))
 #colnames(genres) <- "genre"
 
@@ -140,16 +140,16 @@ mu <- mean(train_df$rating)
 # Add ratings counts and average ratings by genre group, user, and movie
 
 genre_group_count <- as.data.frame(table(unlist(train_df$genres)))
-colnames(genre_group_count) <- c("genre", "count")
-genre_groups <- merge(genre_groups, genre_group_count, by = "genre", all.x = TRUE)
+colnames(genre_group_count) <- c("genres", "count")
+genre_groups <- merge(genre_groups, genre_group_count, by = "genres", all.x = TRUE)
 rm(genre_group_count)
 
 genre_group_rating_avg <- aggregate(
   data = train_df,
   rating ~ genres,
   FUN = mean)
-colnames(genre_group_rating_avg) <- c("genre", "avg_rating")
-genre_groups <- merge(genre_groups, genre_group_rating_avg, by = "genre", all.x = TRUE)
+colnames(genre_group_rating_avg) <- c("genres", "avg_rating")
+genre_groups <- merge(genre_groups, genre_group_rating_avg, by = "genres", all.x = TRUE)
 rm(genre_group_rating_avg)
 
 # Individual Genres 

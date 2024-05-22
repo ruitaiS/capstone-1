@@ -82,6 +82,8 @@ for (k in k_values) {
   }
 }
 
+rm(k, k_values, w, w_values, user_avg, movie_avg, user_rating_count, movie_rating_count, predicted)
+
 # Remove these from rmse df:
 #rmse_df <- head(rmse_df, 26)
 
