@@ -66,21 +66,21 @@ rm(user_avg, movie_avg, predicted, w, w_values)
 
 # Cutoffs don't seem to be very fruitful. Increasing just seems to increase the error.
 # Might be a consequence of the data, but I'm a lil short on time to explore this rabbit hole
-user_avg <- users$avg_rating[match(test_df$userId, users$userId)]
-movie_avg <- movies$avg_rating[match(test_df$movieId, movies$movieId)]
-user_rating_count <- users$count[match(test_df$userId, users$userId)]
-movie_rating_count <- movies$count[match(test_df$movieId, movies$movieId)]
-k_values = seq(0, 30,1)
-w_values <- seq(0.42, 0.44, 0.001)
+#user_avg <- users$avg_rating[match(test_df$userId, users$userId)]
+#movie_avg <- movies$avg_rating[match(test_df$movieId, movies$movieId)]
+#user_rating_count <- users$count[match(test_df$userId, users$userId)]
+#movie_rating_count <- movies$count[match(test_df$movieId, movies$movieId)]
+#k_values = seq(0, 30,1)
+#w_values <- seq(0.42, 0.44, 0.001)
 
-for (k in k_values) {
-  for (w in w_values) {
-  predicted <- ifelse(user_rating_count > k, w*user_avg + (1-w)*movie_avg, movie_avg)
-  rmse_df <- rbind(rmse_df, data.frame(
-    Algorithm = paste("User Movie Weighted Ensemble, w = ", w, " user rating count cutoff = ", k),
-    RMSE = calculate_rmse(predicted, test_df$rating)))
-  }
-}
+#for (k in k_values) {
+#  for (w in w_values) {
+#  predicted <- ifelse(user_rating_count > k, w*user_avg + (1-w)*movie_avg, movie_avg)
+#  rmse_df <- rbind(rmse_df, data.frame(
+#    Algorithm = paste("User Movie Weighted Ensemble, w = ", w, " user rating count cutoff = ", k),
+#    RMSE = calculate_rmse(predicted, test_df$rating)))
+#  }
+#}
 
 rm(k, k_values, w, w_values, user_avg, movie_avg, user_rating_count, movie_rating_count, predicted)
 

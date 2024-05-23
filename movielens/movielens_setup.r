@@ -121,16 +121,16 @@ test_df <- partitions$test
 #movies <- distinct(train_df, movieId, title, genres_one_hot, .keep_all=FALSE) %>% arrange(movieId)
 movies <- distinct(train_df, movieId, title, .keep_all=FALSE) %>% arrange(movieId)
 movies$year <- as.integer(str_extract(movies$title, "(?<=\\()\\d{4}(?=\\))"))
-users <- as.data.frame(sort(unique(train_df$userId)))
-colnames(users) <- "userId"
-genre_groups <- as.data.frame(sort(unique(unlist(train_df$genres))))
-colnames(genre_groups) <- "genres"
-#genres <- as.data.frame(sort(unique(unlist(train_df$genre_list))))
-#colnames(genres) <- "genre"
 
-# Clear out partitions, df and final holdout (until needed)
+users <- as.data.frame(sort(unique(train_df$userId))) %>%
+  setNames(c("userId"))
+
+genres <- as.data.frame(sort(unique(unlist(train_df$genres)))) %>%
+  setNames(c("genres"))
+
+# Cleanup
 rm(movies_file, ratings_file, partition, partitions, df)
-#rm(final_holdout_test)
+rm(final_holdout_test)
 
 #--------------------------
 # Movie, User, and Genre Statistics
@@ -139,55 +139,31 @@ rm(movies_file, ratings_file, partition, partitions, df)
 # Average of All Ratings
 mu <- mean(train_df$rating)
 
-# Add ratings counts and average ratings by genre group, user, and movie
+# Add ratings counts by genre, user, and movie
+genres <- as.data.frame(table(unlist(train_df$genres))) %>%
+  setNames(c("genres", "count")) %>%
+  merge(genres, ., by = "genres", all.x = TRUE)
 
-genre_group_count <- as.data.frame(table(unlist(train_df$genres)))
-colnames(genre_group_count) <- c("genres", "count")
-genre_groups <- merge(genre_groups, genre_group_count, by = "genres", all.x = TRUE)
-rm(genre_group_count)
+users <- as.data.frame(table(train_df$userId)) %>%
+  setNames(c("userId", "count")) %>%
+  merge(users, ., by = "userId", all.x = TRUE)
 
-genre_group_rating_avg <- aggregate(
-  data = train_df,
-  rating ~ genres,
-  FUN = mean)
-colnames(genre_group_rating_avg) <- c("genres", "avg_rating")
-genre_groups <- merge(genre_groups, genre_group_rating_avg, by = "genres", all.x = TRUE)
-rm(genre_group_rating_avg)
+movies<- as.data.frame(table(train_df$movieId)) %>%
+  setNames(c("movieId", "count")) %>%
+  merge(movies, ., by = "movieId", all.x = TRUE)
 
-# Individual Genres 
-#genre_count <- as.data.frame(table(unlist(train_df$genre_list)))
-#colnames(genre_count) <- c("genre", "count")
-#genres <- merge(genres, genre_count, by = "genre", all.x = TRUE)
-#rm(genre_count)
+# Add average ratings by genre, user, and movie
+genres <- aggregate(data = train_df, rating ~ genres, FUN = mean) %>%
+  setNames(c("genres", "avg_rating")) %>%
+  merge(genres, ., by = "genres", all.x = TRUE)
 
-#genre_rating_avg <- aggregate(
-#  data = train_df %>%
-#    unnest(genre_list),
-#  rating ~ genre_list,
-#  FUN = mean)
-#colnames(genre_rating_avg) <- c("genre", "avg_rating")
-#genres <- merge(genres, genre_rating_avg, by = "genre", all.x = TRUE)
-#rm(genre_rating_avg)
+users <- aggregate(rating ~ userId, data = train_df, FUN = mean) %>%
+  setNames(c("userId", "avg_rating")) %>%
+  merge(users, ., by = "userId", all.x = TRUE)
 
-user_rating_count <- as.data.frame(table(train_df$userId))
-colnames(user_rating_count) <- c("userId", "count")
-users <- merge(users, user_rating_count, by = "userId", all.x = TRUE)
-rm(user_rating_count)
-
-user_rating_avg <- aggregate(rating ~ userId, data = train_df, FUN = mean)
-colnames(user_rating_avg) <- c("userId", "avg_rating")
-users <- merge(users, user_rating_avg, by = "userId", all.x = TRUE)
-rm(user_rating_avg)
-
-movie_rating_counts <- as.data.frame(table(train_df$movieId))
-colnames(movie_rating_counts) <- c("movieId", "count")
-movies <- merge(movies, movie_rating_counts, by = "movieId", all.x = TRUE)
-rm(movie_rating_counts)
-
-movie_rating_avg <- aggregate(rating ~ movieId, data = train_df, FUN = mean)
-colnames(movie_rating_avg) <- c("movieId", "avg_rating")
-movies <- merge(movies, movie_rating_avg, by = "movieId", all.x = TRUE)
-rm(movie_rating_avg)
+movies <- aggregate(rating ~ movieId, data = train_df, FUN = mean) %>%
+  setNames(c("movieId", "avg_rating")) %>%
+  merge(movies, ., by = "movieId", all.x = TRUE)
 # ---------------------------------------------------------------------------------
 
 # DF for Storing RMSE Results:
