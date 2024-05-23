@@ -171,7 +171,7 @@ rmse_df <- data.frame(Algorithm = character(),
                       RMSE = numeric(),
                       stringsAsFactors = FALSE)
 
-#RMSE Calculation Function:
+# RMSE Calculation Function:
 calculate_rmse <- function(predicted_ratings, actual_ratings) {
   differences <- predicted_ratings - actual_ratings
   squared_differences <- differences^2
@@ -179,6 +179,15 @@ calculate_rmse <- function(predicted_ratings, actual_ratings) {
   rmse <- sqrt(mean_squared_difference)
   return(rmse)
 }
+
+# Plot Export Function:
+store_plot <- function(filename, h = 1500, w = 1500, plot){
+  png(file = paste("graphs/", filename, sep=""), height = h, width = w)
+  print(plot)
+  dev.off()
+}
+
+
 
 # Remove a column
 # df <- subset(df, select = -column_name)
