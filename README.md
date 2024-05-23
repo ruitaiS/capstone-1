@@ -1,5 +1,9 @@
 # Movie Recommendations:
 
+# Formulas
+
+RMSE = sqrt((1/n) * Σ(y_i - ŷ_i)^2)
+
 * 0 points: The report is either not uploaded or contains very minimal information AND/OR the report is not written in English AND/OR the report appears to violate the edX Honor Code.
 
 * 10 points: Multiple required sections of the report are missing.
