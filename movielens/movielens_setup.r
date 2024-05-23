@@ -134,7 +134,6 @@ rm(final_holdout_test)
 
 #--------------------------
 # Movie, User, and Genre Statistics
-#TODO: If time, fix this code so that it doesn't re-add the columns if they already exist
 
 # Average of All Ratings
 mu <- mean(train_df$rating)

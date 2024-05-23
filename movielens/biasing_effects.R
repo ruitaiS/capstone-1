@@ -122,7 +122,9 @@ store_plot("regularized_movie_bias.png", plot = {
 )
 rm(density_values)
 
-rm(tuning_df, l1, l1_values, l1_plot, movie_bias, predicted)
+rm(tuning_df, l1, l1_plot, movie_bias)
+
+#TODO: b_i_0 - b_i_reg vs. count plot
 
 #--------
 # l2 tuning for user bias:
@@ -134,90 +136,106 @@ l2_plot <- data.frame(Lambda = character(),
                       RMSE = numeric(),
                       stringsAsFactors = FALSE)
 
-l2_values <- seq(0, 1, 0.01)
 movie_bias <- movies$b_i_reg[match(test_df$movieId, movies$movieId)]
-for (l2 in l2_values){
+for (l2 in seq(0, 1, 0.01)){
   tuning_df$b_u <- tuning_df$sum / (tuning_df$count + l2)
   user_bias <- tuning_df$b_u[match(test_df$userId, tuning_df$userId)]
-  predicted <- mu + movie_bias + user_bias
   l2_plot <- rbind(l2_plot, data.frame(
     Lambda = l2,
-    RMSE = calculate_rmse(predicted, test_df$rating)))
+    RMSE = calculate_rmse(
+      mu + movie_bias + user_bias,
+      test_df$rating)))
 }
 
-# TODO: Export
-qplot(l2_plot$Lambda, l2_plot$RMSE, geom = "line")+
-  xlab("Lambda") +
-  ylab("RMSE") +
-  ggtitle("Lambda L2 vs. RMSE")
+# Plot:
+store_plot("user_bias_tuning.png",
+           qplot(l2_plot$Lambda, l2_plot$RMSE, geom = "line")+
+             xlab("Lambda") +
+             ylab("RMSE") +
+             ggtitle("Lambda L2 vs. RMSE"),
+           h = 1000, w = 1000
+           )
 
-l2 <- l2_values[which.min(l2_plot$RMSE)]
+l2 <- l2_plot$Lambda[which.min(l2_plot$RMSE)]
 
 # Store
 users$b_u_reg <- tuning_df$sum / (tuning_df$count + l2)
 train_df <- merge(train_df, users[,c('userId', 'b_u_reg')], by="userId")
 
-rm(tuning_df, l2, l2_values, l2_plot, movie_bias, user_bias, predicted)
+rm(tuning_df, l2, l2_plot, movie_bias, user_bias)
+
+# Note: Even though l2 is optimized at 0, b_u_reg != b_u_0
+# This is because we're basing it on b_i_reg, not b_i_0
 #--------
+
 # l3 tuning for genre bias:
 tuning_df <- aggregate((rating-(mu+b_i_reg+b_u_reg)) ~ genres, data = train_df, FUN = sum) %>%
   setNames(c("genres", "sum")) %>%
-  merge(genre_groups[,c('genres', 'count')], by="genres")
+  merge(genres[,c('genres', 'count')], by="genres")
 
 l3_plot <- data.frame(Lambda = character(),
                       RMSE = numeric(),
                       stringsAsFactors = FALSE)
 
-l3_values <- seq(0, 1, 0.01)
 movie_bias <- movies$b_i_reg[match(test_df$movieId, movies$movieId)]
 user_bias <- users$b_u_reg[match(test_df$userId, users$userId)]
-for (l3 in l3_values){
+for (l3 in seq(0, 1, 0.01)){
   tuning_df$b_g <- tuning_df$sum / (tuning_df$count + l3)
   genre_bias <- tuning_df$b_g[match(test_df$genres, tuning_df$genres)]
-  predicted <- mu + movie_bias + user_bias + genre_bias
   l3_plot <- rbind(l3_plot, data.frame(
     Lambda = l3,
-    RMSE = calculate_rmse(predicted, test_df$rating)))
+    RMSE = calculate_rmse(
+      mu + movie_bias + user_bias + genre_bias,
+      test_df$rating)))
 }
 
-# TODO: Export
-qplot(l3_plot$Lambda, l3_plot$RMSE, geom = "line")+
-  xlab("Lambda") +
-  ylab("RMSE") +
-  ggtitle("Lambda L3 vs. RMSE")
+# Plot:
+store_plot("genre_bias_tuning.png",
+           qplot(l3_plot$Lambda, l3_plot$RMSE, geom = "line")+
+             xlab("Lambda") +
+             ylab("RMSE") +
+             ggtitle("Lambda L3 vs. RMSE"),
+           h = 1000, w = 1000
+)
 
-l3 <- l3_values[which.min(l3_plot$RMSE)]
+l3 <- l3_plot$Lambda[which.min(l3_plot$RMSE)]
 
 # Store
-genre_groups$b_g_reg <- tuning_df$sum / (tuning_df$count + l3)
-train_df <- merge(train_df, genre_groups[,c('genres', 'b_g_reg')], by="genres")
+genres$b_g_reg <- tuning_df$sum / (tuning_df$count + l3)
+train_df <- merge(train_df, genres[,c('genres', 'b_g_reg')], by="genres")
 
-rm(tuning_df, l3, l3_values, l3_plot, movie_bias, user_bias, genre_bias, predicted)
+rm(tuning_df, l3, l3_plot, movie_bias, user_bias, genre_bias)
+
+# Note: Like with l2, even though l3 is optimized at 0, b_g_reg != b_g_0
+# This is because we're basing it on b_i_reg and b_u_reg, not b_i_0 and b_u_0
 
 #----------
 # Predict with Regularized Biases
 movie_bias <- movies$b_i_reg[match(test_df$movieId, movies$movieId)]
 user_bias <- users$b_u_reg[match(test_df$userId, users$userId)]
-genre_bias <- genre_groups$b_g_reg[match(test_df$genres, genre_groups$genres)]
+genre_bias <- genres$b_g_reg[match(test_df$genres, genres$genres)]
 
 # Movie Bias Only:
-predicted <- mu + movie_bias# + user_bias + genre_bias
 rmse_df <- rbind(rmse_df, data.frame(
   Algorithm = "mu + b_i_reg",
-  RMSE = calculate_rmse(predicted, test_df$rating)))
+  RMSE = calculate_rmse(
+    mu + movie_bias,
+    test_df$rating)))
 
 # Movie + User Bias:
-predicted <- mu + movie_bias + user_bias# + genre_bias
 rmse_df <- rbind(rmse_df, data.frame(
   Algorithm = "mu + b_i_reg + b_u_reg",
-  RMSE = calculate_rmse(predicted, test_df$rating)))
+  RMSE = calculate_rmse(
+    mu + movie_bias + user_bias,
+    test_df$rating)))
 
 # Movie, User, and Genre Bias:
-predicted <- mu + movie_bias + user_bias + genre_bias
 rmse_df <- rbind(rmse_df, data.frame(
   Algorithm = "mu + b_i_reg + b_u_reg + b_g_reg",
-  RMSE = calculate_rmse(predicted, test_df$rating)))
+  RMSE = calculate_rmse(
+    mu + movie_bias + user_bias + genre_bias,
+    test_df$rating)))
 
-rm(movie_bias, user_bias, genre_bias, predicted)
+rm(movie_bias, user_bias, genre_bias)
 
 # -----------
