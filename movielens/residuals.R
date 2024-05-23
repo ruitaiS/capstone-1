@@ -12,11 +12,19 @@ density_values <- density(train_df$r)
 plot(density_values, main = "Density Plot of Remaining Variation", xlab = "Remainder", ylab = "Density")
 polygon(density_values, col = "lightblue", border = "black")
 
-# TODO: Comparing Residuals of Two Movies
-#compare_r <- function(movieId1, movieId2){
-#  common_users <- intersect(train_df$userId[train_df$movieId == movieId1],
-#                            train_df$userId[train_df$movieId == movieId2])
-#  subset_df <- train_df[train_df$userId %in% common_users & train_df$movieId %in% c(movieId1, movieId2), ]
-#  
-#}
+# Comparing Residuals of Two Movies
+compare_r <- function(movieId1, movieId2){
+  subset <- merge(train_df[train_df$movieId == movieId1, c('movieId', 'userId', 'title', 'r')],
+                         train_df[train_df$movieId == movieId2, c('movieId', 'userId', 'title', 'r')],
+                         by = "userId")
+  title1 <- unique(subset$title.x)[1]
+  title2 <- unique(subset$title.y)[1]
+  
+  ggplot(subset, aes(x = r.x, y = r.y)) +
+    geom_point() +
+    xlab(paste(title1, " Residuals")) +
+    ylab(paste(title2, " Residuals")) +
+    ggtitle(paste("Comparison of Residuals for", title1, "and", title2))
+}
 
+compare_r(1, 2)
