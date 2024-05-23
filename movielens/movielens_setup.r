@@ -4,7 +4,9 @@
 
 if(!require(tidyverse)) install.packages("tidyverse", repos = "http://cran.us.r-project.org")
 if(!require(caret)) install.packages("caret", repos = "http://cran.us.r-project.org")
+if(!require(mlpack)) install.packages("mlpack")
 
+library(mlpack)
 library(tidyverse)
 library(caret)
 library("ggplot2")

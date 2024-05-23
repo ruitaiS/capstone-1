@@ -27,4 +27,6 @@ compare_r <- function(movieId1, movieId2){
     ggtitle(paste("Comparison of Residuals for", title1, "and", title2))
 }
 
-compare_r(1, 2)
+compare_r(1, 300)
+
+#---#
