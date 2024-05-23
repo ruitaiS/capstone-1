@@ -3,7 +3,7 @@
 # Residuals calculation / Prep for SVD:
 movie_bias <- movies$b_i_reg[match(train_df$movieId, movies$movieId)]
 user_bias <- users$b_u_reg[match(train_df$userId, users$userId)]
-genre_bias <- genre_groups$b_g_reg[match(train_df$genres, genre_groups$genres)]
+genre_bias <- genres$b_g_reg[match(train_df$genres, genres$genres)]
 train_df$r <- train_df$rating - (mu + movie_bias + user_bias + genre_bias)
 rm(movie_bias, user_bias, genre_bias)
 
@@ -27,6 +27,9 @@ compare_r <- function(movieId1, movieId2){
     ggtitle(paste("Comparison of Residuals for", title1, "and", title2))
 }
 
-compare_r(1, 300)
+#compare_r(1, 300)
 
-#---#
+# SVD on Residuals----------------
+
+# Train the collaborative filtering model
+residuals <- as.matrix(train_df[, c("userId", "movieId", "r")])
