@@ -2,6 +2,8 @@
 
 ## Formulas and Notation:
 
+(Final holdout set, main dataset)
+
 (Check) Training Set $\kappa = \\{(u,i) | r{_u}{_i} \text{is known}\\}$
 
 (Check) $K$ cross validation sets $\{k_1, k_2, ... k_K\}$
@@ -51,7 +53,7 @@ Regularized bias for genre $g$: $`{b}_{g_0} = \sum_{u,i\in R(g)} \frac{{r}{_u}{_
 
 Predicted rating for user $u$'s rating of movie $i$ : $\hat{r}{_u}{_i}$
 
-(Check Te) Root Mean Squared Error (RMSE): ${\sum}_{u,i\in Te} \frac{({r}{_u}{_i} - \hat{r}{_u}{_i})^2}{|Te|}$
+Root Mean Squared Error (RMSE): ${\sum}_{u,i\in {D}_{train}} \frac{({r}{_u}{_i} - \hat{r}{_u}{_i})^2}{|{D}_{train}|}$
 
 * 0 points: The report is either not uploaded or contains very minimal information AND/OR the report is not written in English AND/OR the report appears to violate the edX Honor Code.
 
