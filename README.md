@@ -63,6 +63,14 @@ r'_{m1} & r'_{m2} & \cdots & r'_{mn} \\
 
 where $`m = |\{u\in \mathcal{D}\}|`$, $`n = |\{i\in \mathcal{D}\}|`$, and each entry $`{r'}{_u}{_i} = {r}{_u}{_i} - (\mu+{b}_{i_{reg}}+{b}_{u_{reg}}+{b}_{g_{reg}})`$
 
+We decompose $\mathcal{E}$ with Singular Value Decomposition:
+
+$`\mathcal{E} = U\Sigma V^T`$, such that
+
+$U$ is an $m\times m$ orthogonal matrix.
+$\Sigma$ is an $m\times n$ diagonal matrix with non-negative real numbers on the diagonal.
+$V$ is an $n\times n$ orthogonal matrix, of which $V^T$ is the transpose.
+
 Predicted rating for user $u$'s rating of movie $i$ : $\hat{r}{_u}{_i}$
 
 Root Mean Squared Error (RMSE): $`{\sum}_{u,i\in {D}_{val}} \frac{({r}{_u}{_i} - \hat{r}{_u}{_i})^2}{|{D}_{val}|}`$
