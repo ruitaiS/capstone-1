@@ -5,7 +5,7 @@
 RMSE = $`\\sum_{n=1}^{\\infty} 2^{-n} = 1 $
 
 
-rmse = $\\sum_{i=1}^{|\kappa|} \frac{(r_i{_j} - \hat{r}{_i}{_j})^2}{|\kappa|}$
+rmse = ${\\sum}_{i=1}^{|\kappa|} \frac{(r_i{_j} - \hat{r}{_i}{_j})^2}{|\kappa|}$
 
 $$\sqrt{\frac{\sum_{i=1}^{n}  (r_i_j - \hat{r}_i_j)^2}{n}}$$
 
