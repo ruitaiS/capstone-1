@@ -6,7 +6,9 @@ Training Set $\kappa = \\{(u,i) | r{_u}{_i} \text{is known}\\}$
 
 Average rating across all users and movies in the training set: $\mu_{(\kappa)}$
 
-Average rating for a movie $m$ : $\mu_{(m)}$
+Average rating for a movie $i$ : $\mu_{(m)}$
+
+Average rating for a user $u$ : $\mu_{(u)}$
 
 Root Mean Squared Error (RMSE): ${\sum}_{i=1}^{|\kappa|} \frac{(r_i{_j} - \hat{r}{_i}{_j})^2}{|\kappa|}$
 
