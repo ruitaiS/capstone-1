@@ -6,7 +6,7 @@ RMSE = $`\sum_{i=1}^n y_i`$
 
 $$\sum_{i=1}^n y_i$$
 
-$$\sqrt{\frac{1}{n} \sum_{i=1}^{n} (y_i - \hat{y}_i)^2}$$
+$$\sqrt{\frac{\sum_{i=1}^{n} (r_ij - \hat{r}_ij)^2}{n}}$$
 
 * 0 points: The report is either not uploaded or contains very minimal information AND/OR the report is not written in English AND/OR the report appears to violate the edX Honor Code.
 
