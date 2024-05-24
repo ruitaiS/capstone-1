@@ -2,9 +2,15 @@
 
 ## Formulas and Notation:
 
-Training Set $\kappa = \\{(u,i) | r{_u}{_i} \text{is known}\\}$
+(Check) Training Set $\kappa = \\{(u,i) | r{_u}{_i} \text{is known}\\}$
 
-$K$ cross validation sets $\{k_1, k_2, ... k_K\}$
+(Check) $K$ cross validation sets $\{k_1, k_2, ... k_K\}$
+
+Observed rating of user $u$ for movie $i$: ${r}{_u}{_i}$
+
+(Genre set for movie i)
+
+(Clarify that the following are derived from the training (eg. non-validation) folds)
 
 Average Rating function $\bar{r}_{(...)}$, such that:
 
@@ -14,27 +20,32 @@ Average rating for a movie $i$ : $\bar{r}_{(i)}$
 
 Average rating for a user $u$ : $\bar{r}_{(u)}$
 
-Observed rating of user $u$ for movie $i$: ${r}{_u}{_i}$
-
 Sets $R(u)$ and $R(i)$ denoting all movies rated by user $u$ and all users who have rated movie $i$, respectively
 
-Predicted rating for user $u$'s rating of movie $i$ : $\hat{r}{_u}{_i}$
-
-Root Mean Squared Error (RMSE): ${\sum}_{i=1}^{|\kappa|} \frac{(r_i{_j} - \hat{r}{_i}{_j})^2}{|\kappa|}$
+(Check) Set $R(g) denoting all pairs $(u,i)$ of users and movies which have rated a movie with genre set $g$
 
 Unregularized bias for movie $i$: $`{b}_{i_0} = \sum_{u\in R(i)} \frac{{r}{_u}{_i} - \mu}{|R(i)|}`$
+
+Regularization parameter l1 for movie biases: $\lambda_1$
 
 Regularized bias for movie $i$: $`{b}_{i_{reg}} = \sum_{u\in R(i)} \frac{{r}{_u}{_i} - \mu}{\lambda_1 + |R(i)|}`$
 
 Unregularized bias for user $u$: $`{b}_{u_0} = \sum_{i\in R(u)} \frac{{r}{_u}{_i} - (\mu+{b}_{i_0})}{|R(u)|}`$
 
-Regularized bias for user $u$: $`{b}_{u_{reg}} = \sum_{i\in R(u)} \frac{{r}{_u}{_i} - (\mu+{b}_{i_{reg}})}{\lambda_2 + |R(u)|}`$
-
-Regularization parameter l1 for movie biases: $\lambda_1$
-
 Regularization parameter l2 for user biases: $\lambda_2$
 
+Regularized bias for user $u$: $`{b}_{u_{reg}} = \sum_{i\in R(u)} \frac{{r}{_u}{_i} - (\mu+{b}_{i_{reg}})}{\lambda_2 + |R(u)|}`$
+
+
+(Check size of R(g)) Unregularized bias for genre set $g$: $`{b}_{g_0} = \sum_{u,i\in R(g)} \frac{{r}{_u}{_i} - (\mu+{b}_{i_0}+{b}_{u_0})}{|R(g)|}`$
+
 Regularization parameter l3 for genre biases: $\lambda_3$
+
+Regularized bias for genre $g$: $`{b}_{g_0} = \sum_{u,i\in R(g)} \frac{{r}{_u}{_i} - (\mu+{b}_{i_0}+{b}_{u_0})}{\lambda_3 + |R(g)|}`$
+
+Predicted rating for user $u$'s rating of movie $i$ : $\hat{r}{_u}{_i}$
+
+Root Mean Squared Error (RMSE): ${\sum}_{i=1}^{|\kappa|} \frac{(r_i{_j} - \hat{r}{_i}{_j})^2}{|\kappa|}$
 
 * 0 points: The report is either not uploaded or contains very minimal information AND/OR the report is not written in English AND/OR the report appears to violate the edX Honor Code.
 
