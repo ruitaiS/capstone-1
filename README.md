@@ -2,7 +2,7 @@
 
 # Formulas
 
-RMSE = $\sum_{i=1}^n (y_i - \hat{y}_i)^2 \right$
+RMSE = $\sum_{i=1}^n y_i$
 
 $$\left( \sum_{k=1}^n a_k b_k \right)^2$$
 
