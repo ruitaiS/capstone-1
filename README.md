@@ -2,7 +2,7 @@
 
 # Formulas
 
-RMSE = $\sum_{i=1}^n y_i$
+RMSE = $`\sum_{i=1}^n y_i`$
 
 $$\sum_{i=1}^n y_i$$
 
