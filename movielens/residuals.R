@@ -67,4 +67,17 @@ axis(side = 2, 1:ncol(y), rev(colnames(y)), las = 2)
 # Create residuals matrix
 residuals <- as.matrix(train_df[, c("userId", "movieId", "r")])
 
+# Exploration:
+
+random_movieIds <- sample(unique(train_df$movieId), 100, replace = FALSE)
+
+# Randomly select 100 unique userIds
+random_userIds <- sample(unique(train_df$userId), 100, replace = FALSE)
+
+# Filter train_df based on randomly selected movieIds and userIds
+filtered_df <- train_df[train_df$movieId %in% random_movieIds & train_df$userId %in% random_userIds, ]
+
+# Convert filtered dataframe to matrix
+residuals <- as.matrix(filtered_df[, c("userId", "movieId", "r")])
+
 
