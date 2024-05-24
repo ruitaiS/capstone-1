@@ -54,9 +54,10 @@ Regularization parameter l3 for genre biases: $\lambda_3$
 Regularized bias for genre $g$: $`{b}_{g_0} = \sum_{u,i\in R(g)} \frac{{r}{_u}{_i} - (\mu+{b}_{i_{reg}}+{b}_{u_{reg}})}{\lambda_3 + |R(g)|}`$
 
 (TODO as a matrix)Residuals Matrix $`R = \begin{pmatrix}
-1 & 2 & 3 \\
-4 & 5 & 6 \\
-7 & 8 & 9 \\
+r'_{11} & r'_{12} & \cdots & r'_{1n} \\
+r'_{21} & r'_{22} & \cdots & r'_{2n} \\
+\vdots & \vdots & \ddots & \vdots \\
+r'_{m1} & r'_{m2} & \cdots & r'_{mn} \\
 \end{pmatrix}`$
 
 where each entry $`{r'}{_u}{_i} = {r}{_u}{_i} - (\mu+{b}_{i_{reg}}+{b}_{u_{reg}}+{b}_{g_{reg}})`$
