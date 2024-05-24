@@ -2,7 +2,9 @@
 
 ## Formulas and Notation:
 
-(Final holdout set, main dataset)
+Final holdout set $\mathcal{F}$
+
+Main dataset $\mathcal{D}$
 
 (Check) Training Set $\kappa = \\{(u,i) | r{_u}{_i} \text{is known}\\}$
 
