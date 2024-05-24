@@ -4,6 +4,8 @@
 
 Training Set $\kappa = \\{(u,i) | r{_u}{_i} \text{is known}\\}$
 
+Average rating across all users and movies in the training set: $\mu$
+
 Root Mean Squared Error (RMSE): ${\sum}_{i=1}^{|\kappa|} \frac{(r_i{_j} - \hat{r}{_i}{_j})^2}{|\kappa|}$
 
 * 0 points: The report is either not uploaded or contains very minimal information AND/OR the report is not written in English AND/OR the report appears to violate the edX Honor Code.
