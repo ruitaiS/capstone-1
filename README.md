@@ -53,7 +53,7 @@ Regularization parameter l3 for genre biases: $\lambda_3$
 
 Regularized bias for genre $g$: $`{b}_{g_0} = \sum_{u,i\in R(g)} \frac{{r}{_u}{_i} - (\mu+{b}_{i_{reg}}+{b}_{u_{reg}})}{\lambda_3 + |R(g)|}`$
 
-(TODO)Residuals Matrix $R$, where each entry $`{r'}{_u}{_i} = {r}{_u}{_i} - (\mu+{b}_{i_{reg}}+{b}_{u_{reg}})`$
+(TODO as a matrix)Residuals Matrix $R$, where each entry $`{r'}{_u}{_i} = {r}{_u}{_i} - (\mu+{b}_{i_{reg}}+{b}_{u_{reg}}+{b}_{g_{reg}})`$
 
 Predicted rating for user $u$'s rating of movie $i$ : $\hat{r}{_u}{_i}$
 
