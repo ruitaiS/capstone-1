@@ -4,6 +4,8 @@
 
 Training Set $\kappa = \\{(u,i) | r{_u}{_i} \text{is known}\\}$
 
+$K$ cross validation sets $\{k_1, k_2, ... k_K\}$
+
 Average Rating function $\bar{r}_{(...)}$, such that:
 
 Average rating across all users and movies in the training set: $\bar{r}_{(\kappa)}$ or $\mu$
