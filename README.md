@@ -4,7 +4,7 @@
 
 Training Set $\kappa = \\{(u,i) | r{_u}{_i} \text{is known}\\}$
 
-Average Rating function $\bar{r}_(...)$, such that:
+Average Rating function $\bar{r}_{(...)}$, such that:
 
 Average rating across all users and movies in the training set: $\bar{r}_{(\kappa)}$ or $\mu$
 
