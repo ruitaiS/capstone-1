@@ -8,13 +8,13 @@ Main dataset $\mathcal{D}$
 
 (Check) Training Set $\kappa = \\{(u,i) | r{_u}{_i} \text{is known}\\}$
 
-(Check) $k$ cross validation sets $\kappa = \{K_1, K_2, ... K_k\}$
+(Check) $k$ cross validation sets $\\{K_1, K_2, ... K_k\\}$
 
 From these sets, we pick an index $v\in\\{1, 2, ... k\\}$ to form our validation and training sets, such that:
 
 Validation Set $`\mathcal{D}_{val} = K_v`$
 
-Training Set $`\mathcal{D}_{train} = \{ K_t\in \kappa | t\neq v \}`$
+Training Set $`\mathcal{D}_{train} = \{ K_t\in \\{K_1, K_2, ... K_k\\} | t\neq v \}`$
 
 Observed rating of user $u$ for movie $i$: ${r}{_u}{_i}$
 
