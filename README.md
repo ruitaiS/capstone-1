@@ -28,7 +28,7 @@ Regularized bias for movie $i$: $`{b}_{i_{reg}} = \sum_{u\in R(i)} \frac{(\mu - 
 
 Unregularized bias for user $u$: $`{b}_{u_0} = \sum_{i\in R(u)} \frac{(\mu - ({r}{_u}{_i}+{b}_{i_0}))}{|R(u)|}`$
 
-Regularized bias for user $u$: $`{b}_{u_{reg}} = \sum_{i\in R(u)} \frac{(\mu - ({r}{_u}{_i}+{b}_{i_{reg}))}{\lambda_2 + |R(u)|}`$
+Regularized bias for user $u$: $`{b}_{u_{reg}} = \sum_{i\in R(u)} \frac{(\mu - ({r}{_u}{_i}+{b}_{i_{reg}}))}{\lambda_2 + |R(u)|}`$
 
 Regularization parameter l1 for movie biases: $\lambda_1$
 
