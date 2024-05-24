@@ -14,9 +14,9 @@ Predicted rating for user $u$'s rating of movie $i$ : $\hat{r}{_u}{_i}$
 
 Root Mean Squared Error (RMSE): ${\sum}_{i=1}^{|\kappa|} \frac{(r_i{_j} - \hat{r}{_i}{_j})^2}{|\kappa|}$
 
-Regularization parameter l1 for movie biases: $\lambda_1
-Regularization parameter l2 for user biases: $\lambda_2
-Regularization parameter l3 for genre biases: $\lambda_3
+Regularization parameter l1 for movie biases: $\lambda_1$
+Regularization parameter l2 for user biases: $\lambda_2$
+Regularization parameter l3 for genre biases: $\lambda_3$
 
 * 0 points: The report is either not uploaded or contains very minimal information AND/OR the report is not written in English AND/OR the report appears to violate the edX Honor Code.
 
