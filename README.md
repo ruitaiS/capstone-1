@@ -41,7 +41,7 @@ Regularized bias for user $u$: $`{b}_{u_{reg}} = \sum_{i\in R(u)} \frac{{r}{_u}{
 
 Regularization parameter l3 for genre biases: $\lambda_3$
 
-Regularized bias for genre $g$: $`{b}_{g_0} = \sum_{u,i\in R(g)} \frac{{r}{_u}{_i} - (\mu+{b}_{i_0}+{b}_{u_0})}{\lambda_3 + |R(g)|}`$
+Regularized bias for genre $g$: $`{b}_{g_0} = \sum_{u,i\in R(g)} \frac{{r}{_u}{_i} - (\mu+{b}_{i_{reg}}+{b}_{u_{reg}})}{\lambda_3 + |R(g)|}`$
 
 Predicted rating for user $u$'s rating of movie $i$ : $\hat{r}{_u}{_i}$
 
