@@ -2,7 +2,7 @@
 
 ## Formulas and Notation:
 
-Training Set $\kappa = = \\{(u,i) | rui is known\\}.$
+Training Set $\kappa = = \\{(u,i) | r{_u}{_i}$ is known$\\}$
 
 Root Mean Squared Error (RMSE): ${\sum}_{i=1}^{|\kappa|} \frac{(r_i{_j} - \hat{r}{_i}{_j})^2}{|\kappa|}$
 
