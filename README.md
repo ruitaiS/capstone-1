@@ -14,13 +14,17 @@ Average rating for a movie $i$ : $\bar{r}_{(i)}$
 
 Average rating for a user $u$ : $\bar{r}_{(u)}$
 
+Observed rating of user $u$ for movie $i$: ${r}{_u}{_i}$
+
 Sets $R(u)$ and $R(i)$ denoting all movies rated by user $u$ and all users who have rated movie $i$, respectively
 
 Predicted rating for user $u$'s rating of movie $i$ : $\hat{r}{_u}{_i}$
 
 Root Mean Squared Error (RMSE): ${\sum}_{i=1}^{|\kappa|} \frac{(r_i{_j} - \hat{r}{_i}{_j})^2}{|\kappa|}$
 
-Unregularized movie bias equation: $b_i = \sum_{u\in R(i)}$
+Unregularized movie bias equation: $b_i = \sum_{u\in R(i)} \frac{({r}{_u}{_i} - \mu)}{|R(i)|}$
+
+Regularized movie bias equation: $b_i = \sum_{u\in R(i)} \frac{({r}{_u}{_i} - \mu)}{\lambda_1 + |R(i)|}$
 
 Regularization parameter l1 for movie biases: $\lambda_1$
 
