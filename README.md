@@ -4,7 +4,7 @@
 
 Training Set $\kappa = \\{(u,i) | r{_u}{_i} \text{is known}\\}$
 
-Average rating across all users and movies in the training set: $\mu_{(\kappa)}$
+Average rating across all users and movies in the training set: $\bar{r}_{(\kappa)}$ or $\mu$
 
 Average rating for a movie $i$ : $\bar{r}_{(i)}$
 
