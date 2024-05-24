@@ -4,7 +4,7 @@
 
 RMSE = $\sum_{i=1}^n y_i$
 
-$$\left( \sum_{i=1}^n y_i \right)$$
+$$\left \sum_{i=1}^n y_i \right$$
 
 $\sqrt{\frac{\sum_{i=1}^{n} {(y_i - \hat{y}_i)^2}{n} }$
 
