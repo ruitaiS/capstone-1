@@ -20,7 +20,7 @@ Predicted rating for user $u$'s rating of movie $i$ : $\hat{r}{_u}{_i}$
 
 Root Mean Squared Error (RMSE): ${\sum}_{i=1}^{|\kappa|} \frac{(r_i{_j} - \hat{r}{_i}{_j})^2}{|\kappa|}$
 
-Unregularized movie bias equation: $b_i = \sum_{u\inR(i)}
+Unregularized movie bias equation: $b_i = \sum_{u\inR(i)}$
 
 Regularization parameter l1 for movie biases: $\lambda_1$
 
