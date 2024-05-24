@@ -6,6 +6,8 @@
 
 (Check) $K$ cross validation sets $\{k_1, k_2, ... k_K\}$
 
+Training Set $\mathcal{D}_{train} = \\{ k_t\in \kappa | t\neq v \\}$
+
 Observed rating of user $u$ for movie $i$: ${r}{_u}{_i}$
 
 (Genre set for movie i)
