@@ -5,7 +5,7 @@
 RMSE = $`\\sum_{n=1}^{\\infty} 2^{-n} = 1 $
 
 
-$$\sum_{i=1}^n y_i$$
+$$\\sum_{i=1}^n y_i$$
 
 $$\sqrt{\frac{\sum_{i=1}^{n}  (r_i_j - \hat{r}_i_j)^2}{n}}$$
 
