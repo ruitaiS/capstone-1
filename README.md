@@ -1,13 +1,10 @@
 # Movie Recommendations:
 
-# Formulas
+## Formulas and Notation:
 
-RMSE = $`\\sum_{n=1}^{\\infty} 2^{-n} = 1 $
+Training Set $\kappa$
 
-
-rmse = ${\\sum}_{i=1}^{|\kappa|} \frac{(r_i{_j} - \hat{r}{_i}{_j})^2}{|\kappa|}$
-
-$$\sqrt{\frac{\sum_{i=1}^{n}  (r_i_j - \hat{r}_i_j)^2}{n}}$$
+Root Mean Squared Error (RMSE): ${\sum}_{i=1}^{|\kappa|} \frac{(r_i{_j} - \hat{r}{_i}{_j})^2}{|\kappa|}$
 
 * 0 points: The report is either not uploaded or contains very minimal information AND/OR the report is not written in English AND/OR the report appears to violate the edX Honor Code.
 
