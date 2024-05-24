@@ -34,24 +34,26 @@ Sets $R(u)$ and $R(i)$ denoting all movies rated by user $u$ and all users who h
 
 (Check) Set $R(g)$ denoting all pairs $(u,i)$ of users and movies which have rated a movie with genre set $g$
 
+(Update code to use alpha instead of lambda for regularization
+
 Unregularized bias for movie $i$: $`{b}_{i_0} = \sum_{u\in R(i)} \frac{{r}{_u}{_i} - \mu}{|R(i)|}`$
 
-Regularization parameter l1 for movie biases: $\lambda_1$
+Regularization parameter for movie biases: $\alpha_1$
 
-Regularized bias for movie $i$: $`{b}_{i_{reg}} = \sum_{u\in R(i)} \frac{{r}{_u}{_i} - \mu}{\lambda_1 + |R(i)|}`$
+Regularized bias for movie $i$: $`{b}_{i_{reg}} = \sum_{u\in R(i)} \frac{{r}{_u}{_i} - \mu}{\alpha_1 + |R(i)|}`$
 
 Unregularized bias for user $u$: $`{b}_{u_0} = \sum_{i\in R(u)} \frac{{r}{_u}{_i} - (\mu+{b}_{i_0})}{|R(u)|}`$
 
-Regularization parameter l2 for user biases: $\lambda_2$
+Regularization parameter for user biases: $\alpha_2$
 
-Regularized bias for user $u$: $`{b}_{u_{reg}} = \sum_{i\in R(u)} \frac{{r}{_u}{_i} - (\mu+{b}_{i_{reg}})}{\lambda_2 + |R(u)|}`$
+Regularized bias for user $u$: $`{b}_{u_{reg}} = \sum_{i\in R(u)} \frac{{r}{_u}{_i} - (\mu+{b}_{i_{reg}})}{\alpha_2 + |R(u)|}`$
 
 
 (Check size of R(g)) Unregularized bias for genre set $g$: $`{b}_{g_0} = \sum_{u,i\in R(g)} \frac{{r}{_u}{_i} - (\mu+{b}_{i_0}+{b}_{u_0})}{|R(g)|}`$
 
-Regularization parameter l3 for genre biases: $\lambda_3$
+Regularization parameter for genre biases: $\alpha_3$
 
-Regularized bias for genre $g$: $`{b}_{g_0} = \sum_{u,i\in R(g)} \frac{{r}{_u}{_i} - (\mu+{b}_{i_{reg}}+{b}_{u_{reg}})}{\lambda_3 + |R(g)|}`$
+Regularized bias for genre $g$: $`{b}_{g_0} = \sum_{u,i\in R(g)} \frac{{r}{_u}{_i} - (\mu+{b}_{i_{reg}}+{b}_{u_{reg}})}{\alpha_3 + |R(g)|}`$
 
 (Make sure m and n line up in code)
 An $m\times n$ residuals matrix $`\mathcal{E} = \begin{pmatrix}
@@ -67,9 +69,19 @@ We decompose $\mathcal{E}$ with Singular Value Decomposition:
 
 $`\mathcal{E} = U\Sigma V^T`$, such that
 
-$U$ is an $m\times m$ orthogonal matrix.
-$\Sigma$ is an $m\times n$ diagonal matrix with non-negative real numbers on the diagonal.
-$V$ is an $n\times n$ orthogonal matrix, of which $V^T$ is the transpose.
+$U$ is an $m\times m$ orthogonal matrix
+
+$\Sigma$ is an $m\times n$ diagonal matrix with non-negative real numbers on the diagonal
+
+$V$ is an $n\times n$ orthogonal matrix, of which $V^T$ is the transpose
+
+From $\mathcal{E}$, we compute the $m\times m$ matrix $\mathcal{E}\mathcal{E}^T$ and the $n\times n$ matrix $\mathcal{E}^T\mathcal{E}$
+
+Since $\mathcal{E}\mathcal{E}^T$ and $\mathcal{E}^T\mathcal{E}$ are both square matrices, we can find their eigenvalues and eigenvectors through eigendecomposition.
+
+
+
+
 
 Predicted rating for user $u$'s rating of movie $i$ : $\hat{r}{_u}{_i}$
 
