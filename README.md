@@ -4,15 +4,21 @@
 
 Training Set $\kappa = \\{(u,i) | r{_u}{_i} \text{is known}\\}$
 
+Average Rating function $\bar{r}_(...)$, such that:
+
 Average rating across all users and movies in the training set: $\bar{r}_{(\kappa)}$ or $\mu$
 
 Average rating for a movie $i$ : $\bar{r}_{(i)}$
 
 Average rating for a user $u$ : $\bar{r}_{(u)}$
 
+Sets $R(u)$ and $R(i)$ denoting all movies rated by user $u$ and all users who have rated movie $i$, respectively
+
 Predicted rating for user $u$'s rating of movie $i$ : $\hat{r}{_u}{_i}$
 
 Root Mean Squared Error (RMSE): ${\sum}_{i=1}^{|\kappa|} \frac{(r_i{_j} - \hat{r}{_i}{_j})^2}{|\kappa|}$
+
+Unregularized movie bias equation: $b_i = 
 
 Regularization parameter l1 for movie biases: $\lambda_1$
 
