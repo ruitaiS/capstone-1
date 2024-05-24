@@ -28,7 +28,7 @@ Average rating for a user $u$ : $\bar{r}_{(u)}$
 
 Sets $R(u)$ and $R(i)$ denoting all movies rated by user $u$ and all users who have rated movie $i$, respectively
 
-(Check) Set $R(g) denoting all pairs $(u,i)$ of users and movies which have rated a movie with genre set $g$
+(Check) Set $R(g)$ denoting all pairs $(u,i)$ of users and movies which have rated a movie with genre set $g$
 
 Unregularized bias for movie $i$: $`{b}_{i_0} = \sum_{u\in R(i)} \frac{{r}{_u}{_i} - \mu}{|R(i)|}`$
 
