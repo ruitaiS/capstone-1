@@ -22,13 +22,13 @@ Predicted rating for user $u$'s rating of movie $i$ : $\hat{r}{_u}{_i}$
 
 Root Mean Squared Error (RMSE): ${\sum}_{i=1}^{|\kappa|} \frac{(r_i{_j} - \hat{r}{_i}{_j})^2}{|\kappa|}$
 
-Unregularized bias for movie $i$: $`{b}_{i_0} = \sum_{u\in R(i)} \frac{(\mu - {r}{_u}{_i})}{|R(i)|}`$
+Unregularized bias for movie $i$: $`{b}_{i_0} = \sum_{u\in R(i)} \frac{\mu - {r}{_u}{_i}}{|R(i)|}`$
 
-Regularized bias for movie $i$: $`{b}_{i_{reg}} = \sum_{u\in R(i)} \frac{(\mu - {r}{_u}{_i})}{\lambda_1 + |R(i)|}`$
+Regularized bias for movie $i$: $`{b}_{i_{reg}} = \sum_{u\in R(i)} \frac{\mu - {r}{_u}{_i}}{\lambda_1 + |R(i)|}`$
 
-Unregularized bias for user $u$: $`{b}_{u_0} = \sum_{i\in R(u)} \frac{(\mu - ({r}{_u}{_i}+{b}_{i_0}))}{|R(u)|}`$
+Unregularized bias for user $u$: $`{b}_{u_0} = \sum_{i\in R(u)} \frac{\mu - ({r}{_u}{_i}+{b}_{i_0})}{|R(u)|}`$
 
-Regularized bias for user $u$: $`{b}_{u_{reg}} = \sum_{i\in R(u)} \frac{(\mu - ({r}{_u}{_i}+{b}_{i_{reg}}))}{\lambda_2 + |R(u)|}`$
+Regularized bias for user $u$: $`{b}_{u_{reg}} = \sum_{i\in R(u)} \frac{\mu - ({r}{_u}{_i}+{b}_{i_{reg}})}{\lambda_2 + |R(u)|}`$
 
 Regularization parameter l1 for movie biases: $\lambda_1$
 
