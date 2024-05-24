@@ -2,7 +2,7 @@
 
 # Formulas
 
-RMSE = $\sqrt{\frac{\sum_{i=1}^{n} (y_i - \hat{y}_i)^2}{n} }$
+RMSE = $\sqrt{\frac{\sum_{i=1}^{n} {(y_i - \hat{y}_i)^2}{n} }$
 
 * 0 points: The report is either not uploaded or contains very minimal information AND/OR the report is not written in English AND/OR the report appears to violate the edX Honor Code.
 
