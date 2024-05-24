@@ -24,7 +24,7 @@ Root Mean Squared Error (RMSE): ${\sum}_{i=1}^{|\kappa|} \frac{(r_i{_j} - \hat{r
 
 Unregularized movie bias equation: $`{b}_{i_0} = \sum_{u\in R(i)} \frac{({r}{_u}{_i} - \mu)}{|R(i)|}`$
 
-Unregularized bias for movie $i$: $b{_i}{_0} = \sum_{u\in R(i)} \frac{(\mu - {r}{_u}{_i})}{|R(i)|}$
+Unregularized bias for movie $i$: $`{b}_{i_0} = \sum_{u\in R(i)} \frac{(\mu - {r}{_u}{_i})}{|R(i)|}`$
 
 Regularized bias for movie $i$: $b{_i}{_reg} = \sum_{u\in R(i)} \frac{(\mu - {r}{_u}{_i})}{\lambda_1 + |R(i)|}$
 
