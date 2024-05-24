@@ -8,8 +8,9 @@
 
 From these sets, we pick an index $v\in\\{1, 2, ... k\\}$ to form our validation and training sets, such that:
 
-Validation Set $`\mathcal{D}_{val} = \\{ k_v \\}`$
-Training Set $`\mathcal{D}_{train} = \\{ k_t\in \kappa | t\neq v \\}`$
+Validation Set $`\mathcal{D}_{val} = k_v`$
+
+Training Set $`\mathcal{D}_{train} = \{ k_t\in \kappa | t\neq v \}`$
 
 Observed rating of user $u$ for movie $i$: ${r}{_u}{_i}$
 
