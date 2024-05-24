@@ -10,7 +10,7 @@ Average rating for a movie $i$ : $\bar{r}_{(i)}$
 
 Average rating for a user $u$ : $\bar{r}_{(u)}$
 
-Predicted rating for user $u$'s rating of movie $i$ : $`\hat{r}_{u}_{i}`$
+Predicted rating for user $u$'s rating of movie $i$ : $\hat{r}{_u}{_i}$
 
 Root Mean Squared Error (RMSE): ${\sum}_{i=1}^{|\kappa|} \frac{(r_i{_j} - \hat{r}{_i}{_j})^2}{|\kappa|}$
 
