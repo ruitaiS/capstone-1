@@ -1,5 +1,13 @@
 # Movie Recommendations:
 
+# Formulas
+
+RMSE = $`\sum_{i=1}^n y_i`$
+
+$$\sum_{i=1}^n y_i$$
+
+$$\sqrt{\frac{\sum_{i=1}^{n} (r_ij - \hat{r}_ij)^2}{n}}$$
+
 * 0 points: The report is either not uploaded or contains very minimal information AND/OR the report is not written in English AND/OR the report appears to violate the edX Honor Code.
 
 * 10 points: Multiple required sections of the report are missing.
