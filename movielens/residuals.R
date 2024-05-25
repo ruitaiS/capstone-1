@@ -67,6 +67,25 @@ axis(side = 2, 1:ncol(y), rev(colnames(y)), las = 2)
 # Create residuals matrix
 residuals <- as.matrix(train_df[, c("userId", "movieId", "r")])
 
+# TODO: Default Values for residuals on missing user/movie combinations
+# a) Fill in the missing ratings using the user / movie ensemble,
+# and subtract (mu + movie_bias + user_bias + genre_bias)
+
+# b) Use mu - (movie_bias + user_bias + genre_bias).
+# Mathematically I'm not sure how to justify this choice, but intuitively it seems promising
+# It might no be correct though. The residuals represent the deviation from the mean, minus biasing factors
+# This equation only gives the mean minus biasing factors.
+
+# c) Fill the missing ratings with mu, and subtract (mu + movie_bias + user_bias + genre_bias),
+# yielding r = -movie_bias - user_bias - genre_bias.
+
+# d) Fill in the missing ratings with some other value
+# and subtract (mu + movie_bias + user_bias + genre_bias)
+
+# e) b, c, d are all specific instances of the more general
+# r = alpha - (movie_bias + user_bias + genre_bias)
+# You can just tune for alpha
+
 # Exploration:
 
 random_movieIds <- sample(unique(train_df$movieId), 100, replace = FALSE)
