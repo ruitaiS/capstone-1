@@ -79,6 +79,10 @@ From $\mathcal{E}$, we compute the $m\times m$ matrix $\mathcal{E}\mathcal{E}^T$
 
 Since $\mathcal{E}\mathcal{E}^T$ and $\mathcal{E}^T\mathcal{E}$ are both square matrices, we can find their eigenvalues and eigenvectors through eigendecomposition.
 
+I would suggest that those who are interested in the exact details of this process read this wikipedia article: [Eigendecomposition of a matrix][https://en.wikipedia.org/wiki/Eigendecomposition_of_a_matrix]
+
+For my purposes, I used R's built-in [eigen][https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/eigen] function, which precludes the need to re-implement it myself.
+
 
 
 
