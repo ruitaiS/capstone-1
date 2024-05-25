@@ -88,7 +88,7 @@ final_holdout_test <- temp %>%
 removed <- anti_join(temp, final_holdout_test)
 df <- rbind(df, removed)
 
-rm(ratings, movies, test_index, temp, movielens, removed, all_genres)
+rm(ratings, movies, test_index, temp, movielens, removed)
 
 #########################################################
 
@@ -128,6 +128,8 @@ genres <- as.data.frame(sort(unique(unlist(train_df$genres)))) %>%
 
 # Cleanup
 rm(movies_file, ratings_file, partition, partitions, df)
+
+# Remove final holdout set to save memory space (re-enable for final RMSE)
 rm(final_holdout_test)
 
 #--------------------------
