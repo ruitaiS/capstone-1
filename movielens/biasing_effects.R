@@ -1,7 +1,4 @@
 # TODO: Time Bias
-# TODO: Something still isn't quite right here.
-# The regularized and non-regularized values for users and genres should be the same
-# since l2 and l3 are optimized at 0. But they are not the same. Find out why.
 
 # Unregularized Movie Bias
 movies <- aggregate((rating-mu) ~ movieId, data = train_df, FUN = mean) %>%
@@ -10,13 +7,13 @@ movies <- aggregate((rating-mu) ~ movieId, data = train_df, FUN = mean) %>%
 train_df <- merge(train_df, movies[,c('movieId', 'b_i_0')], by="movieId")
 
 # Plot
-density_values <- density(movies$b_i_0)
-store_plot("unregularized_movie_bias.png", plot = {
-  plot(density_values, main = "Density Plot of Unregularized Movie Effects", xlab = "b_i_0", ylab = "Density")
-  polygon(density_values, col = "lightblue", border = "black")
-  }, h=1000, w = 1000
-)
-rm(density_values)
+#density_values <- density(movies$b_i_0)
+#store_plot("unregularized_movie_bias.png", plot = {
+#  plot(density_values, main = "Density Plot of Unregularized Movie Effects", xlab = "b_i_0", ylab = "Density")
+#  polygon(density_values, col = "lightblue", border = "black")
+#  }, h=1000, w = 1000
+#)
+#rm(density_values)
 
 # Unregularized User Bias
 users <- aggregate((rating-(mu+b_i_0)) ~ userId, data = train_df, FUN = mean) %>%
@@ -25,13 +22,13 @@ users <- aggregate((rating-(mu+b_i_0)) ~ userId, data = train_df, FUN = mean) %>
 train_df <- merge(train_df, users[,c('userId', 'b_u_0')], by="userId")
 
 # Plot
-density_values <- density(users$b_u_0)
-store_plot("unregularized_user_bias.png", plot = {
-  plot(density_values, main = "Density Plot of Unregularized User Effects", xlab = "b_u_0", ylab = "Density")
-  polygon(density_values, col = "lightblue", border = "black")
-}, h=1000, w = 1000
-)
-rm(density_values)
+#density_values <- density(users$b_u_0)
+#store_plot("unregularized_user_bias.png", plot = {
+#  plot(density_values, main = "Density Plot of Unregularized User Effects", xlab = "b_u_0", ylab = "Density")
+#  polygon(density_values, col = "lightblue", border = "black")
+#}, h=1000, w = 1000
+#)
+#rm(density_values)
 
 # Unregularized Genre Bias
 genres <- aggregate((rating-(mu+b_i_0+b_u_0)) ~ genres, data = train_df, FUN = mean) %>%
@@ -40,13 +37,13 @@ genres <- aggregate((rating-(mu+b_i_0+b_u_0)) ~ genres, data = train_df, FUN = m
 train_df <- merge(train_df, genres[,c('genres', 'b_g_0')], by="genres")
 
 # Plot
-density_values <- density(genres$b_g_0)
-store_plot("unregularized_genre_bias.png", plot = {
-  plot(density_values, main = "Density Plot of Unregularized Genre Effects", xlab = "b_g_0", ylab = "Density")
-  polygon(density_values, col = "lightblue", border = "black")
-}, h=1000, w = 1000
-)
-rm(density_values)
+#density_values <- density(genres$b_g_0)
+#store_plot("unregularized_genre_bias.png", plot = {
+#  plot(density_values, main = "Density Plot of Unregularized Genre Effects", xlab = "b_g_0", ylab = "Density")
+#  polygon(density_values, col = "lightblue", border = "black")
+#}, h=1000, w = 1000
+#)
+#rm(density_values)
 
 #----------
 # Predict with Unregularized Biases
@@ -100,13 +97,13 @@ for (l1 in seq(0, 1, 0.01)){
 }
 
 # Plot L1 Tuning
-store_plot("movie_bias_tuning.png",
-           qplot(l1_plot$Lambda, l1_plot$RMSE, geom = "line")+
-             xlab("Lambda") +
-             ylab("RMSE") +
-             ggtitle("Lambda L1 vs. RMSE"),
-           h=1000, w = 1000
-)
+#store_plot("movie_bias_tuning.png",
+#           qplot(l1_plot$Lambda, l1_plot$RMSE, geom = "line")+
+#             xlab("Lambda") +
+#             ylab("RMSE") +
+#             ggtitle("Lambda L1 vs. RMSE"),
+#           h=1000, w = 1000
+#)
 
 # Store
 l1 <- l1_plot$Lambda[which.min(l1_plot$RMSE)]
@@ -114,13 +111,13 @@ movies$b_i_reg <- tuning_df$sum / (tuning_df$count + l1)
 train_df <- merge(train_df, movies[,c('movieId', 'b_i_reg')], by="movieId")
 
 # Plot Regularized Density
-density_values <- density(movies$b_i_reg)
-store_plot("regularized_movie_bias.png", plot = {
-  plot(density_values, main = "Density Plot of Regularized Movie Effects", xlab = "b_i_reg", ylab = "Density")
-  polygon(density_values, col = "lightblue", border = "black")
-}, h=1000, w = 1000
-)
-rm(density_values)
+#density_values <- density(movies$b_i_reg)
+#store_plot("regularized_movie_bias.png", plot = {
+#  plot(density_values, main = "Density Plot of Regularized Movie Effects", xlab = "b_i_reg", ylab = "Density")
+#  polygon(density_values, col = "lightblue", border = "black")
+#}, h=1000, w = 1000
+#)
+#rm(density_values)
 
 rm(tuning_df, l1, l1_plot, movie_bias)
 
@@ -148,13 +145,13 @@ for (l2 in seq(0, 1, 0.01)){
 }
 
 # Plot:
-store_plot("user_bias_tuning.png",
-           qplot(l2_plot$Lambda, l2_plot$RMSE, geom = "line")+
-             xlab("Lambda") +
-             ylab("RMSE") +
-             ggtitle("Lambda L2 vs. RMSE"),
-           h = 1000, w = 1000
-           )
+#store_plot("user_bias_tuning.png",
+#           qplot(l2_plot$Lambda, l2_plot$RMSE, geom = "line")+
+#             xlab("Lambda") +
+#             ylab("RMSE") +
+#             ggtitle("Lambda L2 vs. RMSE"),
+#           h = 1000, w = 1000
+#           )
 
 l2 <- l2_plot$Lambda[which.min(l2_plot$RMSE)]
 
@@ -190,13 +187,13 @@ for (l3 in seq(0, 1, 0.01)){
 }
 
 # Plot:
-store_plot("genre_bias_tuning.png",
-           qplot(l3_plot$Lambda, l3_plot$RMSE, geom = "line")+
-             xlab("Lambda") +
-             ylab("RMSE") +
-             ggtitle("Lambda L3 vs. RMSE"),
-           h = 1000, w = 1000
-)
+#store_plot("genre_bias_tuning.png",
+#           qplot(l3_plot$Lambda, l3_plot$RMSE, geom = "line")+
+#             xlab("Lambda") +
+#             ylab("RMSE") +
+#             ggtitle("Lambda L3 vs. RMSE"),
+#           h = 1000, w = 1000
+#)
 
 l3 <- l3_plot$Lambda[which.min(l3_plot$RMSE)]
 
@@ -239,3 +236,9 @@ rmse_df <- rbind(rmse_df, data.frame(
 rm(movie_bias, user_bias, genre_bias)
 
 # -----------
+
+# Remove unregularized biases to save on memory:
+genres <- subset(genres, select=-b_g_0)
+movies <- subset(movies, select=-b_i_0)
+users <- subset(users, select=-b_u_0)
+train_df <- subset(train_df, select = -c(b_g_0, b_i_0, b_u_0))

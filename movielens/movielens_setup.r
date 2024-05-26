@@ -163,6 +163,7 @@ users <- aggregate(rating ~ userId, data = train_df, FUN = mean) %>%
 movies <- aggregate(rating ~ movieId, data = train_df, FUN = mean) %>%
   setNames(c("movieId", "avg_rating")) %>%
   merge(movies, ., by = "movieId", all.x = TRUE)
+
 # ---------------------------------------------------------------------------------
 
 # DF for Storing RMSE Results:
