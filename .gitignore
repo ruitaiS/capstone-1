@@ -3,6 +3,6 @@ datasets/ml-10M100K/*
 datasets/vehicle_insurance_data/*
 !datasets/vehicle_insurance_data/.gitkeep
 *.zip
-.Rhistory
-.RData
+*.Rhistory
+*.RData
 *.swp

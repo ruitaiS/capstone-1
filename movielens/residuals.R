@@ -26,7 +26,7 @@ rm(movie_bias, user_bias, genre_bias)
 #users$userIndex[match(test_df$userId, users$userId)]
 #movies$movieIndex[match(test_df$movieId, movies$movieId)]
 
-fill_missing_A <- function(i, u){
+foo <- function(userId, movieId){
   # TODO: Default Values for residuals on missing user/movie combinations
   # a) Fill in the missing ratings using the user / movie ensemble,
   # and subtract (mu + movie_bias + user_bias + genre_bias)
@@ -43,9 +43,7 @@ fill_missing_A <- function(i, u){
   # and subtract (mu + movie_bias + user_bias + genre_bias)
   
   # e) b, c, d are all specific instances of the more general
-  # r = alpha - (movie_bias + user_bias + genre_bias)
-  # You can just tune for alpha
-  
+  print(paste0("userId ", userId, "; movieId ", movieId))
   return (0)
 }
 
@@ -56,7 +54,7 @@ users <- subset(users, select = -count)
 genres <- subset(genres, select = -count)
 
 # Test only:
-train_df <- head(train_df, 1000)
+#train_df <- head(train_df, 1000)
 
 # Create the residuals matrix (~8gb of memory lol)
 residuals_matrix <- matrix(-1,
@@ -68,7 +66,14 @@ train_df$userId <- factor(train_df$userId, levels = rownames(residuals_matrix))
 train_df$movieId <- factor(train_df$movieId, levels = colnames(residuals_matrix))
 residuals_matrix[as.matrix(train_df[, c("userId", "movieId")])] <- train_df$r
 
-# TODO: Check this indexes properly / retrieves the value at the correct index by id
+# Fill in Placeholder Values
+for (userId in users$userId) {
+  for (movieId in movies$movieId) {
+    if (residuals_matrix[as.character(userId), as.character(movieId)] == -1) {
+      residuals_matrix[as.character(userId), as.character(movieId)] <- foo(userId, movieId)
+    }
+  }
+}
 
 
 
