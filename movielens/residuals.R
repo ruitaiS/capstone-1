@@ -12,7 +12,6 @@ rm(movie_bias, user_bias, genre_bias)
 #movies$movieIndex <- as.numeric(factor(movies$movieId))
 #train_df$movieIndex <- as.numeric(factor(train_df$movieId))
 #train_df$userIndex <- as.numeric(factor(train_df$userId))
-#train_df$movieIndex <- as.numeric(factor(train_df$movieId))
 
 # Test Only: Check that the indices are all consecutive, and all match
 #all(diff(sort(users$userIndex)) == 1)
