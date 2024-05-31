@@ -12,6 +12,7 @@ train_df <- subset(train_df, select = -c(title, timestamp, rating, date, b_i_reg
 movies <- subset(movies, select = -c(count, year))
 users <- subset(users, select = -count)
 genres <- subset(genres, select = -count)
+gc()
 
 # Re-index the movieIds and userIds so they match their position in the matrix
 #users$userIndex <- as.numeric(factor(users$userId))
