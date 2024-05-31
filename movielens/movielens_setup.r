@@ -111,7 +111,7 @@ partition <- function (seed, subset_p = 1, test_p = 0.2){
 
 
 #Create train + test sets from a subset of the full train set
-partitions <- partition(seed = 1, subset_p = 1)
+partitions <- partition(seed = 1, subset_p = 0.01)
 train_df <- partitions$train
 test_df <- partitions$test
 

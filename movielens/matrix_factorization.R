@@ -5,31 +5,17 @@ initialize <- function(rows, k, min_val, max_val) {
 
 predict <- function(userId, movieId, P, Q){
   #print(paste0("User ", userId, " Movie ", movieId))
-  
   # R hat i, j is the dot product of P row i, Q row j
   return (sum(P[as.character(userId), ]*Q[as.character(movieId), ]))
 }
 
-loss <- function(predicted, actual){
-  return (actual - predicted)
-}
-
 set.seed(1)
-P <- initialize(69878, 2, -1, 1)
+P <- initialize(69878, 2, -0.5, 0.5)
 rownames(P) = users$userId
-Q <- initialize(10677, 2, -1, 1)
+Q <- initialize(10677, 2, -0.5, 0.5)
 rownames(Q) = movies$movieId
 
-#sgd <- function(train_df, P, Q, iterations = 100, subset_p = 0.1){
-#  #TODO
-#  # Iterate given number of times
-#    # Pick a subset of the training df according to subset_p size
-#    predicted <- predict(subset$userId, subset$movieId, P, Q)
-#    loss <- loss(predicted, actual)
-#    # Adjust the corresponding rows of P and Q - P[as.character(userId), ], Q[as.character(movieId), ] to better fit the prediction
-#}
-
-sgd <- function(train_df, P, Q, iterations = 10, subset_p = 0.01, learning_rate = 0.01, regularization_term = 1){
+sgd <- function(train_df, P, Q, iterations = 10, subset_p = 0.01, learning_rate = 0.1, regularization_term = 1){
   num_samples <- nrow(train_df)
   num_subset <- round(num_samples * subset_p)
   
@@ -65,5 +51,14 @@ sgd <- function(train_df, P, Q, iterations = 10, subset_p = 0.01, learning_rate 
 }
 
 
-# Takes about 10 minutes
-predictions <- mapply(predict, test_df$userId, test_df$movieId, MoreArgs = list(P = P, Q = Q))
+# Takes about 5 minutes
+predicted_residuals <- mapply(predict, test_df$userId, test_df$movieId, MoreArgs = list(P = store$P, Q = store$Q))
+
+movie_bias <- movies$b_i_reg[match(test_df$movieId, movies$movieId)]
+user_bias <- users$b_u_reg[match(test_df$userId, users$userId)]
+genre_bias <- genres$b_g_reg[match(test_df$genres, genres$genres)]
+
+predictions <- mu + movie_bias + user_bias + genre_bias + predicted_residuals
+
+
+
