@@ -115,6 +115,17 @@ Root Mean Squared Error (RMSE): $`{\sum}_{u,i\in {D}_{val}} \frac{({r}{_u}{_i} -
 
 an introduction/overview/executive summary section that describes the dataset and summarizes the goal of the project and key steps that were performed
 
+The goal of this project is to implement a machine learning based recommendation system for use with the MovieLens dataset. The full dataset consists of 10000054 ratings of 10681 movies by 71567 users, along with associated metadata. Template code provided by the EdX team removes some metadata fields, preserving only the userId, movieId, timestamp, genres, and title (TODO: Confirm). Additionally, the dataset is split into a final holdout set of (TODO: How many) elements to be used exclusively as a final root mean squared error (RMSE) calculation at the end of the project; the other (TODO) records constitutes the main dataset available to the student to perform their data analysis and machine learning tasks.
+
+The approach I is a simplified version of the one outlined by Robert M. Bell, Yehuda KorenChris, Volinsky in their 2009 paper "The BellKor Solution to the Netflix Grand Prize." The main dataset was split into training and test sets with p = 0.8 and 0.2 respectively. An average of all movie ratings in the training set formed a baseline predictor, on top of which I added movie, user, and genre biases. After tuning regularization parameters to account for small sample sizes (eg. some movies, users, and genres oly have very few ratings, increasing the variability (TODO: Is this the right word?), this combination accounted for most of the variation, resulting in an average RMSE of (TODO. 0.86 I think) across the entire test set. I applied matrix factorization using stochastic gradient descent on the residual matrix to capture the remaining differences between the predicted and actual values (TODO: phrase/explain this better), resulting in a final RMSE of (TODO: whatever it ends up being).
+
+
+TODO: Finally K-fold cross validation was performed, repeating the process with different training / test sets to confirm the results, and the final RMSE was calculated on the holdout set.
+
+
+
+
+
 ## Methods / Analysis
 
 a methods/analysis section that explains the process and techniques used, including data cleaning, data exploration and visualization, insights gained, and your modeling approach
