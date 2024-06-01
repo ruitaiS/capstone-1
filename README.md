@@ -6,9 +6,11 @@ The goal of this project is to implement a machine learning based recommendation
 
 The approach here is a modified version of the one outlined by Robert M. Bell, Yehuda KorenChris, Volinsky in their 2009 paper "The BellKor Solution to the Netflix Grand Prize." 
 
-$\mathcal{D}$ was split into training and test sets with ```p = 0.8``` and ```0.2``` respectively. An average $\mu$ of all movie ratings in the training set formed a baseline predictor, on top of which were added movie, user, and genre biases - $`{b}_{i}`$, $`{b}_{u}`$, $`{b}_{g}`$. After tuning regularization parameters $\alpha_1$, $\alpha_2$, $\alpha_3$ for each of them, this combination resulted in an root mean squared error (RMSE) of ```0.8563``` on the test set.
+$\mathcal{D}$ was split into training and test sets with ```p = 0.8``` and ```0.2``` respectively. An average $\mu$ of all movie ratings in the training set formed a baseline predictor, on top of which were added movie, user, and genre biases - $`{b}_{i}`$, $`{b}_{u}`$, $`{b}_{g}`$. After tuning regularization parameters $\alpha_1$, $\alpha_2$, $\alpha_3$ for each of them, the root mean squared error (RMSE) was calculated on the test set.
 
-* K Fold Validation
+The training set was then split into four sets of ```p = 0.2``` each, and the process was repeated using each of these sets as the new test set, with the remaining three sets plus the original test set forming the new training set, effectively reproducing the results of a ```k=5``` fold cross validation test. The optimal parameter values (those which produced the lowest average RMSE across the 5 folds) were selected.
+
+K-fold cross validation, with 
 * SGD
 * Final Output
 
