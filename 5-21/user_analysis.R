@@ -26,8 +26,9 @@ user_genre_avgs$ratings_count = sapply(user_genre_avgs$userId, count_user_rating
 
 #----------
 # Percentile Analysis
-user_percentiles <- users %>%
-  mutate(percentile = percent_rank(count) * 100)
+density_values <- density(users$count)
+plot(density_values, main = "Density Plot of Rating Counts", xlab = "Remainder", ylab = "Density")
+polygon(density_values, col = "lightblue", border = "black")
 
 
 

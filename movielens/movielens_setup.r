@@ -182,10 +182,10 @@ rmse_df <- data.frame(Algorithm = character(),
 
 # RMSE Calculation Function:
 calculate_rmse <- function(predicted_ratings, actual_ratings) {
-  differences <- predicted_ratings - actual_ratings
-  squared_differences <- differences^2
-  mean_squared_difference <- mean(squared_differences)
-  rmse <- sqrt(mean_squared_difference)
+  errors <- predicted_ratings - actual_ratings
+  squared_errors <- errors^2
+  mean_of_squared_errors <- mean(squared_errors)
+  rmse <- sqrt(mean_of_squared_errors)
   return(rmse)
 }
 
