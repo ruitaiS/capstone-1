@@ -2,7 +2,7 @@
 
 ## Introduction:
 
-The goal of this project is to implement a machine learning based recommendation system for the MovieLens dataset. The full dataset consists of 10000054 ratings of 10681 movies by 71567 unique users, along with associated metadata. Template code provided by the EdX team splits the data into a main dataset and a final holdout test set to be used exclusively for a final root mean squared error (RMSE) calculation at the end of the project.
+The goal of this project is to implement a machine learning based recommendation system for the MovieLens dataset. The full dataset consists of 10000054 ratings of 10681 movies by 71567 unique users, along with associated metadata. Template code provided by the EdX team splits the data into a main dataset $\mathcal{D}$ and a final holdout test set $\mathcal{F}$ to be used exclusively for a final root mean squared error (RMSE) calculation at the end of the project.
 
 The approach here is a modified version of the one outlined by Robert M. Bell, Yehuda KorenChris, Volinsky in their 2009 paper "The BellKor Solution to the Netflix Grand Prize." 
 
@@ -15,7 +15,9 @@ The main dataset was split into training and test sets with p = 0.8 and 0.2 resp
 
 ## Methods / Analysis
 
-The main dataset was split into training and test sets with the ```partition(seed, subset_p = 1, test_p = 0.2)``` function. The function accepts as parameters a random seed value, as well as optional ```subset_p``` and ```test_p``` parameters. ```subset_p``` specifies how much of the main dataset is used, with a value of 1 indicating the entire dataset, and a value of 0 indicating none of it. This is useful in cases where using the full dataset might be too resource intensive, or for initial code testing. All the final results are reported with the full dataset. ```test_p``` specifies the proportion of the subsetted data to use for the test set ```test_df```; the remaining entries form the training set, ```train_df```. ```test_p = 0.2``` was used exclusively throughout this project.
+The main dataset was split into training and test sets with the ```partition(seed, subset_p = 1, test_p = 0.2)``` function. The function accepts as parameters a random seed value, as well as optional ```subset_p``` and ```test_p``` parameters. ```subset_p``` specifies how much of the main dataset is used, with a value of 1 indicating the entire dataset, and a value of 0 indicating none of it. This is useful in cases where using the full dataset might be too resource intensive, or for initial code testing. All the final results are reported with the full dataset. ```test_p``` specifies the proportion of the subsetted data to use for the test set ```test_df```; the remaining entries form the training set, ```train_df```.
+
+```test_p = 0.2``` was used exclusively throughout this project.
 
 The ```partition``` function also ensures that every movieId and userId which appears in the test set must appear in the training set - the code to do this was borrowed from the provided template code, which also performs a similar modification for the main data set in relation to the final holdout set. While this is a seemingly small detail, it makes the recommendation task **significantly** easier, as it completely eliminates the need to deal with the possibility of making recommendations for users or movies which do not appear in the training set, also known as the [cold start problem](https://en.wikipedia.org/wiki/Cold_start_(recommender_systems)).
 
