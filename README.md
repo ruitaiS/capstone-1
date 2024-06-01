@@ -6,7 +6,7 @@ The goal of this project is to implement a machine learning based recommendation
 
 The approach here is a modified version of the one outlined by Robert M. Bell, Yehuda KorenChris, Volinsky in their 2009 paper "The BellKor Solution to the Netflix Grand Prize." 
 
-$\mathcal{D}$ was split into training and test sets with ```p = 0.8``` and ```0.2``` respectively. An average $\mu$ of all movie ratings in the training set formed a baseline predictor, on top of which were added movie, user, and genre biases - ${b}_{i}$, ${b}_{u}$, ${b}_{g}$. After tuning regularization parameters $\alpha_1$, $\alpha_2$, $\alpha_3$ for each of them, this combination resulted in an root mean squared error (RMSE) of ```0.8563``` on the test set.
+$\mathcal{D}$ was split into training and test sets with ```p = 0.8``` and ```0.2``` respectively. An average $\mu$ of all movie ratings in the training set formed a baseline predictor, on top of which were added movie, user, and genre biases - $`{b}_{i}`$, $`{b}_{u}`$, $`{b}_{g}`$. After tuning regularization parameters $\alpha_1$, $\alpha_2$, $\alpha_3$ for each of them, this combination resulted in an root mean squared error (RMSE) of ```0.8563``` on the test set.
 
 * K Fold Validation
 * SGD
