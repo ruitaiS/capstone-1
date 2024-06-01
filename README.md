@@ -21,7 +21,6 @@ The ```partition``` function also ensures that every movieId and userId which ap
 
 The training data was further processed to produce the ```genres```, ```users```, and ```movies``` dataframes. The column names are provided below, and should be self-explanatory. (Note that the genres are the full genre list string provided for a movie, eg. "Toy Story" would have genres "Adventure|Animation|Children|Comedy|Fantasy")
 
-<div align="center">
 ```
 > names(genres)
 [1] "genres"     "count"      "avg_rating"
@@ -30,7 +29,6 @@ The training data was further processed to produce the ```genres```, ```users```
 > names(users)
 [1] "userId"     "count"      "avg_rating"
 ```
-</div>
 
 
 The average of all ratings in the training set ($\mu$) was stored with a simple ```mu <- mean(train_df$rating)```
