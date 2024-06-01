@@ -48,7 +48,11 @@ Note genres contains the full genre list string provided for a movie, not an ind
 
 Initial tests were done with training and test sets produced by ```partition(seed = 1, subset_p = 1)```
 
-The average of all ratings in the training set was stored with a simple ```mu <- mean(train_df$rating)```, and applying this 
+As specified in the project instructions, the root mean squared error function was used as a measure for each algorithms effectiveness.
+
+Let ${r}{_u}{_i}$ denote the observed rating of user $u$ for movie $i$ in some dataset, and let $\hat{r}{_u}{_i}$ denote an algorithm's prediction for how that user would rate the movie. The root mean squared error can then be written as $`{\sum}_{u,i\in {D}_{val}} \frac{({r}{_u}{_i} - \hat{r}{_u}{_i})^2}{|{D}_{val}|}`$, where $`{D}_{val}`$ is our test set.
+
+
 
 
 
@@ -86,8 +90,6 @@ Validation Set $`\mathcal{D}_{val} = K_v`$
 
 (Check nested curly braces)Training Set $`\mathcal{D}_{train} = \{ K_t\in \{K_1, K_2, ... K_k\} | t\neq v \}`$
 
-Observed rating of user $u$ for movie $i$: ${r}{_u}{_i}$
-
 (Genre set for movie i)
 
 (Clarify that the following are derived from the training (eg. non-validation) folds)
@@ -104,7 +106,7 @@ Sets $R(u)$ and $R(i)$ denoting all movies rated by user $u$ and all users who h
 
 (Check) Set $R(g)$ denoting all pairs $(u,i)$ of users and movies which have rated a movie with genre set $g$
 
-(Update code to use alpha instead of lambda for regularization
+(Update code to use alpha instead of lambda for regularization)
 
 Unregularized bias for movie $i$: $`{b}_{i_0} = \sum_{u\in R(i)} \frac{{r}{_u}{_i} - \mu}{|R(i)|}`$
 
@@ -117,7 +119,6 @@ Unregularized bias for user $u$: $`{b}_{u_0} = \sum_{i\in R(u)} \frac{{r}{_u}{_i
 Regularization parameter for user biases: $\alpha_2$
 
 Regularized bias for user $u$: $`{b}_{u_{reg}} = \sum_{i\in R(u)} \frac{{r}{_u}{_i} - (\mu+{b}_{i_{reg}})}{\alpha_2 + |R(u)|}`$
-
 
 (Check size of R(g)) Unregularized bias for genre set $g$: $`{b}_{g_0} = \sum_{u,i\in R(g)} \frac{{r}{_u}{_i} - (\mu+{b}_{i_0}+{b}_{u_0})}{|R(g)|}`$
 
@@ -157,6 +158,4 @@ For my purposes, I used R's built-in [eigen](https://www.rdocumentation.org/pack
 
 
 
-Predicted rating for user $u$'s rating of movie $i$ : $\hat{r}{_u}{_i}$
 
-Root Mean Squared Error (RMSE): $`{\sum}_{u,i\in {D}_{val}} \frac{({r}{_u}{_i} - \hat{r}{_u}{_i})^2}{|{D}_{val}|}`$
