@@ -15,11 +15,11 @@ The main dataset was split into training and test sets with p = 0.8 and 0.2 resp
 
 ## Methods / Analysis
 
-The main dataset $\mathcal{D}$ was split into training and test sets with the ```partition(seed, subset_p = 1, test_p = 0.2)``` function. The function accepts as parameters a random seed value, as well as optional ```subset_p``` and ```test_p``` parameters. ```subset_p``` specifies how much of the main dataset is used, with a value of 1 indicating the entire dataset, and a value of 0 indicating none of it. This is useful in cases where using the full dataset might be too resource intensive, or for initial code testing. All the final results are reported with the full dataset. ```test_p``` specifies the proportion of the subsetted data to use for the test set ```test_df```; the remaining entries form the training set, ```train_df```. ```test_p = 0.2``` was used exclusively throughout this project.
+The main dataset was split into training and test sets with the ```partition(seed, subset_p = 1, test_p = 0.2)``` function. The function accepts as parameters a random seed value, as well as optional ```subset_p``` and ```test_p``` parameters. ```subset_p``` specifies how much of the main dataset is used, with a value of 1 indicating the entire dataset, and a value of 0 indicating none of it. This is useful in cases where using the full dataset might be too resource intensive, or for initial code testing. All the final results are reported with the full dataset. ```test_p``` specifies the proportion of the subsetted data to use for the test set ```test_df```; the remaining entries form the training set, ```train_df```. ```test_p = 0.2``` was used exclusively throughout this project.
 
 The ```partition``` function also ensures that every movieId and userId which appears in the test set must appear in the training set - the code to do this was borrowed from the provided template code, which also performs a similar modification for the main data set in relation to the final holdout set. While this is a seemingly small detail, it makes the recommendation task **significantly** easier, as it completely eliminates the need to deal with the possibility of making recommendations for users or movies which do not appear in the training set, also known as the [cold start problem](https://en.wikipedia.org/wiki/Cold_start_(recommender_systems)).
 
-The training data was further processed to produce the ```genres```, ```users```, and ```movies``` dataframes. The column names are provided below, and should be self-explanatory. (Note that the genres are the full genre list string provided for a movie, eg. "Toy Story" would have genres "Adventure|Animation|Children|Comedy|Fantasy")
+The training data was further processed to produce the ```genres```, ```users```, and ```movies``` dataframes. The column names are provided below, and should be mostly self-explanatory.
 
 ```
 > names(genres)
@@ -30,8 +30,23 @@ The training data was further processed to produce the ```genres```, ```users```
 [1] "userId"     "count"      "avg_rating"
 ```
 
+Note genres contains the full genre list string provided for a movie, not an individual genre. This was done mainly for the sake of simplification.
+```
+> head(genres)
+                                              genres count avg_rating
+1                                 (no genres listed)     4   3.250000
+2                                             Action 19548   2.942961
+3                                   Action|Adventure 54891   3.659671
+4         Action|Adventure|Animation|Children|Comedy  6005   3.969692
+5 Action|Adventure|Animation|Children|Comedy|Fantasy   149   3.043624
+6    Action|Adventure|Animation|Children|Comedy|IMAX    54   3.222222
+```
 
-The average of all ratings in the training set ($\mu$) was stored with a simple ```mu <- mean(train_df$rating)```
+Initial tests were done with training and test sets produced by ```partition(seed = 1, subset_p = 1)```
+
+The average of all ratings in the training set was stored with a simple ```mu <- mean(train_df$rating)```, and applying this 
+
+
 
 
 
