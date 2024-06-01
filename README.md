@@ -8,9 +8,12 @@ The approach here is a modified version of the one outlined by Robert M. Bell, Y
 
 $\mathcal{D}$ was split into training and test sets with ```p = 0.8``` and ```0.2``` respectively. An average $\mu$ of all movie ratings in the training set formed a baseline predictor, on top of which were added movie, user, and genre biases - $`{b}_{i}`$, $`{b}_{u}`$, $`{b}_{g}`$. After tuning regularization parameters $\alpha_1$, $\alpha_2$, $\alpha_3$ for each of them, the root mean squared error (RMSE) was calculated on the test set.
 
-The training set was then split into four sets of ```p = 0.2``` each, and the process was repeated using each of these sets as the new test set, with the remaining three sets plus the original test set forming the new training set, effectively reproducing the results of a ```k=5``` fold cross validation test. The optimal parameter values (those which produced the lowest average RMSE across the 5 folds) were selected.
+The training set was then split into four sets of ```p = 0.2``` each, and the process was repeated using each of these sets as the new test set, with the remaining three sets plus the original test set forming the new training set, effectively reproducing the results of a ```k=5``` K-fold cross validation test. The optimal parameter values (those which produced the lowest average RMSE across the 5 folds) were selected.
 
-K-fold cross validation, with 
+The difference between observed rating ${r}$ and $`\mu+{b}_{i}+{b}_{u}+{b}_{g}}`$ was computed for the entire dataset, and these residual values ${r'}$ formed the basis for performing stochastic gradient descend (SGD) to find item and user latent factor matrices $P$ and $Q$. 
+
+ and stochastic gradient descent (SGD) was performed on the 
+
 * SGD
 * Final Output
 
