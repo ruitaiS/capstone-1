@@ -2,11 +2,11 @@
 
 ## Introduction:
 
-The goal of this project is to implement a machine learning based recommendation system for the MovieLens dataset. The full dataset consists of 10000054 ratings of 10681 movies by 71567 unique users, along with associated metadata. Template code provided by the EdX team splits the data into a main dataset $\mathcal{D}$ and a final holdout test set $\mathcal{F}$ to be used exclusively for a final root mean squared error (RMSE) calculation at the end of the project.
+The goal of this project is to implement a machine learning based recommendation system for the MovieLens dataset. The full dataset consists of 10000054 ratings of 10681 movies by 71567 unique users, along with associated metadata. Template code provided by the EdX team splits the data into a main dataset $\mathcal{D}$ and a final holdout test set $\mathcal{F}$ to be used exclusively for a final error calculation at the end of the project.
 
 The approach here is a modified version of the one outlined by Robert M. Bell, Yehuda KorenChris, Volinsky in their 2009 paper "The BellKor Solution to the Netflix Grand Prize." 
 
-The main dataset was split into training and test sets with p = 0.8 and 0.2 respectively. An average of all movie ratings in the training set formed a baseline predictor, on top of which were added movie, user, and genre biases. After tuning regularization parameters, this combination resulted in an RMSE of 0.8563 on the test set.
+$\mathcal{D}$ was split into training and test sets with ```p = 0.8``` and ```0.2``` respectively. An average $\mu$ of all movie ratings in the training set formed a baseline predictor, on top of which were added movie, user, and genre biases - ${b}_{i}$, ${b}_{u}$, ${b}_{g}$. After tuning regularization parameters $\alpha_1$, $\alpha_2$, $\alpha_3$ for each of them, this combination resulted in an root mean squared error (RMSE) of ```0.8563``` on the test set.
 
 * K Fold Validation
 * SGD
