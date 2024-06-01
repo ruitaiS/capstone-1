@@ -34,7 +34,7 @@ The training data was further processed to produce the ```genres```, ```users```
 [1] "userId"     "count"      "avg_rating"
 ```
 
-Note genres contains the full genre list string provided for a movie, not an individual genre. This was done mainly for the sake of simplification.
+Note genres contains the full genre list string provided for a movie, not an individual genre. This was done mainly for the sake of simplification - the section on genre relationships in the data analysis section will touch further on this decision.
 ```
 > head(genres)
                                               genres count avg_rating
