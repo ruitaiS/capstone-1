@@ -14,8 +14,7 @@ Matrix factorization with stochastic gradient descent was used to account for th
 
 * Final Output
 
-
-## Methods / Analysis
+## Data Analysis / Preprocessing:
 
 The main dataset was split into training and test sets with the ```partition(seed, subset_p = 1, test_p = 0.2)``` function. The function accepts as parameters a random seed value, as well as optional ```subset_p``` and ```test_p``` parameters. ```subset_p``` specifies how much of the main dataset is used, with a value of 1 indicating the entire dataset, and a value of 0 indicating none of it. This is useful in cases where using the full dataset might be too resource intensive, or for initial code testing. All the final results are reported with the full dataset. ```test_p``` specifies the proportion of the subsetted data to use for the test set ```test_df```; the remaining entries form the training set, ```train_df```.
 
@@ -34,7 +33,7 @@ The training data was further processed to produce the ```genres```, ```users```
 [1] "userId"     "count"      "avg_rating"
 ```
 
-Note genres contains the full genre list string provided for a movie, not an individual genre. This was done mainly for the sake of simplification - the section on genre relationships in the data analysis section will touch further on this decision.
+Note genres contains the full genre list string provided for a movie, not an individual genre. This was done mainly for the sake of simplification - the section on genre relationships will touch further on this decision.
 ```
 > head(genres)
                                               genres count avg_rating
@@ -45,6 +44,17 @@ Note genres contains the full genre list string provided for a movie, not an ind
 5 Action|Adventure|Animation|Children|Comedy|Fantasy   149   3.043624
 6    Action|Adventure|Animation|Children|Comedy|IMAX    54   3.222222
 ```
+
+### User Data Analysis:
+
+Initial data exploration showed very quickly that some users had rated much more movies than others, so much so that the discrepancy is difficult to visualize properly on a graph:
+
+<img src="/movielens/graphs/cum_density.png" align="left" alt="Cumulative Density of Rating Counts"
+	title="Cumulative Density of Rating Counts"/>
+<br>
+
+
+## Methods:
 
 Initial tests were done with training and test sets produced by ```partition(seed = 1, subset_p = 1)```
 
@@ -67,6 +77,8 @@ calculate_rmse <- function(predicted_ratings, actual_ratings) {
   return(rmse)
 }
 ```
+
+### Some Simple Algorithms
 
 
 
