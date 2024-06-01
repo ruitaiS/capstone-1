@@ -10,11 +10,8 @@ $\mathcal{D}$ was split into training and test sets with ```p = 0.8``` and ```0.
 
 The training set was then split into four sets of ```p = 0.2``` each, and the process was repeated using each of these sets as the new test set, with the remaining three sets plus the original test set forming the new training set, effectively reproducing the results of a ```k=5``` K-fold cross validation test. The optimal parameter values (those which produced the lowest average RMSE across the 5 folds) were selected.
 
-The difference between observed rating ${r}$ and $`\mu+{b}_{i}+{b}_{u}+{b}_{g}`$ was computed for the entire dataset, and these residual values ${r'}$ formed the basis for performing stochastic gradient descend (SGD) to find item and user latent factor matrices $P$ and $Q$. 
+Matrix factorization with stochastic gradient descent was used to account for the remaining residuals ${r'}$, but at the time of this writing have not yielded results better than the average + biasing effects alone.
 
- and stochastic gradient descent (SGD) was performed on the 
-
-* SGD
 * Final Output
 
 
