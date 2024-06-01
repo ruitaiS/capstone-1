@@ -15,7 +15,27 @@ I split the main dataset into training and test sets with p = 0.8 and 0.2 respec
 
 ## Methods / Analysis
 
+The main dataset $\mathcal{D}$ is split into training and test sets with the ```partition(seed, subset_p = 1, test_p = 0.2)``` function. The function accepts as parameter a random seed value and optional ```subset_p``` and ```test_p``` parameters. ```subset_p``` denotes how much of the main dataset is used, with a value of 1 indicating the entire dataset, and a value of 0 indicating none of it. This is useful in cases where using the full dataset might be too resource intensive, or for initial code testing. All the final results are reported with the full dataset. ```test_p``` specifies what proportion of the subsetted data to use for the test set ```test_df```, with the remaining entries forming the training set, ```train_df```. I used ```test_p = 0.2``` exclusively throughout this project.
 
+The ```partition``` function ensures that every movieId and userId which appears in the test set also appears in the training set - the code to do this was borrowed from the provided template code, which also performs a similar modification. 
+
+```
+test_df <- subset[test_index,] %>% 
+    semi_join(train_df, by = "movieId") %>%
+    semi_join(train_df, by = "userId")
+```
+This section removes from ```test_df``` any rows where ```movieId``` or ```userId``` do not appear in ```train_df```
+
+```
+train_df <- rbind(train_df, anti_join(subset[test_index,], test_df))
+```
+This section restores into ```train_df``` the rows removed from ```test_df```.
+
+
+
+
+
+As a simple first-pass approach, 
 
 
 ## Results
