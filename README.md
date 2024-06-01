@@ -52,7 +52,7 @@ As specified in the project instructions, the root mean squared error function w
 
 Let ${r}{_u}{_i}$ denote the observed rating of user $u$ for movie $i$ in some dataset, and let $\hat{r}{_u}{_i}$ denote an algorithm's prediction for how that user would rate the movie. The root mean squared error can then be written as
 
-$$`{\sum}_{u,i\in {D}_{val}} \frac{({r}{_u}{_i} - \hat{r}{_u}{_i})^2}{|{D}_{val}|}`$$, where $`{D}_{val}`$ is our test set.
+```math{\sum}_{u,i\in {D}_{val}} \frac{({r}{_u}{_i} - \hat{r}{_u}{_i})^2}{|{D}_{val}|}```, where $`{D}_{val}`$ is our test set.
 
 
 
