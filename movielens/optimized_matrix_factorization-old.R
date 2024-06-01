@@ -19,23 +19,19 @@ rs <- train_df$r
 
 sgd <- function(train_df, P, Q,
                 epochs = 10,
-                regularization_term = 0.05,
-                learning_rate = 0.01){
+                regularization_term = 0.5,
+                learning_rate = 0.1){
   for (epoch in 1:epochs){
     print(epoch)
-    
-    #Shuffle:
-    set.seed(123)
-    shuffled_indices <- sample(seq_along(userIds))
-    
-    userIds <- userIds[shuffled_indices]
-    movieIds <- movieIds[shuffled_indices]
-    rs <- rs[shuffled_indices]
-    
     for (i in 1:nrow(train_df)) {
       predicted_r <- sum(P[userIds[i],]*Q[movieIds[i],])
       #print(predicted_r)
       error <- rs[i] - predicted_r
+      if(error < 0.1){
+        print("")
+      }else{
+        print("----")
+      }
       if(is.nan(error) || is.infinite(error)){
         print(paste("Epoch: ", epoch,
                     "Iteration: ", i,
@@ -53,13 +49,21 @@ sgd <- function(train_df, P, Q,
   return(list(P = P, Q = Q))
 }
 
-print("lr 0.005, rt 0.05")
+print("lr 0.01, rt 0.01")
 set.seed(1)
 P <- initialize(nrow(users), 2, -0.5, 0.5)
 rownames(P) = users$userId
 Q <- initialize(nrow(movies), 2, -0.5, 0.5)
 rownames(Q) = movies$movieId
-s1 <- sgd(train_df, P, Q, epochs = 20, learning_rate = 0.005, regularization_term = 0.05)
+s0 <- sgd(train_df, P, Q, epochs = 10, learning_rate = 0.01, regularization_term = 0.01)
+
+print("lr 0.1, rt 0.75")
+set.seed(1)
+P <- initialize(nrow(users), 2, -0.5, 0.5)
+rownames(P) = users$userId
+Q <- initialize(nrow(movies), 2, -0.5, 0.5)
+rownames(Q) = movies$movieId
+s1 <- sgd(train_df, P, Q, epochs = 50, learning_rate = 0.1, regularization_term = 0.75)
 
 print("lr 0.1, rt 0.875")
 set.seed(1)
@@ -67,7 +71,7 @@ P <- initialize(nrow(users), 2, -0.5, 0.5)
 rownames(P) = users$userId
 Q <- initialize(nrow(movies), 2, -0.5, 0.5)
 rownames(Q) = movies$movieId
-s2 <- sgd(train_df, P, Q, epochs = 20, learning_rate = 0.1, regularization_term = 0.875)
+s2 <- sgd(train_df, P, Q, epochs = 50, learning_rate = 0.1, regularization_term = 0.875)
 
 print("lr 0.1, rt 1")
 set.seed(1)
@@ -75,7 +79,7 @@ P <- initialize(nrow(users), 2, -0.5, 0.5)
 rownames(P) = users$userId
 Q <- initialize(nrow(movies), 2, -0.5, 0.5)
 rownames(Q) = movies$movieId
-s3 <- sgd(train_df, P, Q, epochs = 20, learning_rate = 0.1, regularization_term = 1)
+s3 <- sgd(train_df, P, Q, epochs = 50, learning_rate = 0.1, regularization_term = 1)
 
 print("lr 0.1, rt 1.125")
 set.seed(1)
@@ -83,11 +87,11 @@ P <- initialize(nrow(users), 2, -0.5, 0.5)
 rownames(P) = users$userId
 Q <- initialize(nrow(movies), 2, -0.5, 0.5)
 rownames(Q) = movies$movieId
-s4 <- sgd(train_df, P, Q, epochs = 20, learning_rate = 0.1, regularization_term = 1.125)
+s4 <- sgd(train_df, P, Q, epochs = 50, learning_rate = 0.1, regularization_term = 1.125)
 
 #-------
 predicted_residuals <- mapply(function(userId, movieId){
-  sum(s1$P[userId,]*s1$Q[movieId,])
+  sum(P[userId,]*Q[movieId,])
 }, as.character(test_df$userId), as.character(test_df$movieId))
 
 movie_bias <- movies$b_i_reg[match(test_df$movieId, movies$movieId)]
