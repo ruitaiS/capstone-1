@@ -2,40 +2,77 @@
 
 ## Introduction:
 
-The goal of this project is to implement a machine learning based recommendation system for the MovieLens dataset. The full dataset consists of 10000054 ratings of 10681 movies by 71567 unique users, along with associated metadata. Template code provided by the EdX team splits the data into a main dataset and a final holdout test to be used exclusively for a final root mean squared error (RMSE) calculation at the end of the project.
+The goal of this project is to implement a machine learning based recommendation system for the MovieLens dataset. The full dataset consists of 10000054 ratings of 10681 movies by 71567 unique users, along with associated metadata. Template code provided by the EdX team splits the data into a main dataset $\mathcal{D}$ and a final holdout test set $\mathcal{F}$ to be used exclusively for a final error calculation at the end of the project.
 
-The approach I took is a simplified version of the one outlined by Robert M. Bell, Yehuda KorenChris, Volinsky in their 2009 paper "The BellKor Solution to the Netflix Grand Prize." 
+The approach here is a modified version of the one outlined by Robert M. Bell, Yehuda KorenChris, Volinsky in their 2009 paper "The BellKor Solution to the Netflix Grand Prize." 
 
-I split the main dataset into training and test sets with p = 0.8 and 0.2 respectively. An average of all movie ratings in the training set formed a baseline predictor, on top of which I added movie, user, and genre biases. After tuning regularization parameters to account for small sample sizes (some movies, users, or genres have a very small number of ratings in the test set), this combination resulted in an RMSE of 0.8563 on the test set.
+$\mathcal{D}$ was split into training and test sets with ```p = 0.8``` and ```0.2``` respectively. An average $\mu$ of all movie ratings in the training set formed a baseline predictor, on top of which were added movie, user, and genre biases - $`{b}_{i}`$, $`{b}_{u}`$, $`{b}_{g}`$. After tuning regularization parameters $\alpha_1$, $\alpha_2$, $\alpha_3$ for each of them, the root mean squared error (RMSE) was calculated on the test set.
 
-* K Fold Validation
-* SGD
+The training set was then split into four sets of ```p = 0.2``` each, and the process was repeated using each of these sets as the new test set, with the remaining three sets plus the original test set forming the new training set, effectively reproducing the results of a ```k=5``` K-fold cross validation test. The optimal parameter values (those which produced the lowest average RMSE across the 5 folds) were selected.
+
+Matrix factorization with stochastic gradient descent was used to account for the remaining residuals ${r'}$, but at the time of this writing have not yielded results better than the average + biasing effects alone.
+
 * Final Output
 
 
 ## Methods / Analysis
 
-The main dataset $\mathcal{D}$ is split into training and test sets with the ```partition(seed, subset_p = 1, test_p = 0.2)``` function. The function accepts as parameter a random seed value and optional ```subset_p``` and ```test_p``` parameters. ```subset_p``` denotes how much of the main dataset is used, with a value of 1 indicating the entire dataset, and a value of 0 indicating none of it. This is useful in cases where using the full dataset might be too resource intensive, or for initial code testing. All the final results are reported with the full dataset. ```test_p``` specifies what proportion of the subsetted data to use for the test set ```test_df```, with the remaining entries forming the training set, ```train_df```. I used ```test_p = 0.2``` exclusively throughout this project.
+The main dataset was split into training and test sets with the ```partition(seed, subset_p = 1, test_p = 0.2)``` function. The function accepts as parameters a random seed value, as well as optional ```subset_p``` and ```test_p``` parameters. ```subset_p``` specifies how much of the main dataset is used, with a value of 1 indicating the entire dataset, and a value of 0 indicating none of it. This is useful in cases where using the full dataset might be too resource intensive, or for initial code testing. All the final results are reported with the full dataset. ```test_p``` specifies the proportion of the subsetted data to use for the test set ```test_df```; the remaining entries form the training set, ```train_df```.
 
-The ```partition``` function ensures that every movieId and userId which appears in the test set also appears in the training set - the code to do this was borrowed from the provided template code, which also performs a similar modification. 
+```test_p = 0.2``` was used exclusively throughout this project.
 
-```
-test_df <- subset[test_index,] %>% 
-    semi_join(train_df, by = "movieId") %>%
-    semi_join(train_df, by = "userId")
-```
-This section removes from ```test_df``` any rows where ```movieId``` or ```userId``` do not appear in ```train_df```
+The ```partition``` function also ensures that every movieId and userId which appears in the test set must appear in the training set - the code to do this was borrowed from the provided template code, which also performs a similar modification for the main data set in relation to the final holdout set. While this is a seemingly small detail, it makes the recommendation task **significantly** easier, as it completely eliminates the need to deal with the possibility of making recommendations for users or movies which do not appear in the training set, also known as the [cold start problem](https://en.wikipedia.org/wiki/Cold_start_(recommender_systems)).
+
+The training data was further processed to produce the ```genres```, ```users```, and ```movies``` dataframes. The column names are provided below, and should be mostly self-explanatory.
 
 ```
-train_df <- rbind(train_df, anti_join(subset[test_index,], test_df))
+> names(genres)
+[1] "genres"     "count"      "avg_rating"
+> names(movies)
+[1] "movieId"    "title"      "year"       "count"      "avg_rating"
+> names(users)
+[1] "userId"     "count"      "avg_rating"
 ```
-This section restores into ```train_df``` the rows removed from ```test_df```.
+
+Note genres contains the full genre list string provided for a movie, not an individual genre. This was done mainly for the sake of simplification - the section on genre relationships in the data analysis section will touch further on this decision.
+```
+> head(genres)
+                                              genres count avg_rating
+1                                 (no genres listed)     4   3.250000
+2                                             Action 19548   2.942961
+3                                   Action|Adventure 54891   3.659671
+4         Action|Adventure|Animation|Children|Comedy  6005   3.969692
+5 Action|Adventure|Animation|Children|Comedy|Fantasy   149   3.043624
+6    Action|Adventure|Animation|Children|Comedy|IMAX    54   3.222222
+```
+
+Initial tests were done with training and test sets produced by ```partition(seed = 1, subset_p = 1)```
+
+As specified in the project instructions, the root mean squared error function was used as a measure for each algorithms effectiveness.
+
+Let ${r}{_u}{_i}$ denote the observed rating of user $u$ for movie $i$ in some dataset, and let $\hat{r}{_u}{_i}$ signify an algorithm's prediction for how that user would rate the movie. The root mean squared error can then be written as
+
+```math
+\sqrt{{\sum}_{u,i\in {D}_{val}} \frac{({r}{_u}{_i} - \hat{r}{_u}{_i})^2}{|{D}_{val}|}}
+```
+
+where $`{D}_{val}`$ is our validation (eg. test) set. It is, as the name would suggest, the square root of the mean of the square of the error, or the difference between the predicted and actual values. For this reason, RMSE is also frequently called RMSD, or Root Mean Squared **Difference**) In code this equation is much easier to understand:
+
+```
+calculate_rmse <- function(predicted_ratings, actual_ratings) {
+  errors <- predicted_ratings - actual_ratings
+  squared_errors <- errors^2
+  mean_of_squared_errors <- mean(squared_errors)
+  rmse <- sqrt(mean_of_squared_errors)
+  return(rmse)
+}
+```
 
 
 
 
 
-As a simple first-pass approach, 
+
 
 
 ## Results
@@ -69,8 +106,6 @@ Validation Set $`\mathcal{D}_{val} = K_v`$
 
 (Check nested curly braces)Training Set $`\mathcal{D}_{train} = \{ K_t\in \{K_1, K_2, ... K_k\} | t\neq v \}`$
 
-Observed rating of user $u$ for movie $i$: ${r}{_u}{_i}$
-
 (Genre set for movie i)
 
 (Clarify that the following are derived from the training (eg. non-validation) folds)
@@ -87,7 +122,7 @@ Sets $R(u)$ and $R(i)$ denoting all movies rated by user $u$ and all users who h
 
 (Check) Set $R(g)$ denoting all pairs $(u,i)$ of users and movies which have rated a movie with genre set $g$
 
-(Update code to use alpha instead of lambda for regularization
+(Update code to use alpha instead of lambda for regularization)
 
 Unregularized bias for movie $i$: $`{b}_{i_0} = \sum_{u\in R(i)} \frac{{r}{_u}{_i} - \mu}{|R(i)|}`$
 
@@ -100,7 +135,6 @@ Unregularized bias for user $u$: $`{b}_{u_0} = \sum_{i\in R(u)} \frac{{r}{_u}{_i
 Regularization parameter for user biases: $\alpha_2$
 
 Regularized bias for user $u$: $`{b}_{u_{reg}} = \sum_{i\in R(u)} \frac{{r}{_u}{_i} - (\mu+{b}_{i_{reg}})}{\alpha_2 + |R(u)|}`$
-
 
 (Check size of R(g)) Unregularized bias for genre set $g$: $`{b}_{g_0} = \sum_{u,i\in R(g)} \frac{{r}{_u}{_i} - (\mu+{b}_{i_0}+{b}_{u_0})}{|R(g)|}`$
 
@@ -140,6 +174,4 @@ For my purposes, I used R's built-in [eigen](https://www.rdocumentation.org/pack
 
 
 
-Predicted rating for user $u$'s rating of movie $i$ : $\hat{r}{_u}{_i}$
 
-Root Mean Squared Error (RMSE): $`{\sum}_{u,i\in {D}_{val}} \frac{({r}{_u}{_i} - \hat{r}{_u}{_i})^2}{|{D}_{val}|}`$
