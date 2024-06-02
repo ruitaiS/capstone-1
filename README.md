@@ -153,15 +153,26 @@ users <- aggregate((rating-(mu+b_i_0)) ~ userId, data = train_df, FUN = mean)
 genres <- aggregate((rating-(mu+b_i_0+b_u_0)) ~ genres, data = train_df, FUN = mean)
 ```
 
-Once the biasing effects $`{b}_{i}`$, $`{b}_{u}`$, and $`{b}_{g}`$ are calculated for each movie, user, and list of genres, we simply add them on top of the global rating average $\mu$ to find the predicted rating:
+Once the biasing effects $`{b}_{i}`$, $`{b}_{u}`$, and $`{b}_{g}`$ are calculated for each movie, user, and list of genres, we simply add them on top of the global rating average $\mu$ to find the predicted rating $`\hat{r}{_u}{_i} = \mu + {b}_{i} + {b}_{u} + {b}_{g}`$,
 
- $`\hat{r}{_u}{_i} = \mu + {b}_{i} + {b}_{u} + {b}_{g}`$,
+I layered the biasing effects onto the global average one at a time, and the results are shown below:
+
+<div align = "center">
+	
+| Algorithm | RMSE |
+| :-: | :-: |
+| mu + b_i_0 | 0.9437667 |
+| mu + b_i_0 + b_u_0 | 0.8661612 |
+| mu + b_i_0 + b_u_0 + b_g_0 | 0.8657986 |
+
+</div>
+
+### Bias Regularization
 
 
 
 $`{b}_{i_0} = \sum_{u\in R(i)} \frac{{r}{_u}{_i} - \mu}{|R(i)|}`$
 
-* Regularization of Biasing Effects
 * K-Fold Cross Validation for Regularization Parameters
 * Residuals Matrix
 * SGD on Residuals
