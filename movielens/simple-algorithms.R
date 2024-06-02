@@ -1,7 +1,5 @@
 # Random Guessing --------------------------------
 # Randomly guess ratings
-
-
 set.seed(1)
 rmse_df <- rbind(rmse_df, data.frame(
   Algorithm = "Random Guess",
@@ -16,6 +14,20 @@ rmse_df <- rbind(rmse_df, data.frame(
   RMSE = calculate_rmse(
     rep(mu,length(test_df$rating)),
     test_df$rating)))
+
+plot <- ggplot(train_df, aes(x = rating)) +
+  geom_histogram(binwidth = 0.5, fill = "lightblue", color = "black") +
+  labs(title = "Histogram of Rating Frequencies",
+       x = "Rating",
+       y = "Frequency") +
+  theme_minimal()+
+  theme(
+    text = element_text(size = unit(2, "mm")),          # General text size
+    plot.title = element_text(size = unit(20, "mm")),    # Title text size
+    axis.title = element_text(size = unit(15, "mm")),    # Axis titles text size
+    axis.text = element_text(size = unit(10, "mm"))      # Axis text size
+  )
+store_plot("rating_histogram.png", plot)
 
 # User Avg ----------------------------------------
 # Always predict the user's average rating in the training set
@@ -40,7 +52,7 @@ movie_avg <- movies$avg_rating[match(test_df$movieId, movies$movieId)]
 # Equal weighting from User Avg. and the Movie Avg.
 predicted <- (user_avg + movie_avg) / 2
 rmse_df <- rbind(rmse_df, data.frame(
-  Algorithm = "User and Movie Avg Simple Ensemble",
+  Algorithm = "User and Movie Avg, Equal Weight Ensemble",
   RMSE = calculate_rmse(predicted, test_df$rating)))
 
 # User Movie Weighted Ensemble Exploration
@@ -48,18 +60,25 @@ rmse_df <- rbind(rmse_df, data.frame(
 w_plot <- data.frame(w = numeric(),
                      RMSE = numeric(),
                      stringsAsFactors = FALSE)
-for (w in seq(0.4, 0.6, 0.0001)) {
+for (w in seq(0.2, 0.6, 0.0001)) {
   predicted <- w*user_avg + (1-w)*movie_avg
   w_plot <- rbind(w_plot, data.frame(
     w = w,
     RMSE = calculate_rmse(predicted, test_df$rating)))
 }
 
-store_plot("weighted_ensemble_tuning.png", h=500, w=500,
+store_plot("weighted_ensemble_tuning.png",
            qplot(w_plot$w, w_plot$RMSE, geom = "line")+
              xlab("W") +
              ylab("RMSE") +
-             ggtitle("User / Movie Average Weighted Ensemble Optimization"))
+             ggtitle("User / Movie Average Weighted Ensemble Optimization")+
+             theme_minimal()+
+             theme(
+               text = element_text(size = unit(2, "mm")),          # General text size
+               plot.title = element_text(size = unit(20, "mm")),    # Title text size
+               axis.title = element_text(size = unit(15, "mm")),    # Axis titles text size
+               axis.text = element_text(size = unit(10, "mm"))      # Axis text size
+             ))
 
 # Store RMSE for Optimized Weighting
 # w = 0.4255 gives RMSE 0.9076019
@@ -101,15 +120,10 @@ rm(user_avg, movie_avg, predicted, w, w_plot)
 #rmse_df <- head(rmse_df, 26)
 
 # Genre Avg --------------------------------------------------
-#set.seed(1)
-#predicted <- sapply(test_df$genre_list, function(genre_list){
-#  #TODO: More complicated per-genre weighting
-#  ratings <- sapply(genre_list, function(genre){
-#    genres[genres$genre == genre,]$avg_rating
-#  })
-#  return (mean(ratings))
-#})
-#rmse <- calculate_rmse(predicted, test_df$rating)
-##rmse # = 1.048989
-#
-#rm(predicted, rmse)
+set.seed(1)
+predicted <- sapply(test_df$genres, function(genre_string){
+  return (genres[genres$genres == genre_string,]$avg_rating)
+})
+rmse_df <- rbind(rmse_df, data.frame(
+  Algorithm = "Genre Avg",
+  RMSE = calculate_rmse(predicted, test_df$rating)))
