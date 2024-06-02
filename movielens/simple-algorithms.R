@@ -17,6 +17,7 @@ rmse_df <- rbind(rmse_df, data.frame(
 
 plot <- ggplot(train_df, aes(x = rating)) +
   geom_histogram(binwidth = 0.5, fill = "lightblue", color = "black") +
+  geom_vline(aes(xintercept = mu), color = "red", linetype = "dashed", size = 1) +
   labs(title = "Histogram of Ratings",
        x = "Rating",
        y = "Count") +
