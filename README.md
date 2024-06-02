@@ -61,7 +61,10 @@ As the plot shows, the most prolific 10% or so of users have rated so many movie
   <img src="/movielens/graphs/counts_cdf_top10.png" alt="Cumulative Density of Rating Counts (Top 10%)" title="Cumulative Density of Rating Counts (Top 10%)" style="float: left; margin-right: 10px; width: 45%;">
 </div>
 
+(TODO: If you have time, make mu, movie bias, and genre bias split along these two user groups)
+
 ### Genre Data Analysis:
+
 
 
 
