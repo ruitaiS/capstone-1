@@ -55,7 +55,9 @@ Initial data exploration showed very quickly that some users had rated much more
 </div>
 
 
-As 
+As these graphs show, the most prolific 10% or so of users have rated so many movies that it immediately blows out the scale of the Y axis, making it difficult to even read for the other 90%. Here are the same graphs, but for the bottom 90% of users only:
+
+
 
 ## Methods:
 
