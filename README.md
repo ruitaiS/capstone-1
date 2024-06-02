@@ -20,7 +20,7 @@ The main dataset was split into training and test sets with the ```partition(see
 
 ```test_p = 0.2``` was used exclusively throughout this project.
 
-The ```partition``` function also ensures that every movieId and userId which appears in the test set must appear in the training set - the code to do this was borrowed from the provided template code, which also performs a similar modification for the main data set in relation to the final holdout set. While this is a seemingly small detail, it makes the recommendation task **significantly** easier, as it completely eliminates the need to deal with the possibility of making recommendations for users or movies which do not appear in the training set, also known as the [cold start problem](https://en.wikipedia.org/wiki/Cold_start_(recommender_systems)).
+The ```partition``` function also ensures that every movieId and userId which appears in the test set must appear in the training set - the code to do this was borrowed from the provided template code, which also performs a similar modification for the main data set in relation to the final holdout set. While this is a seemingly small detail, it makes the prediction task **significantly** easier, as it completely eliminates the need to deal with the possibility of making predictions for users or movies which do not appear in the training set, also known as the [cold start problem](https://en.wikipedia.org/wiki/Cold_start_(recommender_systems)).
 
 The training data was further processed to produce the ```genres```, ```users```, and ```movies``` dataframes. The column names are provided below, and should be mostly self-explanatory.
 
@@ -98,10 +98,10 @@ As specified in the project instructions, the root mean squared error function w
 Let ${r}{_u}{_i}$ denote the observed rating of user $u$ for movie $i$ in some dataset, and let $\hat{r}{_u}{_i}$ signify an algorithm's prediction for how that user would rate the movie. The root mean squared error can then be written as
 
 ```math
-\sqrt{{\sum}_{u,i\in {D}_{val}} \frac{({r}{_u}{_i} - \hat{r}{_u}{_i})^2}{|{D}_{val}|}}
+\sqrt{\frac{{\sum}_{u,i\in {D}_{val}}({r}{_u}{_i} - \hat{r}{_u}{_i})^2}{|{D}_{val}|}}
 ```
 
-where $`{D}_{val}`$ is our validation (eg. test) set. It is, as the name would suggest, the square root of the mean of the square of the error, or the difference between the predicted and actual values. For this reason, RMSE is also frequently called RMSD, or Root Mean Squared Difference. In code this equation is much easier to understand:
+where $`{D}_{val}`$ is our validation (eg. test) set. It is, as the name would suggest, the square root of the mean of the square of the error. Error is commonly defined as the difference between the predicted vs. actual values - for this reason RMSE is also frequently called RMSD, or Root Mean Squared Difference. In code this relationship is much clearer:
 
 ```
 calculate_rmse <- function(predicted_ratings, actual_ratings) {
@@ -142,11 +142,37 @@ The results of these simple algorithms are tallied below:
 
 ### User, Movie, and Genre Biases
 
-A more sophisticated approach similar to the one found in Koren et Al's (TODO: format) 2009 paper was tried next. Rather than taking the average rating for each movie, we instead find the biasing effect $`{b}_{i}`$ for each movie, defined as the average difference between the observed movie rating from the mean of all ratings, such that $`{b}_{i} = \bar{{r}_{i} - \mu}`$. We likewise define the user bias with $`{b}_{u} = \bar{{r}_{u} - \mu}`$ to be the average of the observed rating, minus the mean plus the movie bias, and the genre bias $`{b}_{g}`$ as the average difference between the observed rating and the sum of the user and movie biases. (TODO: Clarify / Mathify)
+A more sophisticated approach similar to the one found in Koren et Al's (TODO: format) 2009 paper was tried next. Rather than taking the average rating for each movie, we instead find the biasing effect $`{b}_{i}`$ for each movie, defined as the average difference of the observed ratings for all users on that movie from the global average $\mu$ of all movie ratings, such that $`{b}_{i} = \frac{\sum_{u\in R(i)}{r}{_u}{_i} - \mu}{|R(i)|}`$, with ${u\in R(i)}$ being all users $u$ who have rated movie $i$, and $|R(i)|$ as the size of that set of users. We likewise define the user bias to be the average of the observed ratings, minus the global mean plus the movie bias: $`{b}_{u} = \frac{\sum_{i\in R(u)}{r}{_u}{_i} - (\mu+{b}_{i})}{|R(u)|}`$, and the genre bias to be the average of the observed, minus the global mean plus the user and movie biases: $`{b}_{g} = \frac{\sum_{u,i\in R(g)}{r}{_u}{_i} - (\mu+{b}_{i}+{b}_{u})}{|R(g)|}`$, where $`{u,i\in R(g)}`$ is some user $u$ rating a movie $i$ which has genre $g$, and $|R(g)|$ is the size of the set of all ratings for that genre.
+
+Please note again that "genre" in this case refers to the entire genre list string attached to a given movie. As mentioned previously, I did not feel it was worth the added complexity of finding the biasing effects of each the 20 individual genres, and instead treated the entire genre list string as one item.
+
+These equations were implemented in code using R's `aggregate` function. Again, the code might be easier to understand than the mathematical equations, so I've included a shortened version below (the `_0` suffix indicates that these are unregularized biases - more on that in the Bias Regularization section).:
+```
+movies <- aggregate((rating-mu) ~ movieId, data = train_df, FUN = mean)
+users <- aggregate((rating-(mu+b_i_0)) ~ userId, data = train_df, FUN = mean)
+genres <- aggregate((rating-(mu+b_i_0+b_u_0)) ~ genres, data = train_df, FUN = mean)
+```
+
+Once the biasing effects $`{b}_{i}`$, $`{b}_{u}`$, and $`{b}_{g}`$ are calculated for each movie, user, and list of genres, we simply add them on top of the global rating average $\mu$ to find the predicted rating $`\hat{r}{_u}{_i} = \mu + {b}_{i} + {b}_{u} + {b}_{g}`$,
+
+I layered the biasing effects onto the global average one at a time, and the results are shown below:
+
+<div align = "center">
+	
+| Algorithm | RMSE |
+| :-: | :-: |
+| mu + b_i_0 | 0.9437667 |
+| mu + b_i_0 + b_u_0 | 0.8661612 |
+| mu + b_i_0 + b_u_0 + b_g_0 | 0.8657986 |
+
+</div>
+
+### Bias Regularization
+
+
 
 $`{b}_{i_0} = \sum_{u\in R(i)} \frac{{r}{_u}{_i} - \mu}{|R(i)|}`$
 
-* Regularization of Biasing Effects
 * K-Fold Cross Validation for Regularization Parameters
 * Residuals Matrix
 * SGD on Residuals
