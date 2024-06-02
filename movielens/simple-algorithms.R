@@ -17,9 +17,9 @@ rmse_df <- rbind(rmse_df, data.frame(
 
 plot <- ggplot(train_df, aes(x = rating)) +
   geom_histogram(binwidth = 0.5, fill = "lightblue", color = "black") +
-  labs(title = "Histogram of Rating Frequencies",
+  labs(title = "Histogram of Ratings",
        x = "Rating",
-       y = "Frequency") +
+       y = "Count") +
   theme_minimal()+
   theme(
     text = element_text(size = unit(2, "mm")),          # General text size
