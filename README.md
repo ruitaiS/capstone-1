@@ -146,6 +146,7 @@ A more sophisticated approach similar to the one found in Koren et Al's (TODO: f
 $`{b}_{i_0} = \sum_{u\in R(i)} \frac{{r}{_u}{_i} - \mu}{|R(i)|}`$
 
 * Regularization of Biasing Effects
+* K-Fold Cross Validation for Regularization Parameters
 * SGD on Residuals
 
 
