@@ -54,7 +54,7 @@ Initial data exploration showed very quickly that some users had rated much more
 </div>
 
 
-As the plot shows, the most prolific 10% or so of users have rated so many movies that it immediately blows out the scale of the Y axis, making it difficult to even read for the other 90%. Cumulative density functions done on these two groups show that the cutoff for the top 10% of users is about 250 ratings, beyond which the counts begin to skyrocket.
+As the plot shows, the most prolific 10% or so of users have rated so many movies that it immediately blows out the scale of the Y axis, making it difficult to even read the values for the other 90%. Cumulative density functions done on these two groups show that the cutoff for the top 10% of users is about 250 ratings, beyond which the counts begin to skyrocket.
 
 <div style="display: inline-block;">
   <img src="/movielens/graphs/counts_cdf_bottom90.png" alt="Cumulative Density of Rating Counts (Bottom 90%)" title="Cumulative Density of Rating Counts (Bottom 90%)" style="float: left; margin-right: 10px; width: 45%;">
@@ -65,7 +65,10 @@ As the plot shows, the most prolific 10% or so of users have rated so many movie
 
 ### Genre Data Analysis:
 
+Similar to what we saw with users, certain movie genres had a much higher number of ratings, and others very few. However the skew is not nearly as dramatic.
 
+<img src="/movielens/graphs/genre_counts_barplot.png" align="center" alt="Genre Counts"
+	title="Genre Counts"/>
 
 
 ## Methods:
