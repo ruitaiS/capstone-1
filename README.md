@@ -75,7 +75,7 @@ I was also curious to see which genres were most likely to appear together on th
 <img src="/movielens/graphs/genre_co_occurrence_heatmap.png" align="center" alt="Genre Heatmap"
 	title="Genre Heatmap"/>
 
-It is clear that there are certain genres which occur more frequently alongside other ones, but, perhaps unsurprisingly, the most common genres are also the ones most likely to be associated with other genres, and the rarer ones less likely. I tried normalizing the matrix by dividing each row element by the sum of the values in the row, but the result wasn't any more insightful. I decided to stop my exploration into the genre data here, and stick to using the full genre string, rather than over-complicate things by subdividing them into individual genres. 
+It is clear that there are certain genres which occur more frequently alongside other ones, but, perhaps unsurprisingly, the most common genres are also the ones most likely to be associated with other genres, and the rarer ones less likely. I tried normalizing the matrix by dividing each row element by the sum of the values in that row, but the result wasn't any more insightful. I decided to stop my exploration into the genre data here, and stick to using the full genre string associated with each movie, rather than over-complicate things by subdividing them into individual genres. There are 797 unique genre strings, as opposed to only 20 unique individual genres, so while some resolution might be lost, in a training set of over 7 million ratings, I did not consider this loss of granularity to be worth the added complexity.
 
 ## Methods:
 
