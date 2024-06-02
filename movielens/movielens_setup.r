@@ -113,8 +113,6 @@ partition <- function (seed, subset_p = 1, test_p = 0.2){
   # Add to train_df any removed rows
   train_df <- rbind(train_df, anti_join(subset[test_index,], test_df))
   
-  #Old:
-  #train_df <- rbind(train_df, anti_join(subset[test_index,], final_holdout_test))
   return(list(train = train_df, test = test_df))
 }
 
