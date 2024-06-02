@@ -190,25 +190,21 @@ calculate_rmse <- function(predicted_ratings, actual_ratings) {
 }
 
 # Plot Export Function:
-store_plot <- function(filename, h = 1500, w = 1500, plot){
-  png(file = paste("graphs/", filename, sep=""), height = h, width = w)
-  print(plot)
-  dev.off()
-}
+#store_plot <- function(filename, h = 1500, w = 1500, plot){
+#  png(file = paste("graphs/", filename, sep=""), height = h, width = w)
+#  print(plot)
+#  dev.off()
+#}
 
-store_plot2 <- function(filename, plot, inches = 6) {
-  # Convert inches to pixels at a desired resolution (e.g., 300 pixels per inch)
-  height <- inches * 300
-  width <- inches * 300
-  
-  # Set the resolution (dpi) for the PNG file
-  res <- 300  # Adjust as needed
-  
-  # Save the plot as PNG with the specified dimensions and resolution
+store_plot<- function(filename, plot, h = 6, w = 12) {
+  res <- 300
+  height <- h * res
+  width <- w * res
   png(file = paste("graphs/", filename, sep = ""), height = height, width = width, res = res)
   print(plot)
   dev.off()
 }
+
 
 
 
