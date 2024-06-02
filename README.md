@@ -50,12 +50,12 @@ Note genres contains the full genre list string provided for a movie, not an ind
 Initial data exploration showed very quickly that some users had rated much more movies than others, so much so that the discrepancy is difficult to visualize properly on a graph. Here are some attempts to, using a cumulative density plot and a decile box-whisker plot:
 
 <div style="clear: both;">
-    <div style="display: inline-block;">
-        <img src="/movielens/graphs/cum_density.png" alt="Cumulative Density of Rating Counts" title="Cumulative Density of Rating Counts" style="float: left; margin-right: 10px;">
+    <div style="display: inline-block; max-width: 45%;">
+        <img src="/movielens/graphs/cum_density.png" alt="Cumulative Density of Rating Counts" title="Cumulative Density of Rating Counts" style="float: left; margin-right: 10px; max-width: 100%;">
     </div>
 
-    <div style="display: inline-block;">
-        <img src="/movielens/graphs/box-whisker-decile.png" alt="Box-and-Whisker Plot of Rating Counts by Decile" title="Box-and-Whisker Plot of Rating Counts by Decile" style="float: left; margin-right: 10px;">
+    <div style="display: inline-block; max-width: 45%;">
+        <img src="/movielens/graphs/box-whisker-decile.png" alt="Box-and-Whisker Plot of Rating Counts by Decile" title="Box-and-Whisker Plot of Rating Counts by Decile" style="float: left; margin-right: 10px; max-width: 100%;">
     </div>
 </div>
 
