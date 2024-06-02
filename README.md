@@ -153,6 +153,10 @@ users <- aggregate((rating-(mu+b_i_0)) ~ userId, data = train_df, FUN = mean)
 genres <- aggregate((rating-(mu+b_i_0+b_u_0)) ~ genres, data = train_df, FUN = mean)
 ```
 
+Once the biasing effects $`{b}_{i}`$, $`{b}_{u}`$, and $`{b}_{g}`$ are calculated for each movie, user, and list of genres, we simply add them on top of the global rating average $\mu$ to find the predicted rating:
+
+ $`\hat{r}{_u}{_i} = \mu + {b}_{i} + {b}_{u} + {b}_{g}`$,
+
 
 
 $`{b}_{i_0} = \sum_{u\in R(i)} \frac{{r}{_u}{_i} - \mu}{|R(i)|}`$
