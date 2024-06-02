@@ -142,7 +142,18 @@ The results of these simple algorithms are tallied below:
 
 ### User, Movie, and Genre Biases
 
-A more sophisticated approach similar to the one found in Koren et Al's (TODO: format) 2009 paper was tried next. Rather than taking the average rating for each movie, we instead find the biasing effect $`{b}_{i}`$ for each movie, defined as the average difference between the observed movie rating from the mean of all ratings, such that $`{b}_{i} = \bar{{r}_{i} - \mu}`$. We likewise define the user bias with $`{b}_{u} = \bar{{r}_{u} - \mu}`$ to be the average of the observed rating, minus the mean plus the movie bias, and the genre bias $`{b}_{g}`$ as the average difference between the observed rating and the sum of the user and movie biases. (TODO: Clarify / Mathify)
+A more sophisticated approach similar to the one found in Koren et Al's (TODO: format) 2009 paper was tried next. Rather than taking the average rating for each movie, we instead find the biasing effect $`{b}_{i}`$ for each movie, defined as the average difference of the observed ratings for all users on that movie from the global average $mu$ of all movie ratings, such that $`{b}_{i} = \sum_{u\in R(i)} \frac{{r}{_u}{_i} - \mu}{|R(i)|}`$, with ${u\in R(i)} being all users $u$ who have rated movie $i$, and $|R(i)|$ as the size of that set of users. We likewise define the user bias to be the average of the observed ratings, minus the global mean plus the movie bias: $`{b}_{u} = \sum_{i\in R(u)} \frac{{r}{_u}{_i} - (\mu+{b}_{i})}{|R(u)|}`$, and the genre bias to be the average of the observed, minus the global mean plus the user and movie biases: $`{b}_{g} = \sum_{u,i\in R(g)} \frac{{r}{_u}{_i} - (\mu+{b}_{i}+{b}_{u})}{|R(g)|}`$, where $`{u,i\in R(g)}`$ is some user $u$ rating a movie $i$ which has genre $g$ and $|R(g)|$ is the size of the set of all ratings for that genre. Please note again that "genre" in this case refers to the entire genre list string attached to a given movie. As mentioned previously, I did not feel it was worth the added complexity of finding the biasing effects of each the 20 individual genres, and instead treated the entire genre list string as one item.
+
+These equations were implemented in code using R's `aggregate` function. Again, the code might be easier to understand than the mathematical equations, so a simplified version is presented:
+```
+movies <- aggregate((rating-mu) ~ movieId, data = train_df, FUN = mean) %>% setNames(c("movieId", "b_i_0"))
+users <- aggregate((rating-(mu+b_i_0)) ~ userId, data = train_df, FUN = mean) %>% setNames(c("userId", "b_u_0"))
+genres <- aggregate((rating-(mu+b_i_0+b_u_0)) ~ genres, data = train_df, FUN = mean) %>% setNames(c("genres", "b_g_0"))
+```
+
+The `_0` suffix indicates that these are unregularized biases (more on that in the Bias Regularization section).
+
+
 
 $`{b}_{i_0} = \sum_{u\in R(i)} \frac{{r}{_u}{_i} - \mu}{|R(i)|}`$
 
