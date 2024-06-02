@@ -98,7 +98,7 @@ As specified in the project instructions, the root mean squared error function w
 Let ${r}{_u}{_i}$ denote the observed rating of user $u$ for movie $i$ in some dataset, and let $\hat{r}{_u}{_i}$ signify an algorithm's prediction for how that user would rate the movie. The root mean squared error can then be written as
 
 ```math
-\sqrt{{\sum}_{u,i\in {D}_{val}} \frac{({r}{_u}{_i} - \hat{r}{_u}{_i})^2}{|{D}_{val}|}}
+\sqrt{\frac{{\sum}_{u,i\in {D}_{val}}({r}{_u}{_i} - \hat{r}{_u}{_i})^2}{|{D}_{val}|}}
 ```
 
 where $`{D}_{val}`$ is our validation (eg. test) set. It is, as the name would suggest, the square root of the mean of the square of the error. Error is commonly defined as the difference between the predicted vs. actual values - for this reason RMSE is also frequently called RMSD, or Root Mean Squared Difference. In code this relationship is much clearer:
