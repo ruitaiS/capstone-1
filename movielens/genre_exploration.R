@@ -1,10 +1,25 @@
 # Individual Genres 
-test_df <- train_df
-test_df$genre_list <- strsplit(test_df$genres, "\\|")
-genres_individual <- as.data.frame(table(unlist(train_df$genre_list)))
-#colnames(genre_count) <- c("genre", "count")
-#genres <- merge(genres, genre_count, by = "genre", all.x = TRUE)
-#rm(genre_count)
+genres_individual <- as.data.frame(table(unlist(strsplit(train_df$genres, "\\|"))))
+colnames(genres_individual) <- c("genre", "count")
+genres_individual$genre <- as.character(genres_individual$genre)
+genres_individual$genre[genres_individual$genre == "(no genres listed)"] <- "None"
+genres_individual$genre <- as.factor(genres_individual$genre) 
+
+
+plot <- ggplot(genres_individual, aes(x = reorder(genre, count), y = count)) + 
+  geom_bar(stat = "identity") +
+  geom_text(aes(label = count, nudge_y = 50000)) +  # Corrected label assignment
+  labs(x = "Genre", y = "Count", title = "Genre Counts Barplot")+
+  theme_minimal()+
+  theme(
+    text = element_text(size = unit(2, "mm")),          # General text size
+    plot.title = element_text(size = unit(20, "mm")),    # Title text size
+    axis.title = element_text(size = unit(15, "mm")),    # Axis titles text size
+    axis.text = element_text(size = unit(8, "mm"))      # Axis text size
+  )
+
+store_plot("genre_counts_barplot.png", plot)
+pdf(file = "graphs/pdf", height = 8, width = 15)
 
 #genre_rating_avg <- aggregate(
 #  data = train_df %>%
