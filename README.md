@@ -147,6 +147,7 @@ $`{b}_{i_0} = \sum_{u\in R(i)} \frac{{r}{_u}{_i} - \mu}{|R(i)|}`$
 
 * Regularization of Biasing Effects
 * K-Fold Cross Validation for Regularization Parameters
+* Residuals Matrix
 * SGD on Residuals
 
 
@@ -157,10 +158,16 @@ a results section that presents the modeling results and discusses the model per
 ## Conclusion
 
 a conclusion section that gives a brief summary of the report, its limitations and future work
+* Chrono Biasing
+* Per-Genre Analysis
+* Better Matrix Factorization
+
 
 ## References
 Movielens Dataset:
 https://grouplens.org/datasets/movielens/10m/
+
+(TODO: Other Papers)
 
 
 
