@@ -116,9 +116,11 @@ The most naive approach would be to randomly guess a rating - as one would expec
 <img src="/movielens/graphs/rating_histogram.png" align="center" alt="Ratings Histogam"
 	title="Ratings Histogram"/>
 
-Always predicting the global mean might not be a very sophisticated approach, but it minimizes the distance from the observed rating better than any other static value. In any case, it is much better than making random guesses, and gives a much improved RMSE of ~1.06.
+Always predicting the global mean might not be a very sophisticated approach, but it minimizes the distance from observed ratings more so than any other static value. In any case, it is much better than making random guesses, and gives a much improved RMSE of ~1.06.
 
-Using the per-genre average, per-user average, and per-movie average incrementally improved the RMSE. Finally, I tried an ensemble of the user and movie averages. In the case where the two are equally weighted, the predicted value is defined as $`\hat{r}{_u}{_i} = \frac{(\bar{r}_{u} + \bar{r}_{i})}{2}`$, with the average rating for user $u$ and movie $i$ as $`\bar{r}_{u}`$ and $`\bar{r}_{i}`$ respectively. This yielded an RMSE of ~0.913, To see whether this could be improved by weighting the average, the prediction was redefined as $`\hat{r}{_u}{_i} = {w} * \bar{r}_{u} + (1 - {w}) * \bar{r}_{i}`$, with ${w}$ being the weight assigned to the user average, and $1-{w}$ the weight for the movie average. The plot below shows the RMSE across the test set plotted against values of ${w}$ ranging from 0.2 to 0.6.
+Per-genre average, per-user average, and per-movie average is a slightly more nuanced approach, producing a mean for each genre, user, or movie, and making that our guess, rather than the global average. This takes into account that some genres / users / movies might tend to rate higher or lower, and by taking the mean of specific subsets of ratings rather than the entire set, we capture slightly more detail and were able to incrementally improve the rmse.
+
+Finally, I tried an ensemble of the user and movie averages. In the case where the two are equally weighted, the predicted value is defined as $`\hat{r}{_u}{_i} = \frac{(\bar{r}_{u} + \bar{r}_{i})}{2}`$, with the average rating for user $u$ and movie $i$ as $`\bar{r}_{u}`$ and $`\bar{r}_{i}`$ respectively. This yielded an RMSE of ~0.913, To see whether this could be improved by weighting the average, the prediction was redefined as $`\hat{r}{_u}{_i} = {w} * \bar{r}_{u} + (1 - {w}) * \bar{r}_{i}`$, with ${w}$ being the weight assigned to the user average, and $1-{w}$ the weight for the movie average. The plot below shows the RMSE across the test set plotted against values of ${w}$ ranging from 0.2 to 0.6.
 
 <img src="/movielens/graphs/weighted_ensemble_tuning.png" align="center" alt="User / Movie Average Weighted Ensemble Optimization"
 	title="User / Movie Average Weighted Ensemble Optimization"/>
@@ -143,7 +145,7 @@ The results of these simple algorithms are tallied below:
 
 ### User, Movie, and Genre Biases
 
-A more sophisticated approach similar to the one found in Koren et Al's (TODO: format) 2009 paper was tried next. Rather than taking the average rating for each movie, we instead find the biasing effect $`{b}_{i}`$ for each movie, defined as the average difference of the observed ratings for all users on that movie from the global average $\mu$ of all movie ratings, such that $`{b}_{i} = \frac{\sum_{u\in R(i)}{r}{_u}{_i} - \mu}{|R(i)|}`$, with ${u\in R(i)}$ being all users $u$ who have rated movie $i$, and $|R(i)|$ as the size of that set of users. We likewise define the user bias to be the average of the observed ratings, minus the global mean plus the movie bias: $`{b}_{u} = \frac{\sum_{i\in R(u)}{r}{_u}{_i} - (\mu+{b}_{i})}{|R(u)|}`$, and the genre bias to be the average of the observed, minus the global mean plus the user and movie biases: $`{b}_{g} = \frac{\sum_{u,i\in R(g)}{r}{_u}{_i} - (\mu+{b}_{i}+{b}_{u})}{|R(g)|}`$, where $`{u,i\in R(g)}`$ is some user $u$ rating a movie $i$ which has genre $g$, and $|R(g)|$ is the size of the set of all ratings for that genre.
+A more sophisticated approach similar to the one found in Koren et al.'s (TODO: format) 2009 paper was tried next. Rather than taking the average rating for each movie, we instead find the biasing effect $`{b}_{i}`$ for each movie, defined as the average difference of the observed ratings for all users on that movie from the global average $\mu$ of all movie ratings, such that $`{b}_{i} = \frac{\sum_{u\in R(i)}{r}{_u}{_i} - \mu}{|R(i)|}`$, with ${u\in R(i)}$ being all users $u$ who have rated movie $i$, and $|R(i)|$ as the size of that set of users. We likewise define the user bias to be the average of the observed ratings, minus the global mean plus the movie bias: $`{b}_{u} = \frac{\sum_{i\in R(u)}{r}{_u}{_i} - (\mu+{b}_{i})}{|R(u)|}`$, and the genre bias to be the average of the observed, minus the global mean plus the user and movie biases: $`{b}_{g} = \frac{\sum_{u,i\in R(g)}{r}{_u}{_i} - (\mu+{b}_{i}+{b}_{u})}{|R(g)|}`$, where $`{u,i\in R(g)}`$ is some user $u$ rating a movie $i$ which has genre $g$, and $|R(g)|$ is the size of the set of all ratings for that genre.
 
 Please note again that "genre" in this case refers to the entire genre list string attached to a given movie. As mentioned previously, I did not feel it was worth the added complexity of finding the biasing effects of each the 20 individual genres, and instead treated the entire genre list string as one item.
 
@@ -169,6 +171,9 @@ I layered the biasing effects onto the global average one at a time, and the res
 </div>
 
 ### Bias Regularization
+(TODO)
+Koren et al.'s approach also incorporated the use of regularization. As seen before, some genres, users, and movies have very few ratings - 
+
 
 
 
