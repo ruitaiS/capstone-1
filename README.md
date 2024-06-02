@@ -20,7 +20,7 @@ The main dataset was split into training and test sets with the ```partition(see
 
 ```test_p = 0.2``` was used exclusively throughout this project.
 
-The ```partition``` function also ensures that every movieId and userId which appears in the test set must appear in the training set - the code to do this was borrowed from the provided template code, which also performs a similar modification for the main data set in relation to the final holdout set. While this is a seemingly small detail, it makes the recommendation task **significantly** easier, as it completely eliminates the need to deal with the possibility of making recommendations for users or movies which do not appear in the training set, also known as the [cold start problem](https://en.wikipedia.org/wiki/Cold_start_(recommender_systems)).
+The ```partition``` function also ensures that every movieId and userId which appears in the test set must appear in the training set - the code to do this was borrowed from the provided template code, which also performs a similar modification for the main data set in relation to the final holdout set. While this is a seemingly small detail, it makes the prediction task **significantly** easier, as it completely eliminates the need to deal with the possibility of making predictions for users or movies which do not appear in the training set, also known as the [cold start problem](https://en.wikipedia.org/wiki/Cold_start_(recommender_systems)).
 
 The training data was further processed to produce the ```genres```, ```users```, and ```movies``` dataframes. The column names are provided below, and should be mostly self-explanatory.
 
