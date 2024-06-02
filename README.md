@@ -65,11 +65,17 @@ As the plot shows, the most prolific 10% or so of users have rated so many movie
 
 ### Genre Data Analysis:
 
-Similar to what we saw with users, certain movie genres had a much higher number of ratings, and others very few. However the skew is not nearly as dramatic.
+My initial approach for genres was to split apart the list of genres for each movie, and consider them individually. In total there are twenty unique genres, and similarly to what we saw with users, certain movie genres had a much higher number of ratings, and others very few. However the skew is not nearly as dramatic.
 
 <img src="/movielens/graphs/genre_counts_barplot.png" align="center" alt="Genre Counts"
 	title="Genre Counts"/>
 
+I was also curious to see which genres were most likely to appear together on the same movie, so I created the co-occurrence heatmap shown below. Each cell represents the number of movies which have both the genre on the X axis and the genre on the Y axis, with darker values indicating a higher number. Cells along the diagonal (where the X and Y genres are the same) are counts for movies with only that genre associated to it.
+
+<img src="/movielens/graphs/genre_co_occurrence_heatmap.png" align="center" alt="Genre Heatmap"
+	title="Genre Heatmap"/>
+
+It is clear that there are certain genres which occur more frequently alongside other ones, but, perhaps unsurprisingly, the most common genres are also the ones most likely to be associated with other genres, and the rarer ones less likely. I tried normalizing the matrix by dividing each row element by the sum of the values in the row, but the result wasn't any more insightful. I decided to stop my exploration into the genre data here, and stick to using the full genre string, rather than over-complicate things by subdividing them into individual genres. 
 
 ## Methods:
 
