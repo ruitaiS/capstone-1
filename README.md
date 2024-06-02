@@ -45,12 +45,6 @@ Note genres contains the full genre list string provided for a movie, not an ind
 6    Action|Adventure|Animation|Children|Comedy|IMAX    54   3.222222
 ```
 
-(TODO: Figure out where to put this:)
-If we look to the density plot of the ratings given in the training set, we see that most movies are rated 3 or 4. Whole number ratings are more common than .5s.
-
-<img src="/movielens/graphs/rating_histogram.png" align="center" alt="Ratings Histogam"
-	title="Ratings Histogram"/>
-
 ### User Data Analysis:
 
 Initial data exploration showed very quickly that some users had rated much more movies than others, so much so that the discrepancy is difficult to visualize properly on a graph. Here is an attempt to do so using a box-whisker decile plot:
@@ -117,7 +111,14 @@ calculate_rmse <- function(predicted_ratings, actual_ratings) {
 
 A couple of very basic methods for rating prediction come to mind, and these were the ones I tried first while building out the testing framework. The code for them is in the ```simple-algorithms.R``` file. (TODO: Specify where the files are for each section)
 
-The most naive approach would be to randomly guess a rating - as one would expect, this gave a very poor RMSE of ~2.16. Next was to find the average of all the ratings in the training set, and to use that value as the prediction for the ratings in the test set. This gives a much improved RMSE of ~1.06. Using the per-genre average, per-user average, and per-movie average incrementally improved the RMSE. Finally, I tried an ensemble of the user and movie averages. In the case where the two are equally weighted, the predicted value is defined as $`\hat{r}{_u}{_i} = \frac{(\bar{r}_{u} + \bar{r}_{i})}{2}`$, with the average rating for user $u$ and movie $i$ as $`\bar{r}_{u}`$ and $`\bar{r}_{i}`$ respectively. This yielded an RMSE of ~0.913, To see whether this could be improved by weighting the average, the prediction was redefined as $`\hat{r}{_u}{_i} = {w} * \bar{r}_{u} + (1 - {w}) * \bar{r}_{i}`$, with ${w}$ being the weight assigned to the user average, and $1-{w}$ the weight for the movie average. The plot below shows the RMSE across the test set plotted against values of ${w}$ ranging from 0.2 to 0.6.
+The most naive approach would be to randomly guess a rating - as one would expect, this gave a very poor RMSE of ~2.16. Next was to find the average of all the ratings in the training set, and to use that value as the prediction for every rating in the test set. If we look to the histogram plot of the ratings given in the training set, we see that whole number ratings are more common than ones rated at half integer increments - this I would attribute to user psychology more than anything else. Taken individually, the set of whole number ratings and the set of half-step ratings both form bell-curve shaped distributions centered roughly around the global mean, shown as the dashed vertical red line.
+
+<img src="/movielens/graphs/rating_histogram.png" align="center" alt="Ratings Histogam"
+	title="Ratings Histogram"/>
+
+Always predicting the global mean might not be a very sophisticated approach, but it minimizes the distance from the observed rating better than any other static value. In any case, it is much better than making random guesses, and gives a much improved RMSE of ~1.06.
+
+Using the per-genre average, per-user average, and per-movie average incrementally improved the RMSE. Finally, I tried an ensemble of the user and movie averages. In the case where the two are equally weighted, the predicted value is defined as $`\hat{r}{_u}{_i} = \frac{(\bar{r}_{u} + \bar{r}_{i})}{2}`$, with the average rating for user $u$ and movie $i$ as $`\bar{r}_{u}`$ and $`\bar{r}_{i}`$ respectively. This yielded an RMSE of ~0.913, To see whether this could be improved by weighting the average, the prediction was redefined as $`\hat{r}{_u}{_i} = {w} * \bar{r}_{u} + (1 - {w}) * \bar{r}_{i}`$, with ${w}$ being the weight assigned to the user average, and $1-{w}$ the weight for the movie average. The plot below shows the RMSE across the test set plotted against values of ${w}$ ranging from 0.2 to 0.6.
 
 <img src="/movielens/graphs/weighted_ensemble_tuning.png" align="center" alt="User / Movie Average Weighted Ensemble Optimization"
 	title="User / Movie Average Weighted Ensemble Optimization"/>
