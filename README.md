@@ -117,11 +117,12 @@ calculate_rmse <- function(predicted_ratings, actual_ratings) {
 
 A couple of very basic methods for rating prediction come to mind, and these were the ones I tried first while building out the testing framework. The code for them is in the ```simple-algorithms.R``` file. (TODO: Specify where the files are for each section)
 
-The most naive approach would be to randomly guess a rating - as one would expect, this gave a very poor RMSE of ~2.16. Next was to find the average of all the ratings in the training set, and to use that value as the prediction for the ratings in the test set. This gives a much improved RMSE of ~1.06. Using the per-genre average, per-user average, and per-movie average incrementally improved the RMSE. Finally, I tried an ensemble of the user and movie averages, giving an RMSE of ~0.913 if the two were equally weighted, and ~0.912 if the weighting was optimized at $`{w} = 0.4062; \hat{r}{_u}{_i} = {w} * \bar{r}_{u} + (1 - {w}) * \bar{r}_{i}`$
+The most naive approach would be to randomly guess a rating - as one would expect, this gave a very poor RMSE of ~2.16. Next was to find the average of all the ratings in the training set, and to use that value as the prediction for the ratings in the test set. This gives a much improved RMSE of ~1.06. Using the per-genre average, per-user average, and per-movie average incrementally improved the RMSE. Finally, I tried an ensemble of the user and movie averages. In the case where the two are equally weighted, the predicted value is defined as $`\hat{r}{_u}{_i} = \frac{(\bar{r}_{u} + \bar{r}_{i})}{2}`$, with the average rating for user $u$ and movie $i$ as $`\bar{r}_{u}`$ and $`\bar{r}_{i}`$ respectively. This yielded an RMSE of ~0.913, To see whether this could be improved by weighting the average, the prediction was redefined as $`\hat{r}{_u}{_i} = {w} * \bar{r}_{u} + (1 - {w}) * \bar{r}_{i}`$, with ${w}$ being the weight assigned to the user average, and $1-{w}$ the weight for the movie average. The plot below shows the RMSE across the test set plotted against values of ${w}$ ranging from 0.2 to 0.6.
 
 <img src="/movielens/graphs/weighted_ensemble_tuning.png" align="center" alt="User / Movie Average Weighted Ensemble Optimization"
 	title="User / Movie Average Weighted Ensemble Optimization"/>
 
+The minima occurs at $`{w} = 0.4062`$, and yields a very slightly improved RMSE of ~0.912 on the test set.
 
 The results of these simple algorithms are tallied below:
 
