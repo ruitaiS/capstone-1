@@ -14,10 +14,10 @@ train_df <- merge(train_df, users[,c('userId', 'b_u_0')], by="userId")
 #rm(density_values)
 
 # Unregularized Movie Bias
-movies <- aggregate((rating-(mu+b_u_0)) ~ movieId, data = train_df, FUN = mean) %>%
-  setNames(c("movieId", "b_i_0")) %>%
+movies2 <- aggregate((rating-(mu+b_u_0)) ~ movieId + user_percentile_group, data = train_df, FUN = mean) %>%
+  setNames(c("movieId", "b_i_0", "user_percentile_group")) %>%
   merge(movies, by="movieId")
-train_df <- merge(train_df, movies[,c('movieId', 'b_i_0')], by="movieId")
+train_df2 <- merge(train_df, movies2[,c('movieId', 'b_i_0', 'user_percentile_group')], by=c("movieId","user_percentile_group"))
 
 # Plot
 #density_values <- density(movies$b_i_0)

@@ -2,9 +2,10 @@ user_percentiles <- users %>%
   mutate(count_percentile = percent_rank(count) * 100) %>%
   mutate(rating_percentile = percent_rank(avg_rating)*100) %>%
   mutate(decile = ntile(count, 10))%>%
-  mutate(count_percentile_group = ifelse(decile == 10, "upper", "lower"))
+  mutate(user_percentile_group = ifelse(decile == 10, "upper", "lower"))
 
-users <- merge(users, user_percentiles[, c("userId", "count_percentile_group")], by = "userId", all.x = TRUE)
+users <- merge(users, user_percentiles[, c("userId", "user_percentile_group")], by = "userId", all.x = TRUE)
+train_df <- merge(train_df, user_percentiles[, c("userId", "user_percentile_group")], by = "userId", all.x = TRUE)
 
 # Plot Count Percentiles
 plot <- ggplot(users, aes(x = count)) +
