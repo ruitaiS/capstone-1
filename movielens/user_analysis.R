@@ -48,6 +48,20 @@ plot <- ggplot(user_percentiles[user_percentiles$count_percentile<=90,], aes(x =
   )
 store_plot("counts_cdf_bottom90.png", plot)
 
+plot <- ggplot(user_percentiles[user_percentiles$count_percentile>=90,], aes(x = count)) +
+  stat_ecdf(aes(y = after_stat(..y..) * 100), geom = "step", color = "blue") +
+  labs(title = "Rating Counts CDF (Top 10%)",
+       x = "Count",
+       y = "Percentile of Users") +
+  theme_minimal()+
+  theme(
+    text = element_text(size = unit(2, "mm")),          # General text size
+    plot.title = element_text(size = unit(20, "mm")),    # Title text size
+    axis.title = element_text(size = unit(15, "mm")),    # Axis titles text size
+    axis.text = element_text(size = unit(10, "mm"))      # Axis text size
+  )
+store_plot("counts_cdf_top10.png", plot)
+
 # Create a box-and-whisker plot for each decile
 plot <- ggplot(user_percentiles, aes(x = as.factor(decile), y = count)) +
   geom_boxplot(fill = "blue", alpha = 0.7) +
