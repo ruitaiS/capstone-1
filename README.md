@@ -116,7 +116,7 @@ The most naive approach would be to randomly guess a rating - as one would expec
 <img src="/movielens/graphs/rating_histogram.png" align="center" alt="Ratings Histogam"
 	title="Ratings Histogram"/>
 
-Always predicting the global mean might not be a very sophisticated approach, but it minimizes the distance from the observed rating better than any other static value. In any case, it is much better than making random guesses, and gives a much improved RMSE of ~1.06.
+Always predicting the global mean might not be a very sophisticated approach, but it minimizes the distance from observed ratings more so than any other static value. In any case, it is much better than making random guesses, and gives a much improved RMSE of ~1.06.
 
 Using the per-genre average, per-user average, and per-movie average incrementally improved the RMSE. Finally, I tried an ensemble of the user and movie averages. In the case where the two are equally weighted, the predicted value is defined as $`\hat{r}{_u}{_i} = \frac{(\bar{r}_{u} + \bar{r}_{i})}{2}`$, with the average rating for user $u$ and movie $i$ as $`\bar{r}_{u}`$ and $`\bar{r}_{i}`$ respectively. This yielded an RMSE of ~0.913, To see whether this could be improved by weighting the average, the prediction was redefined as $`\hat{r}{_u}{_i} = {w} * \bar{r}_{u} + (1 - {w}) * \bar{r}_{i}`$, with ${w}$ being the weight assigned to the user average, and $1-{w}$ the weight for the movie average. The plot below shows the RMSE across the test set plotted against values of ${w}$ ranging from 0.2 to 0.6.
 
