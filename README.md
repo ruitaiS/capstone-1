@@ -4,7 +4,7 @@
 
 The goal of this project is to implement a machine learning based prediction system for ratings the MovieLens dataset. The full dataset consists of 10000054 ratings of 10681 movies by 71567 unique users, along with associated metadata. Template code provided by the EdX team splits the data into a main dataset $\mathcal{D}$ and a final holdout test set $\mathcal{F}$ to be used exclusively for a final error calculation at the end of the project.
 
-The approach here is a modified version of the one outlined by Robert M. Bell, Yehuda KorenChris, Volinsky in their 2009 paper "The BellKor Solution to the Netflix Grand Prize." 
+The approach here is a modified version of the one outlined by Robert M. Bell, Yehuda KorenChris, Volinsky in their 2009 paper "The BellKor Solution to the Netflix Grand Prize." (TODO: Authors - The team BellKor's Pragmatic Chaos is a combined team of BellKor, Pragmatic Theory and BigChaos. BellKor consists of Robert Bell, Yehuda Koren and Chris Volinsky. The members of Pragmatic Theory are Martin Piotte and Martin Chabbert. Andreas Töscher and Michael Jahrer form the team BigChaos)
 
 $\mathcal{D}$ was split into training and test sets with ```p = 0.8``` and ```0.2``` respectively. An average $\mu$ of all movie ratings in the training set formed a baseline predictor, on top of which were added movie, user, and genre biases - $`{b}_{i}`$, $`{b}_{u}`$, $`{b}_{g}`$. After tuning regularization parameters $\alpha_1$, $\alpha_2$, $\alpha_3$ for each of them, the root mean squared error (RMSE) was calculated on the test set.
 
@@ -113,7 +113,7 @@ calculate_rmse <- function(predicted_ratings, actual_ratings) {
 }
 ```
 
-### Some Simple Algorithms
+### Some Simple Algorithms to Start
 
 A couple of very basic methods for rating prediction come to mind, and these were the ones I tried first while building out the testing framework. The code for them is in the ```simple-algorithms.R``` file. (TODO: Specify where the files are for each section)
 
@@ -124,6 +124,8 @@ The most naive approach would be to randomly guess a rating - as one would expec
 
 
 The results of these simple algorithms are tallied below:
+
+<div align = "center">
 	
 | Algorithm | RMSE |
 | :-: | :-: |
@@ -134,6 +136,14 @@ The results of these simple algorithms are tallied below:
 | Movie Avg | 0.9437667 |
 | User and Movie Avg, Equal Weight Ensemble | 0.9133540 |
 | User and Movie Avg Weighted Ensemble, w =  0.4062 | 0.9116089 |
+
+</div>
+
+### User, Movie, and Genre Biases
+
+A more sophisticated approach similar to the one found in Koren et Al's (TODO: format) 2009 paper was tried next. Rather than taking the average rating for each movie, we instead find the biasing effect $`{b}_{i}`$ for each movie, defined as the average difference between the observed movie rating from the mean of all ratings, such that $`{b}_{i} = \bar{{r}_{i} - \mu}`$. We likewise define the user bias with $`{b}_{u} = \bar{{r}_{u} - \mu}`$ to be the average of the observed rating, minus the mean plus the movie bias, and the genre bias $`{b}_{g}`$ as the average difference between the observed rating and the sum of the user and movie biases. (TODO: Clarify / Mathify)
+
+$`{b}_{i_0} = \sum_{u\in R(i)} \frac{{r}{_u}{_i} - \mu}{|R(i)|}`$
 
 
 ## Results
