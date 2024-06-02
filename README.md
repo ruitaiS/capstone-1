@@ -47,14 +47,14 @@ Note genres contains the full genre list string provided for a movie, not an ind
 
 ### User Data Analysis:
 
-Initial data exploration showed very quickly that some users had rated much more movies than others, so much so that the discrepancy is difficult to visualize properly on a graph. Here are some attempts to do that using a box-whisker decile plot:
+Initial data exploration showed very quickly that some users had rated much more movies than others, so much so that the discrepancy is difficult to visualize properly on a graph. Here is an attempt to do so using a box-whisker decile plot:
 
 <div style="display: inline-block;">
   <img src="/movielens/graphs/box-whisker-decile.png" alt="Box-and-Whisker Plot of Rating Counts by Decile" title="Box-and-Whisker Plot of Rating Counts by Decile" style="float: center; width: 100%;">
 </div>
 
 
-The most prolific 10% or so of users have rated so many movies that it immediately blows out the scale of the Y axis, making it difficult to even read for the other 90%. I decided to redo the cumulative density plots, only this time separating the bottom 90% of users from the top 10% of them.
+As the plot shows, the most prolific 10% or so of users have rated so many movies that it immediately blows out the scale of the Y axis, making it difficult to even read for the other 90%. Cumulative density functions done on these two groups show that past about 250 ratings, the rating counts begin to skyrocket.
 
 <div style="display: inline-block;">
   <img src="/movielens/graphs/counts_cdf_bottom90.png" alt="Cumulative Density of Rating Counts (Bottom 90%)" title="Cumulative Density of Rating Counts (Bottom 90%)" style="float: left; margin-right: 10px; width: 45%;">
