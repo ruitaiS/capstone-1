@@ -2,7 +2,7 @@
 
 ## Introduction:
 
-The goal of this project is to implement a machine learning based recommendation system for the MovieLens dataset. The full dataset consists of 10000054 ratings of 10681 movies by 71567 unique users, along with associated metadata. Template code provided by the EdX team splits the data into a main dataset $\mathcal{D}$ and a final holdout test set $\mathcal{F}$ to be used exclusively for a final error calculation at the end of the project.
+The goal of this project is to implement a machine learning based prediction system for ratings the MovieLens dataset. The full dataset consists of 10000054 ratings of 10681 movies by 71567 unique users, along with associated metadata. Template code provided by the EdX team splits the data into a main dataset $\mathcal{D}$ and a final holdout test set $\mathcal{F}$ to be used exclusively for a final error calculation at the end of the project.
 
 The approach here is a modified version of the one outlined by Robert M. Bell, Yehuda KorenChris, Volinsky in their 2009 paper "The BellKor Solution to the Netflix Grand Prize." 
 
@@ -45,6 +45,12 @@ Note genres contains the full genre list string provided for a movie, not an ind
 6    Action|Adventure|Animation|Children|Comedy|IMAX    54   3.222222
 ```
 
+(TODO: Figure out where to put this:)
+If we look to the density plot of the ratings given in the training set, we see that most movies are rated 3 or 4. Whole number ratings are more common than .5s.
+
+<img src="/movielens/graphs/rating_histogram.png" align="center" alt="Ratings Histogam"
+	title="Ratings Histogram"/>
+
 ### User Data Analysis:
 
 Initial data exploration showed very quickly that some users had rated much more movies than others, so much so that the discrepancy is difficult to visualize properly on a graph. Here is an attempt to do so using a box-whisker decile plot:
@@ -77,6 +83,12 @@ I was also curious to see which genres were most likely to appear together on th
 
 It is clear that there are certain genres which occur more frequently alongside other ones, but, perhaps unsurprisingly, the most common genres are also the ones most likely to be associated with other genres, and the rarer ones less likely. I tried normalizing the matrix by dividing each row element by the sum of the values in that row, but the result wasn't any more insightful. I decided to stop my exploration into the genre data here, and stick to using the full genre string associated with each movie, rather than over-complicate things by subdividing them into individual genres. There are 797 unique genre strings, as opposed to only 20 unique individual genres, so while some resolution might be lost, in a training set of over 7 million ratings, I did not consider this loss of granularity to be worth the added complexity.
 
+### Movie Data Analysis
+
+(TODO: Fill this out more)
+There are 10677 unique movies in the dataset, with release dates from 1915 to 2008. 
+(TODO: Chronological effect, if there's time to do it)
+
 ## Methods:
 
 Initial tests were done with training and test sets produced by ```partition(seed = 1, subset_p = 1)```
@@ -89,7 +101,7 @@ Let ${r}{_u}{_i}$ denote the observed rating of user $u$ for movie $i$ in some d
 \sqrt{{\sum}_{u,i\in {D}_{val}} \frac{({r}{_u}{_i} - \hat{r}{_u}{_i})^2}{|{D}_{val}|}}
 ```
 
-where $`{D}_{val}`$ is our validation (eg. test) set. It is, as the name would suggest, the square root of the mean of the square of the error, or the difference between the predicted and actual values. For this reason, RMSE is also frequently called RMSD, or Root Mean Squared **Difference**) In code this equation is much easier to understand:
+where $`{D}_{val}`$ is our validation (eg. test) set. It is, as the name would suggest, the square root of the mean of the square of the error, or the difference between the predicted and actual values. For this reason, RMSE is also frequently called RMSD, or Root Mean Squared Difference. In code this equation is much easier to understand:
 
 ```
 calculate_rmse <- function(predicted_ratings, actual_ratings) {
@@ -103,11 +115,22 @@ calculate_rmse <- function(predicted_ratings, actual_ratings) {
 
 ### Some Simple Algorithms
 
+A couple of very basic methods for rating prediction come to mind, and these were the ones I tried first while building out the testing framework. The code for them is in the ```simple-algorithms.R``` file. (TODO: Specify where the files are for each section)
+
+The most naive approach would be to randomly guess a rating - as one would expect, this gave a very poor RMSE of ~2.16. Next was to find the average of all the ratings in the training set, and to use that value as the prediction for the ratings in the test set. This gives a much improved RMSE of ~1.06. 
 
 
-
-
-
+The results of these simple algorithms are tallied below:
+	
+| Algorithm | RMSE |
+| :-: | :-: |
+| Random Guess | 2.1553650|
+| Avg All | 1.0605995 |
+| Genre Avg | 1.0184635
+| User Avg | 0.9790682 |
+| Movie Avg | 0.9437667 |
+| User and Movie Avg, Equal Weight Ensemble | 0.9133540 |
+| User and Movie Avg Weighted Ensemble, w =  0.4062 | 0.9116089 |
 
 
 ## Results
