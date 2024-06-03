@@ -28,7 +28,7 @@ rm(mu, genres, movies, users, rmse_df, train_df, test_df)
 
 # Set Index to 1-4 for Cross Validation
 # 5 is the original test set created during setup
-fold_index = 5
+fold_index = 2
 train_df <- do.call(rbind, sets[-fold_index])
 
 # Ensure all movies and users in test set are also in the training set

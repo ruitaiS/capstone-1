@@ -87,11 +87,11 @@ l1_plot <- data.frame(Lambda = character(),
                       stringsAsFactors = FALSE)
 
 #for (l1 in seq(0, 1, 0.01)){ #Original Fold
-#for (l1 in seq(1, 2.5, 0.01)){ # Fold 1
+for (l1 in seq(2, 3.5, 0.01)){ # Fold 1
 #for (l1 in seq(2, 3.5, 0.01)){ # Fold 2
 #for (l1 in seq(2, 3.5, 0.01)){ # Fold 3
 #for (l1 in seq(2, 3.5, 0.01)){ # Fold 4
-for (l1 in seq(2, 3.5, 0.01)){ # Fold 5
+#for (l1 in seq(2, 3.5, 0.01)){ # Fold 5
   tuning_df$b_i <- tuning_df$sum / (tuning_df$count + l1)
   movie_bias <- tuning_df$b_i[match(test_df$movieId, tuning_df$movieId)]
   l1_plot <- rbind(l1_plot, data.frame(
@@ -102,7 +102,7 @@ for (l1 in seq(2, 3.5, 0.01)){ # Fold 5
 }
 
 # Plot L1 Tuning
-store_plot("movie_bias_tuning-fold5-square.png",
+store_plot("movie_bias_tuning-fold1-redo-square.png",
            qplot(l1_plot$Lambda, l1_plot$RMSE, geom = "line")+
              xlab("Lambda") +
              ylab("RMSE") +
@@ -138,11 +138,11 @@ l2_plot <- data.frame(Lambda = character(),
 
 movie_bias <- movies$b_i_reg[match(test_df$movieId, movies$movieId)]
 #for (l2 in seq(0, 1, 0.01)){ # Original Set
-#for (l2 in seq(4.5, 6, 0.01)){ # Fold1
+for (l2 in seq(4.5, 6, 0.01)){ # Fold1
 #for (l2 in seq(4.5, 6, 0.01)){ # Fold2
 #for (l2 in seq(4.5, 6, 0.01)){ # Fold3
 #for (l2 in seq(4.5, 6, 0.01)){ # Fold4
-for (l2 in seq(4.5, 6, 0.01)){ # Fold5
+#for (l2 in seq(4.5, 6, 0.01)){ # Fold5
   tuning_df$b_u <- tuning_df$sum / (tuning_df$count + l2)
   user_bias <- tuning_df$b_u[match(test_df$userId, tuning_df$userId)]
   l2_plot <- rbind(l2_plot, data.frame(
@@ -153,7 +153,7 @@ for (l2 in seq(4.5, 6, 0.01)){ # Fold5
 }
 
 # Plot:
-store_plot("user_bias_tuning-fold5-square.png",
+store_plot("user_bias_tuning-fold1-redo-square.png",
            qplot(l2_plot$Lambda, l2_plot$RMSE, geom = "line")+
              xlab("Lambda") +
              ylab("RMSE") +
@@ -191,11 +191,11 @@ l3_plot <- data.frame(Lambda = character(),
 movie_bias <- movies$b_i_reg[match(test_df$movieId, movies$movieId)]
 user_bias <- users$b_u_reg[match(test_df$userId, users$userId)]
 #for (l3 in seq(0, 1, 0.01)){ # Original
-#for (l3 in seq(4, 6.5, 0.01)){ # Fold 1
+for (l3 in seq(4, 6.5, 0.01)){ # Fold 1
 #for (l3 in seq(48, 50, 0.01)){ # Fold 2
 #for (l3 in seq(10, 12, 0.01)){ # Fold 3
 #for (l3 in seq(12, 14, .01)){ # Fold 4
-for (l3 in seq(19, 21, 0.01)){ # Fold 5
+#for (l3 in seq(19, 21, 0.01)){ # Fold 5
   tuning_df$b_g <- tuning_df$sum / (tuning_df$count + l3)
   genre_bias <- tuning_df$b_g[match(test_df$genres, tuning_df$genres)]
   l3_plot <- rbind(l3_plot, data.frame(
@@ -206,7 +206,7 @@ for (l3 in seq(19, 21, 0.01)){ # Fold 5
 }
 
 # Plot:
-store_plot("genre_bias_tuning-fold5-square.png",
+store_plot("genre_bias_tuning-fold1-redo-square.png",
            qplot(l3_plot$Lambda, l3_plot$RMSE, geom = "line")+
              xlab("Lambda") +
              ylab("RMSE") +
