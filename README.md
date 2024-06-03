@@ -186,8 +186,12 @@ Koren et al.'s approach also incorporated the use of regularization. As seen bef
 | Fold 4 | 2.32 | 5.02 | 12.53 | 0.8649017 |
 | Fold 5 | 2.26 | 4.97 | 19.98 | 0.8651734 |
 
+| Fold 1 | 2.35 | 4.81 | 5.36 | 0.8647763 |
+| Fold 2 | 2.34 | 4.88 | 3.83 | 0.8655529 |
+
 Algorithm
 RMSE
+Fold 1 run 1
 3
 mu + b_i_reg + b_u_reg + b_g_reg
 0.8654754
@@ -198,6 +202,15 @@ mu + b_i_reg + b_u_reg
 mu + b_i_reg
 0.9436709
 
+mu + b_i_reg
+0.9431954
+2
+mu + b_i_reg + b_u_reg
+0.8650691
+3
+mu + b_i_reg + b_u_reg + b_g_reg
+0.8647763
+
 Fold 2
 mu + b_i_reg
 0.9434613
@@ -207,6 +220,16 @@ mu + b_i_reg + b_u_reg
 3
 mu + b_i_reg + b_u_reg + b_g_reg
 0.8652074
+
+Fold 2 run 2
+mu + b_i_reg
+0.9441562
+2
+mu + b_i_reg + b_u_reg
+0.8658528
+3
+mu + b_i_reg + b_u_reg + b_g_reg
+0.8655529
 
 Fold 3:
 mu + b_i_reg
