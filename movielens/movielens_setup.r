@@ -101,15 +101,12 @@ partition <- function (seed, subset_p = 1, test_p = 0.2){
   subset <- df[subset_index,]
   test_index <- createDataPartition(y = subset$rating, times = 1, p = test_p, list = FALSE)
   
-  # Ensure all movies and users in test set are also in the training set
   train_df <- subset[-test_index,]
-  
+  # Ensure all movies and users in test set are also in the training set
   # Remove from test_df rows without matching ids in train_df
   test_df <- subset[test_index,] %>% 
     semi_join(train_df, by = "movieId") %>%
     semi_join(train_df, by = "userId")
-  
-  # TODO: Double check this
   # Add to train_df any removed rows
   train_df <- rbind(train_df, anti_join(subset[test_index,], test_df))
   
