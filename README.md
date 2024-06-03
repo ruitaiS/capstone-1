@@ -175,6 +175,71 @@ I layered the biasing effects onto the global average one at a time, and the res
 Koren et al.'s approach also incorporated the use of regularization. As seen before, some genres, users, and movies have very few ratings - 
 
 
+### K Fold Cross Validation
+
+| Fold | L1 | L2 | L3 | RMSE |
+| :-: | :-: | :-: | :-: | :-: |
+| Original | (TODO) | 0 | 0 | (TODO) |
+| Fold 1 | 1.69 | 5.28 | 5.76 | 0.8654754 |
+| Fold 2 | 2.36 | 5.06 | 49.04 | 0.8652074 |
+| Fold 3 | 2.33 | 5.89 | 10.81 | 0.8655644 |
+| Fold 4 | 2.32 | 5.02 | 12.53 | 0.8649017 |
+| Fold 5 | 2.26 | 4.97 | 19.98 | 0.8651734 |
+
+Algorithm
+RMSE
+3
+mu + b_i_reg + b_u_reg + b_g_reg
+0.8654754
+2
+mu + b_i_reg + b_u_reg
+0.8657726
+1
+mu + b_i_reg
+0.9436709
+
+Fold 2
+mu + b_i_reg
+0.9434613
+2
+mu + b_i_reg + b_u_reg
+0.8654887
+3
+mu + b_i_reg + b_u_reg + b_g_reg
+0.8652074
+
+Fold 3:
+mu + b_i_reg
+0.9443879
+2
+mu + b_i_reg + b_u_reg
+0.8658534
+3
+mu + b_i_reg + b_u_reg + b_g_reg
+0.8655644
+
+Fold 4:
+mu + b_i_reg
+0.9430374
+2
+mu + b_i_reg + b_u_reg
+0.8652310
+3
+mu + b_i_reg + b_u_reg + b_g_reg
+0.8649017
+
+Fold 5:
+mu + b_i_reg
+0.9437042
+2
+mu + b_i_reg + b_u_reg
+0.8654905
+3
+mu + b_i_reg + b_u_reg + b_g_reg
+0.8651734
+
+
+
 
 
 $`{b}_{i_0} = \sum_{u\in R(i)} \frac{{r}{_u}{_i} - \mu}{|R(i)|}`$
