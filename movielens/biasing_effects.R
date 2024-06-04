@@ -87,8 +87,8 @@ l1_plot <- data.frame(Lambda = character(),
                       stringsAsFactors = FALSE)
 
 #for (l1 in seq(0, 1, 0.01)){ #Original Fold
-for (l1 in seq(2, 3.5, 0.01)){ # Fold 1
-#for (l1 in seq(2, 3.5, 0.01)){ # Fold 2
+#for (l1 in seq(2, 3.5, 0.01)){ # Fold 1
+for (l1 in seq(2, 3.5, 0.01)){ # Fold 2
 #for (l1 in seq(2, 3.5, 0.01)){ # Fold 3
 #for (l1 in seq(2, 3.5, 0.01)){ # Fold 4
 #for (l1 in seq(2, 3.5, 0.01)){ # Fold 5
@@ -102,7 +102,7 @@ for (l1 in seq(2, 3.5, 0.01)){ # Fold 1
 }
 
 # Plot L1 Tuning
-store_plot("movie_bias_tuning-fold1-redo-square.png",
+store_plot("movie_bias_tuning-fold2-redo-square.png",
            qplot(l1_plot$Lambda, l1_plot$RMSE, geom = "line")+
              xlab("Lambda") +
              ylab("RMSE") +
@@ -153,7 +153,7 @@ for (l2 in seq(4.5, 6, 0.01)){ # Fold1
 }
 
 # Plot:
-store_plot("user_bias_tuning-fold1-redo-square.png",
+store_plot("user_bias_tuning-fold2-redo-square.png",
            qplot(l2_plot$Lambda, l2_plot$RMSE, geom = "line")+
              xlab("Lambda") +
              ylab("RMSE") +
@@ -190,9 +190,9 @@ l3_plot <- data.frame(Lambda = character(),
 
 movie_bias <- movies$b_i_reg[match(test_df$movieId, movies$movieId)]
 user_bias <- users$b_u_reg[match(test_df$userId, users$userId)]
-#for (l3 in seq(0, 1, 0.01)){ # Original
-for (l3 in seq(4, 6.5, 0.01)){ # Fold 1
-#for (l3 in seq(48, 50, 0.01)){ # Fold 2
+#for (l3 in seq(0, 50, 1)){ # Original
+#for (l3 in seq(4, 6.5, 0.01)){ # Fold 1
+for (l3 in seq(3.5, 6, 0.01)){ # Fold 2
 #for (l3 in seq(10, 12, 0.01)){ # Fold 3
 #for (l3 in seq(12, 14, .01)){ # Fold 4
 #for (l3 in seq(19, 21, 0.01)){ # Fold 5
@@ -206,7 +206,7 @@ for (l3 in seq(4, 6.5, 0.01)){ # Fold 1
 }
 
 # Plot:
-store_plot("genre_bias_tuning-fold1-redo-square.png",
+store_plot("genre_bias_tuning-fold2-redo-square.png",
            qplot(l3_plot$Lambda, l3_plot$RMSE, geom = "line")+
              xlab("Lambda") +
              ylab("RMSE") +
