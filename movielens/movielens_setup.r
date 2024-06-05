@@ -2,12 +2,17 @@
 # Initial Setup
 ###############
 
+#TODO: Check this
 if(!require(tidyverse)) install.packages("tidyverse", repos = "http://cran.us.r-project.org")
 if(!require(caret)) install.packages("caret", repos = "http://cran.us.r-project.org")
+if(!require(ggplot2)) install.packages("ggplot2", repos = "http://cran.us.r-project.org")
+if(!require(tidyr)) install.packages("tidyr", repos = "http://cran.us.r-project.org")
+if(!require(dplyr)) install.packages("dplyr", repos = "http://cran.us.r-project.org")
+if(!require(lubridate)) install.packages("lubridate", repos = "http://cran.us.r-project.org")
 
 library(tidyverse)
 library(caret)
-library("ggplot2")
+library(ggplot2)
 library(tidyr)
 library(dplyr)
 library(lubridate)
@@ -183,13 +188,6 @@ calculate_rmse <- function(predicted_ratings, actual_ratings) {
   rmse <- sqrt(mean_of_squared_errors)
   return(rmse)
 }
-
-# Plot Export Function:
-#store_plot <- function(filename, h = 1500, w = 1500, plot){
-#  png(file = paste("graphs/", filename, sep=""), height = h, width = w)
-#  print(plot)
-#  dev.off()
-#}
 
 store_plot<- function(filename, plot, h = 6, w = 12) {
   res <- 300
