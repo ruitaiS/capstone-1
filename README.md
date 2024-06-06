@@ -180,12 +180,19 @@ I layered the biasing effects onto the global average one at a time, and the res
 
 ### Bias Regularization
 (TODO)
-The variance of the mean value of a sample can be defined as $Var(\bar{r}) = \frac{\sigma^2}{n}` for a sample of size $n$ taken from a population with some variance  $`\sigma^2`$. This equation shows that the variance of the sample mean is inversely proportional to the sample size - for movies, users, or genres with very few ratings in the training set, the calculated biasing effect (essentially a sample mean) will vary significantly based on the specific ratings randomly selected for inclusion.
+The variance of the mean value of a sample can be defined as $Var(\bar{r}) = \frac{\sigma^2}{n}`$ for a sample of size $n$ taken from a population with some variance  $`\sigma^2`$. This equation shows that the variance of the sample mean is inversely proportional to the sample size - for movies, users, or genres with very few ratings in the training set, the calculated biasing effect (essentially a sample mean) will vary significantly based on the specific ratings randomly selected for inclusion.
 
-I adopted Koren et al.'s approach by including a regularization in the bias calculation, such that 
+I adopted Koren et al.'s approach by including a regularization in the bias calculation:
+
+<div style="display: flex; justify-content: space-around;">
+  <span>$\{b\}_{i_{reg}} = \sum_{u\in R(i)} \frac{{r}{_u}{_i} - \mu}{\lambda_1 + |R(i)|}$</span>
+  <span>$\{b\}_{u_{reg}} = \sum_{u,i\in R(u)} \frac{{r}{_u}{_i} - (\mu+{b}_{i_{reg}})}{\lambda_2 + |R(u)|}$</span>
+  <span>$\{b\}_{g_{reg}} = \sum_{u,i\in R(g)} \frac{{r}{_u}{_i} - (\mu+{b}_{i_{reg}}+{b}_{u_{reg}})}{\lambda_3 + |R(g)|}$</span>
+</div>
+
 $`{b}_{i_{reg}} = \sum_{u\in R(i)} \frac{{r}{_u}{_i} - \mu}{\lambda_1 + |R(i)|}`$
 $`{b}_{u_{reg}} = \sum_{u,i\in R(u)} \frac{{r}{_u}{_i} - (\mu+{b}_{i_{reg}})}{\lambda_2 + |R(u)|}`$
-$`{b}_{g_reg} = \sum_{u,i\in R(g)} \frac{{r}{_u}{_i} - (\mu+{b}_{i_{reg}}+{b}_{u_{reg}})}{\lambda_3 + |R(g)|}`$
+$`{b}_{g_{reg}} = \sum_{u,i\in R(g)} \frac{{r}{_u}{_i} - (\mu+{b}_{i_{reg}}+{b}_{u_{reg}})}{\lambda_3 + |R(g)|}`$
 
 When the sample size $|R|$ is small, $\lambda$ significantly reduces the bias, and for larger sample sets $|R|$, this effect diminishes, approaching 0 as $|R|$ approaches infinity. This reduces the influence of noisy biasing effects caused by small sample sizes, while preserving the bias effects we have greater confidence in.
 
