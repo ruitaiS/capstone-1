@@ -219,6 +219,11 @@ TODO:
 $`{b}_{i_0} = \sum_{u\in R(i)} \frac{{r}{_u}{_i} - \mu}{|R(i)|}`$
 
 * K-Fold Cross Validation for Regularization Parameters
+
+### Attempts to reduce residual values $r'$
+
+
+
 * Residuals Matrix
 * SGD on Residuals
 
