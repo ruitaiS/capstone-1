@@ -2,6 +2,7 @@
 
 TODO:
 * Graphs, RMSE calculations, based on K fold 1
+* Make the co-occurrence matrix graph inline and not yuge
 * Check the charts file references and filenames; make sure they are all updated with the correct datasets
 * Exploration graphs should be done on the whole edx set rather than one specific fold
 * Section explaining how test / train was selected, since the partition functionw as rewritten. Instead say the charts were developed using fold 1 of the K, and that the full K folds were used for regularization tuning. Then the entire edx set was used for lm and sgd training, and for final evaluation
