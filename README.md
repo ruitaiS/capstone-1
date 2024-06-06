@@ -184,21 +184,15 @@ The variance of the mean value of a sample can be defined as $Var(\bar{r}) = \fr
 
 I adopted Koren et al.'s approach by including a regularization in the bias calculation:
 
-<div style="display: inline-block; width: 30%;">
+<div style="display: inline-block; align = center">
+	
   $`{b}_{i_{reg}} = \sum_{u\in R(i)} \frac{{r}{_u}{_i} - \mu}{\lambda_1 + |R(i)|}`$
-</div>
-
-<div style="display: inline-block; width: 30%;">
-  $`{b}_{u_{reg}} = \sum_{u,i\in R(u)} \frac{{r}{_u}{_i} - (\mu+{b}_{i_{reg}})}{\lambda_2 + |R(u)|}`$
-</div>
-
-<div style="display: inline-block; width: 30%;">
-  $`{b}_{g_{reg}} = \sum_{u,i\in R(g)} \frac{{r}{_u}{_i} - (\mu+{b}_{i_{reg}}+{b}_{u_{reg}})}{\lambda_3 + |R(g)|}`$
-</div>
-
-$`{b}_{i_{reg}} = \sum_{u\in R(i)} \frac{{r}{_u}{_i} - \mu}{\lambda_1 + |R(i)|}`$
 $`{b}_{u_{reg}} = \sum_{u,i\in R(u)} \frac{{r}{_u}{_i} - (\mu+{b}_{i_{reg}})}{\lambda_2 + |R(u)|}`$
 $`{b}_{g_{reg}} = \sum_{u,i\in R(g)} \frac{{r}{_u}{_i} - (\mu+{b}_{i_{reg}}+{b}_{u_{reg}})}{\lambda_3 + |R(g)|}`$
+
+</div>
+
+
 
 When the sample size $|R|$ is small, $\lambda$ significantly reduces the bias, and for larger sample sets $|R|$, this effect diminishes, approaching 0 as $|R|$ approaches infinity. This reduces the influence of noisy biasing effects caused by small sample sizes, while preserving the bias effects we have greater confidence in.
 
