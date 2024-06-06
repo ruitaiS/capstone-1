@@ -180,7 +180,7 @@ I layered the biasing effects onto the global average one at a time, and the res
 
 ### Bias Regularization
 (TODO)
-The variance of the mean value of a sample can be defined as $Var(\bar{r}) = \frac{\sigma^2}{n}`$ for a sample of size $n$ taken from a population with some variance  $`\sigma^2`$. This equation shows that the variance of the sample mean is inversely proportional to the sample size - for movies, users, or genres with very few ratings in the training set, the calculated biasing effect (essentially a sample mean) will vary significantly based on the specific ratings randomly selected for inclusion.
+The variance of the mean value of a sample can be defined as $`Var(\bar{r}) = \frac{\sigma^2}{n}`$ for a sample of size $n$ taken from a population that has some variance $`\sigma^2`$. This equation shows that the variance of the sample mean is inversely proportional to the sample size - for movies, users, or genres with very few ratings in the training set, the calculated biasing effect (essentially a sample mean) will vary significantly based on the specific ratings randomly selected for inclusion.
 
 I adopted Koren et al.'s approach by including a regularization in the bias calculation:
 
