@@ -1,3 +1,15 @@
+movie_bias <- movies$b_i_reg[match(train_df$movieId, movies$movieId)]
+user_bias <- users$b_u_reg[match(train_df$userId, users$userId)]
+genre_bias <- genres$b_g_reg[match(train_df$genres, genres$genres)]
+train_df$r2 <- train_df$rating - (mu + user_bias + genre_bias)
+
+movie_models2 <- train_df %>%
+  group_by(movieId) %>%
+  nest() %>%
+  mutate(model = map(data, ~ lm(r2 ~ timestamp, data = .x))) %>%
+  select(movieId, model)
+movie_models2 <- setNames(movie_models2$model, movie_models2$movieId)
+
 movie_models <- train_df %>%
   group_by(movieId) %>%
   nest() %>%
@@ -27,13 +39,13 @@ predict_ratings <- function(grouped_test_df, movie_models) {
 test_df <- test_df[order(test_df$movieId), ]
 # Group test_df by movieId
 grouped_test_df <- split(test_df, test_df$movieId)
-lm_predictions <- predict_ratings(grouped_test_df, movie_models)
+lm_predictions <- predict_ratings(grouped_test_df, movie_models2)
 lm_predictions <- unname(unlist(lm_predictions, recursive = TRUE))
 
 #
-movie_bias <- movies$b_i_reg[match(test_df$movieId, movies$movieId)]
+#movie_bias <- movies$b_i_reg[match(test_df$movieId, movies$movieId)]
 user_bias <- users$b_u_reg[match(test_df$userId, users$userId)]
 genre_bias <- genres$b_g_reg[match(test_df$genres, genres$genres)]
-combined_predictions <- lm_predictions + (mu + movie_bias + user_bias + genre_bias)
+combined_predictions <- lm_predictions + (mu + user_bias + genre_bias)
 
-rmse <- calculate_rmse(combined_predictions, test_df$rating)
+rmse2 <- calculate_rmse(combined_predictions, test_df$rating)
