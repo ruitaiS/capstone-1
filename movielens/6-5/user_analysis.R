@@ -4,8 +4,8 @@ user_percentiles <- users %>%
   mutate(decile = ntile(count, 10))%>%
   mutate(user_percentile_group = ifelse(decile == 10, "upper", "lower"))
 
-users <- merge(users, user_percentiles[, c("userId", "user_percentile_group")], by = "userId", all.x = TRUE)
-train_df <- merge(train_df, user_percentiles[, c("userId", "user_percentile_group")], by = "userId", all.x = TRUE)
+#users <- merge(users, user_percentiles[, c("userId", "user_percentile_group")], by = "userId", all.x = TRUE)
+#train_df <- merge(train_df, user_percentiles[, c("userId", "user_percentile_group")], by = "userId", all.x = TRUE)
 
 # Plot Count Percentiles
 plot <- ggplot(users, aes(x = count)) +
@@ -20,7 +20,8 @@ plot <- ggplot(users, aes(x = count)) +
     axis.title = element_text(size = unit(15, "mm")),    # Axis titles text size
     axis.text = element_text(size = unit(10, "mm"))      # Axis text size
   )
-store_plot("cum_density.png", plot)
+print(plot)
+#store_plot("cum_density.png", plot)
 
 # Create a box-and-whisker plot for each decile
 plot <- ggplot(user_percentiles, aes(x = as.factor(decile), y = count)) +
@@ -35,7 +36,8 @@ plot <- ggplot(user_percentiles, aes(x = as.factor(decile), y = count)) +
     axis.title = element_text(size = unit(15, "mm")),    # Axis titles text size
     axis.text = element_text(size = unit(10, "mm"))      # Axis text size
   )
-store_plot("box-whisker-decile.png", plot)
+print(plot)
+#store_plot("box-whisker-decile.png", plot)
 
 # Plot Count Percentiles
 plot <- ggplot(user_percentiles[user_percentiles$count_percentile<=90,], aes(x = count)) +
@@ -50,7 +52,8 @@ plot <- ggplot(user_percentiles[user_percentiles$count_percentile<=90,], aes(x =
     axis.title = element_text(size = unit(15, "mm")),    # Axis titles text size
     axis.text = element_text(size = unit(10, "mm"))      # Axis text size
   )
-store_plot("counts_cdf_bottom90.png", plot)
+print(plot)
+#store_plot("counts_cdf_bottom90.png", plot)
 
 plot <- ggplot(user_percentiles[user_percentiles$count_percentile>90,], aes(x = count)) +
   stat_ecdf(aes(y = after_stat(..y..) * 100), geom = "step", color = "blue") +
@@ -64,6 +67,7 @@ plot <- ggplot(user_percentiles[user_percentiles$count_percentile>90,], aes(x = 
     axis.title = element_text(size = unit(15, "mm")),    # Axis titles text size
     axis.text = element_text(size = unit(10, "mm"))      # Axis text size
   )
+print(plot)
 store_plot("counts_cdf_top10.png", plot)
 
 bottom90 <- users %>%

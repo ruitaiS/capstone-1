@@ -1,12 +1,21 @@
 # Movie Recommendations:
 
+TODO:
+* Graphs, RMSE calculations, based on K fold 1
+* Make the co-occurrence matrix graph inline and not yuge
+* Check the charts file references and filenames; make sure they are all updated with the correct datasets
+* Exploration graphs should be done on the whole edx set rather than one specific fold
+* Section explaining how test / train was selected, since the partition functionw as rewritten. Instead say the charts were developed using fold 1 of the K, and that the full K folds were used for regularization tuning. Then the entire edx set was used for lm and sgd training, and for final evaluation
+* Actually record results of RMSE calculation for all K folds while tuning regularization params, because you're retarded and didn't do that the first time :C
+* Mention the lm and matrix factorization approaches you took, which unfortunately did not yield positive results / took too far too long to run.
+
 ## Introduction:
 
 The goal of this project is to implement a machine learning based prediction system for ratings the MovieLens dataset. The full dataset consists of 10000054 ratings of 10681 movies by 71567 unique users, along with associated metadata. Template code provided by the EdX team splits the data into a main dataset $\mathcal{D}$ and a final holdout test set $\mathcal{F}$ to be used exclusively for a final error calculation at the end of the project.
 
 The approach here is a modified version of the one outlined by Robert M. Bell, Yehuda KorenChris, Volinsky in their 2009 paper "The BellKor Solution to the Netflix Grand Prize." (TODO: Authors - The team BellKor's Pragmatic Chaos is a combined team of BellKor, Pragmatic Theory and BigChaos. BellKor consists of Robert Bell, Yehuda Koren and Chris Volinsky. The members of Pragmatic Theory are Martin Piotte and Martin Chabbert. Andreas Töscher and Michael Jahrer form the team BigChaos)
 
-$\mathcal{D}$ was split into training and test sets with ```p = 0.8``` and ```0.2``` respectively. An average $\mu$ of all movie ratings in the training set formed a baseline predictor, on top of which were added movie, user, and genre biases - $`{b}_{i}`$, $`{b}_{u}`$, $`{b}_{g}`$. After tuning regularization parameters $\alpha_1$, $\alpha_2$, $\alpha_3$ for each of them, the root mean squared error (RMSE) was calculated on the test set.
+$\mathcal{D}$ was split into training and test sets with ```p = 0.8``` and ```0.2``` respectively. An average $\mu$ of all movie ratings in the training set formed a baseline predictor, on top of which were added movie, user, and genre biases - $`{b}_{i}`$, $`{b}_{u}`$, $`{b}_{g}`$. After tuning regularization parameters $\lambda_1$, $\lambda_2$, $\lambda_3$ for each of them, the root mean squared error (RMSE) was calculated on the test set.
 
 The training set was then split into four sets of ```p = 0.2``` each, and the process was repeated using each of these sets as the new test set, with the remaining three sets plus the original test set forming the new training set, effectively reproducing the results of a ```k=5``` K-fold cross validation test. The optimal parameter values (those which produced the lowest average RMSE across the 5 folds) were selected.
 
@@ -172,102 +181,49 @@ I layered the biasing effects onto the global average one at a time, and the res
 
 ### Bias Regularization
 (TODO)
-Koren et al.'s approach also incorporated the use of regularization. As seen before, some genres, users, and movies have very few ratings - 
+The variance of the mean value of a sample can be defined as $`Var(\bar{r}) = \frac{\sigma^2}{n}`$ for a sample of size $n$ taken from a population that has some variance $`\sigma^2`$. This equation shows that the variance of the sample mean is inversely proportional to the sample size - for movies, users, or genres with very few ratings in the training set, the calculated biasing effect (essentially a sample mean) will vary significantly based on the specific ratings randomly selected for inclusion.
+
+To counteract this, I adopted Koren et al.'s approach by including a regularization in the bias calculation:
+
+```math
+	
+{b}_{i_{reg}} = \sum_{u\in R(i)} \frac{{r}{_u}{_i} - \mu}{\lambda_1 + |R(i)|} \quad \quad
+{b}_{u_{reg}} = \sum_{u,i\in R(u)} \frac{{r}{_u}{_i} - (\mu+{b}_{i_{reg}})}{\lambda_2 + |R(u)|} \quad \quad
+{b}_{g_{reg}} = \sum_{u,i\in R(g)} \frac{{r}{_u}{_i} - (\mu+{b}_{i_{reg}}+{b}_{u_{reg}})}{\lambda_3 + |R(g)|}
+
+```
+
+
+
+When the sample size $|R|$ is small, $\lambda$ significantly reduces the bias, and for larger sample sets $|R|$, this effect diminishes, approaching 0 as $|R|$ approaches infinity. This reduces the influence of noisy biasing effects caused by small sample sizes, while preserving the bias effects we have greater confidence in.
 
 
 ### K Fold Cross Validation
 
-| Fold | L1 | L2 | L3 | RMSE |
-| :-: | :-: | :-: | :-: | :-: |
-| Original | (TODO) | 0 | 0 | (TODO) |
-| Fold 1 | 1.69 | 5.28 | 5.76 | 0.8654754 |
-| Fold 2 | 2.36 | 5.06 | 49.04 | 0.8652074 |
-| Fold 3 | 2.33 | 5.89 | 10.81 | 0.8655644 |
-| Fold 4 | 2.32 | 5.02 | 12.53 | 0.8649017 |
-| Fold 5 | 2.26 | 4.97 | 19.98 | 0.8651734 |
+TODO:
+* Include RMSEs for each of these if you feel like wasting another 3 hours of your life
+* Put the graphs in here for at least a couple runs
 
-| Fold 1 | 2.35 | 4.81 | 5.36 | 0.8647763 |
-| Fold 2 | 2.34 | 4.88 | 3.83 | 0.8655529 |
+<div align = "center">
 
-Algorithm
-RMSE
-Fold 1 run 1
-3
-mu + b_i_reg + b_u_reg + b_g_reg
-0.8654754
-2
-mu + b_i_reg + b_u_reg
-0.8657726
-1
-mu + b_i_reg
-0.9436709
+| Fold | L1 | L2 | L3 |
+| :-: | :-: | :-: | :-: |
+| Fold 1 | 1.947 | 4.836 | 27.167 |
+| Fold 2 | 2.347 | 4.974 | 15.209 |
+| Fold 3 | 2.083 | 4.859 | 0 |
+| Fold 4 | 2.272 | 4.959 | 12.262 |
+| Fold 5 | 2.151 | 5.307 | 4.07 |
 
-mu + b_i_reg
-0.9431954
-2
-mu + b_i_reg + b_u_reg
-0.8650691
-3
-mu + b_i_reg + b_u_reg + b_g_reg
-0.8647763
-
-Fold 2
-mu + b_i_reg
-0.9434613
-2
-mu + b_i_reg + b_u_reg
-0.8654887
-3
-mu + b_i_reg + b_u_reg + b_g_reg
-0.8652074
-
-Fold 2 run 2
-mu + b_i_reg
-0.9441562
-2
-mu + b_i_reg + b_u_reg
-0.8658528
-3
-mu + b_i_reg + b_u_reg + b_g_reg
-0.8655529
-
-Fold 3:
-mu + b_i_reg
-0.9443879
-2
-mu + b_i_reg + b_u_reg
-0.8658534
-3
-mu + b_i_reg + b_u_reg + b_g_reg
-0.8655644
-
-Fold 4:
-mu + b_i_reg
-0.9430374
-2
-mu + b_i_reg + b_u_reg
-0.8652310
-3
-mu + b_i_reg + b_u_reg + b_g_reg
-0.8649017
-
-Fold 5:
-mu + b_i_reg
-0.9437042
-2
-mu + b_i_reg + b_u_reg
-0.8654905
-3
-mu + b_i_reg + b_u_reg + b_g_reg
-0.8651734
-
-
-
-
+</div>
 
 $`{b}_{i_0} = \sum_{u\in R(i)} \frac{{r}{_u}{_i} - \mu}{|R(i)|}`$
 
 * K-Fold Cross Validation for Regularization Parameters
+
+### Attempts to reduce residual values $r'$
+
+
+
 * Residuals Matrix
 * SGD on Residuals
 
@@ -343,7 +299,7 @@ Regularized bias for user $u$: $`{b}_{u_{reg}} = \sum_{i\in R(u)} \frac{{r}{_u}{
 
 Regularization parameter for genre biases: $\alpha_3$
 
-Regularized bias for genre $g$: $`{b}_{g_0} = \sum_{u,i\in R(g)} \frac{{r}{_u}{_i} - (\mu+{b}_{i_{reg}}+{b}_{u_{reg}})}{\alpha_3 + |R(g)|}`$
+Regularized bias for genre $g$: $`{b}_{g_reg} = \sum_{u,i\in R(g)} \frac{{r}{_u}{_i} - (\mu+{b}_{i_{reg}}+{b}_{u_{reg}})}{\alpha_3 + |R(g)|}`$
 
 (Make sure m and n line up in code)
 An $m\times n$ residuals matrix $`\mathcal{E} = \begin{pmatrix}
