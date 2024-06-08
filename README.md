@@ -1,13 +1,13 @@
 # Movie Recommendations:
 
 TODO:
-* Graphs, RMSE calculations, based on K fold 1
-* Make the co-occurrence matrix graph inline and not yuge
+* Graphs, RMSE calculations, based on entire train set
 * Check the charts file references and filenames; make sure they are all updated with the correct datasets
 * Exploration graphs should be done on the whole edx set rather than one specific fold
 * Section explaining how test / train was selected, since the partition functionw as rewritten. Instead say the charts were developed using fold 1 of the K, and that the full K folds were used for regularization tuning. Then the entire edx set was used for lm and sgd training, and for final evaluation
 * Actually record results of RMSE calculation for all K folds while tuning regularization params, because you're retarded and didn't do that the first time :C
 * Mention the lm and matrix factorization approaches you took, which unfortunately did not yield positive results / took too far too long to run.
+* Fiddle with the heatmap graph spacing if you really want
 
 ## Introduction:
 
@@ -81,12 +81,15 @@ My initial approach for genres was to split apart the list of genres for each mo
 
 I was also curious to see which genres were most likely to appear together on the same movie, so I created the co-occurrence heatmap shown below. Each cell represents the number of movies which have both the genre on the X axis and the genre on the Y axis, with darker values indicating a higher number. Cells along the diagonal (where the X and Y genres are the same) are counts for movies with only that genre associated to it.
 
+<div style="display: inline-block; vertical-align: middle;">
+<p>
 <img src="/movielens/graphs/genre_co_occurrence_heatmap.png" align="left" style="width: 425px;" alt="Genre Heatmap"
 	title="Genre Heatmap"/>
 
 <br>
 It is clear that there are certain genres which occur more frequently alongside other ones, but, perhaps unsurprisingly, the most common genres are also the ones most likely to be associated with other genres, and the rarer ones less likely. I tried normalizing the matrix by dividing each row element by the sum of the values in that row, but the result wasn't any more insightful. I decided to stop my exploration into the genre data here, and stick to using the full genre string associated with each movie, rather than over-complicate things by subdividing them into individual genres. There are 797 unique genre strings, as opposed to only 20 unique individual genres, so while some resolution might be lost, in a training set of over 7 million ratings, I did not consider this loss of granularity to be worth the added complexity.
-
+</p>
+</div>
 <br>
 <br>
 
