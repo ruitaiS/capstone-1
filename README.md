@@ -99,6 +99,9 @@ It is clear that there are certain genres which occur more frequently alongside 
 There are 10677 unique movies in the dataset, with release dates from 1915 to 2008. 
 (TODO: Chronological effect, if there's time to do it)
 
+<img src="/movielens/graphs/movie_rating_by_release_year.png" align="center" alt="Average Movie Ratings By Release Year"
+	title="Average Movie Ratings By Release Year"/>
+
 ## Methods:
 
 Initial tests were done with training and test sets produced by ```partition(seed = 1, subset_p = 1)```
