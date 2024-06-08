@@ -81,7 +81,7 @@ My initial approach for genres was to split apart the list of genres for each mo
 
 I was also curious to see which genres were most likely to appear together on the same movie, so I created the co-occurrence heatmap shown below. Each cell represents the number of movies which have both the genre on the X axis and the genre on the Y axis, with darker values indicating a higher number. Cells along the diagonal (where the X and Y genres are the same) are counts for movies with only that genre associated to it.
 
-<img src="/movielens/graphs/genre_co_occurrence_heatmap.png" align="left" style="width: 450px;" alt="Genre Heatmap"
+<img src="/movielens/graphs/genre_co_occurrence_heatmap.png" align="left" style="width: 400px;" alt="Genre Heatmap"
 	title="Genre Heatmap"/>
 
 <br>
