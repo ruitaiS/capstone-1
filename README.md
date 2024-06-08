@@ -59,15 +59,15 @@ Note genres contains the full genre list string provided for a movie, not an ind
 Initial data exploration showed very quickly that some users had rated much more movies than others, so much so that the discrepancy is difficult to visualize properly on a graph. Here is an attempt to do so using a box-whisker decile plot:
 
 <div style="display: inline-block;">
-  <img src="/movielens/graphs/box-whisker-decile.png" alt="Box-and-Whisker Plot of Rating Counts by Decile" title="Box-and-Whisker Plot of Rating Counts by Decile" style="float: center; width: 100%;">
+  <img src="/movielens/graphs/box-whisker-decile_users.png" alt="User Rating Counts by Decile" title="User Rating Counts by Decile" style="float: center; width: 100%;">
 </div>
 
 
-As the plot shows, the most prolific 10% or so of users have rated so many movies that it immediately blows out the scale of the Y axis, making it difficult to even read the values for the other 90%. Cumulative density functions done on these two groups show that the cutoff for the top 10% of users is about 250 ratings, beyond which the counts begin to skyrocket.
+As the plot shows, the most prolific 10% or so of users have rated so many movies that it immediately blows out the scale of the Y axis, making it difficult to even read the values for the other 90%. Cumulative density functions done on these two groups show that the cutoff for the top 10% of users is about 300 ratings, beyond which the counts begin to skyrocket.
 
 <div style="display: inline-block;">
-  <img src="/movielens/graphs/counts_cdf_bottom90.png" alt="Cumulative Density of Rating Counts (Bottom 90%)" title="Cumulative Density of Rating Counts (Bottom 90%)" style="float: left; margin-right: 10px; width: 45%;">
-  <img src="/movielens/graphs/counts_cdf_top10.png" alt="Cumulative Density of Rating Counts (Top 10%)" title="Cumulative Density of Rating Counts (Top 10%)" style="float: left; margin-right: 10px; width: 45%;">
+  <img src="/movielens/graphs/counts_cdf_bottom90_users.png" alt="Cumulative Density of Rating Counts (Bottom 90%)" title="Cumulative Density of Rating Counts (Bottom 90%)" style="float: left; margin-right: 10px; width: 45%;">
+  <img src="/movielens/graphs/counts_cdf_top10_users.png" alt="Cumulative Density of Rating Counts (Top 10%)" title="Cumulative Density of Rating Counts (Top 10%)" style="float: left; margin-right: 10px; width: 45%;">
 </div>
 
 (TODO: If you have time, make mu, movie bias, and genre bias split along these two user groups)
@@ -81,10 +81,20 @@ My initial approach for genres was to split apart the list of genres for each mo
 
 I was also curious to see which genres were most likely to appear together on the same movie, so I created the co-occurrence heatmap shown below. Each cell represents the number of movies which have both the genre on the X axis and the genre on the Y axis, with darker values indicating a higher number. Cells along the diagonal (where the X and Y genres are the same) are counts for movies with only that genre associated to it.
 
-<img src="/movielens/graphs/genre_co_occurrence_heatmap.png" align="center" alt="Genre Heatmap"
+<img src="/movielens/graphs/genre_co_occurrence_heatmap.png" align="left" style="width: 425px;" alt="Genre Heatmap"
 	title="Genre Heatmap"/>
 
+<br>
 It is clear that there are certain genres which occur more frequently alongside other ones, but, perhaps unsurprisingly, the most common genres are also the ones most likely to be associated with other genres, and the rarer ones less likely. I tried normalizing the matrix by dividing each row element by the sum of the values in that row, but the result wasn't any more insightful. I decided to stop my exploration into the genre data here, and stick to using the full genre string associated with each movie, rather than over-complicate things by subdividing them into individual genres. There are 797 unique genre strings, as opposed to only 20 unique individual genres, so while some resolution might be lost, in a training set of over 7 million ratings, I did not consider this loss of granularity to be worth the added complexity.
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
 
 ### Movie Data Analysis
 
