@@ -5,21 +5,21 @@ user_percentiles <- users %>%
   mutate(user_percentile_group = ifelse(decile == 10, "upper", "lower"))
 
 # Plot Count Percentiles-------------------------------------------------------------------
-plot <- ggplot(users, aes(x = count)) +
-  stat_ecdf(aes(y = after_stat(..y..) * 100), geom = "step", color = "blue") +
-  labs(title = "Cumulative Density of Rating Counts",
-       x = "Count",
-       y = "Percentile of Users") +
-  theme_minimal()+
-  theme(
-    text = element_text(size = unit(2, "mm")),
-    plot.title = element_text(size = unit(20, "mm")),
-    axis.title = element_text(size = unit(15, "mm")),
-    axis.text = element_text(size = unit(10, "mm"))
-  )
-print(plot)
+#plot <- ggplot(users, aes(x = count)) +
+#  stat_ecdf(aes(y = after_stat(..y..) * 100), geom = "step", color = "blue") +
+#  labs(title = "Cumulative Density of Rating Counts",
+#       x = "Count",
+#       y = "Percentile of Users") +
+#  theme_minimal()+
+#  theme(
+#    text = element_text(size = unit(2, "mm")),
+#    plot.title = element_text(size = unit(20, "mm")),
+#    axis.title = element_text(size = unit(15, "mm")),
+#    axis.text = element_text(size = unit(10, "mm"))
+#  )
+#print(plot)
 #store_plot("cum_density.png", plot)
-rm(plot)
+#rm(plot)
 
 # Create a box-and-whisker plot for each decile--------------------------------------------
 plot <- ggplot(user_percentiles, aes(x = as.factor(decile), y = count)) +

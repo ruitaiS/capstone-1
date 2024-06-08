@@ -14,7 +14,7 @@ plot_df$genre <- as.factor(plot_df$genre) # Convert back to factor because you c
 # Genre Counts Barplot
 plot <- ggplot(plot_df, aes(x = reorder(genre, count), y = count)) + 
   geom_bar(stat = "identity") +
-  geom_text(aes(label = count), nudge_y = 50000)
+  geom_text(aes(label = count), nudge_y = 80000) +
   labs(x = "Genre", y = "Count", title = "Genre Counts Barplot")+
   theme_minimal()+
   theme(
@@ -25,7 +25,7 @@ plot <- ggplot(plot_df, aes(x = reorder(genre, count), y = count)) +
   )
 print(plot)
 #store_plot("genre_counts_barplot.png", plot, w=13)
-rm(plot_df)
+rm(plot, plot_df)
 
 # Co-Occurrence Heat Map -----------------------------------------------------------
 co_occurrence_genre_list <- train_df$genres %>% lapply(function(genres) {
@@ -50,27 +50,44 @@ co_occurrence_matrix <- matrix(0,
                                                genres_individual[order(-genres_individual$count), ]$genre))
 
 # Populate co-occurrence matrix
+for (genre_list in co_occurrence_genre_list) {
+  if (length(genre_list) == 2){
+    co_occurrence_matrix[genre_list[1], genre_list[2]] <- co_occurrence_matrix[genre_list[1], genre_list[2]] + 1
+    co_occurrence_matrix[genre_list[2], genre_list[1]] <- co_occurrence_matrix[genre_list[2], genre_list[1]] + 1
+  }else{
+    for (i in 1:(length(genre_list) - 1)) {
+      for (j in (i+1):length(genre_list)) {
+        co_occurrence_matrix[genre_list[i], genre_list[j]] <- co_occurrence_matrix[genre_list[i], genre_list[j]] + 1
+        co_occurrence_matrix[genre_list[j], genre_list[i]] <- co_occurrence_matrix[genre_list[j], genre_list[i]] + 1
+      }
+    } 
+  }
+}
+rm(genre_list, i, j)
  
-
 # Optionally Normalize the rows and pass it into the heatmap function
-#row_normalized_matrix<- t(apply(co_occurrence_matrix, 1, function(x) x / sum(x)))
+#co_occurrence_matrix<- t(apply(co_occurrence_matrix, 1, function(x) x / sum(x)))
 
-plot <- heatmap(sqrt(co_occurrence_matrix + 1), # Transform values for better visibility
-                Rowv = NA, 
-                Colv = NA, 
-                col = rev(heat.colors(256)),  # Use a different color palette for better visibility
-                scale = "none",  # Avoid scaling to prevent distortion
-                main = "Genre Co-occurrence") +
-  theme_minimal()+
+# Plot
+reversed <- co_occurrence_matrix[, ncol(co_occurrence_matrix):1]
+plot_df <- melt(sqrt(reversed + 1))
+plot <- ggplot(plot_df, aes(x=Var1, y=Var2, fill=value)) +
+  geom_tile() +
+  scale_fill_gradientn(colors = rev(heat.colors(256))) +
+  labs(title = "Genre Co-occurrence", x = NULL, y = NULL) +
+  guides(fill = FALSE) +
+  theme_minimal() +
   theme(
-    text = element_text(size = unit(2, "mm")),          # General text size
-    plot.title = element_text(size = unit(20, "mm")),    # Title text size
-    axis.title = element_text(size = unit(15, "mm")),    # Axis titles text size
-    axis.text = element_text(size = unit(10, "mm"))      # Axis text size
+    text = element_text(size = 8),
+    plot.title = element_text(size = 20),
+    axis.title = element_text(size = 15),
+    axis.text = element_text(size = 10),
+    axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)
   )
 
 print(plot)
+#store_plot("genre_co_occurrence_heatmap.png", plot, h = 6, w = 6)
 #store_plot("normalized_genre_co_occurrence_heatmap.png", plot, h = 6, w = 6)
 
 # Cleanup
-rm(genres_individual, plot_df, co_occurrence_genre_list, co_occurrence_matrix, row_normalized_matrix, heatmap_df, plot)
+rm(genres_individual, plot_df, co_occurrence_genre_list, co_occurrence_matrix, row_normalized_matrix, reversed, plot)

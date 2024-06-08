@@ -7,7 +7,8 @@ test_df <- splits[[1]]
 train_df <- splits[[2]]
 rm(splits, mu, users, movies, genres)
 
-# Run This Instead for Full Edx Set (Starting Section 12):
+# Run This Instead for Full Edx Set
+# For sections 4, 5, 12
 #train_df <- edx
 
 # Always Run The Below Code:

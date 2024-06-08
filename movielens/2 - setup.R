@@ -3,12 +3,14 @@ if(!require(tidyr)) install.packages("tidyr", repos = "http://cran.us.r-project.
 if(!require(dplyr)) install.packages("dplyr", repos = "http://cran.us.r-project.org")
 if(!require(lubridate)) install.packages("lubridate", repos = "http://cran.us.r-project.org")
 if(!require(purrr)) install.packages("purrr", repos = "http://cran.us.r-project.org")
+if(!require(reshape2)) install.packages("reshape2", repos = "http://cran.us.r-project.org")
 
 library(ggplot2)
 library(tidyr)
 library(dplyr)
 library(lubridate)
 library(purrr)
+library(reshape2)
 
 # Make sure the same movies and users are in both sets
 consistency_check <- function(test, train){
