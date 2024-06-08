@@ -34,8 +34,8 @@ plot <- ggplot(movie_percentiles, aes(x = as.factor(decile), y = count)) +
     axis.title = element_text(size = unit(15, "mm")),
     axis.text = element_text(size = unit(10, "mm"))
   )
-#print(plot)
-store_plot("box-whisker-decile_movies.png", plot)
+print(plot)
+#store_plot("box-whisker-decile_movies.png", plot)
 rm(plot)
 
 # Bottom 90% CDF----------------------------------------------------------------------------
@@ -51,8 +51,8 @@ plot <- ggplot(movie_percentiles[movie_percentiles$count_percentile<=90,], aes(x
     axis.title = element_text(size = unit(15, "mm")),
     axis.text = element_text(size = unit(10, "mm"))
   )
-#print(plot)
-store_plot("counts_cdf_bottom90_movies.png", plot, h = 6, w = 6)
+print(plot)
+#store_plot("counts_cdf_bottom90_movies.png", plot, h = 6, w = 6)
 rm(plot)
 
 # Top 10% CDF----------------------------------------------------------------------------
@@ -68,14 +68,14 @@ plot <- ggplot(movie_percentiles[movie_percentiles$count_percentile>90,], aes(x 
     axis.title = element_text(size = unit(15, "mm")),
     axis.text = element_text(size = unit(10, "mm"))
   )
-#print(plot)
-store_plot("counts_cdf_top10_movies.png", plot, h = 6, w = 6)
+print(plot)
+#store_plot("counts_cdf_top10_movies.png", plot, h = 6, w = 6)
 rm(plot)
 
 # Average Rating Density Plot----------------------------------------------------------------------------
 density_values <- density(movies$avg_rating)
 store_plot("avg_rating_density_movies.png", {
-  plot(density_values, main = "Density Plot of Movie's Average Ratings", xlab = "Average Rating", ylab = "Density")
+  plot(density_values, main = "Density Plot of Average Movie Ratings", xlab = "Average Rating", ylab = "Density")
   polygon(density_values, col = "lightblue", border = "black")  
 })
 rm(density_values)
