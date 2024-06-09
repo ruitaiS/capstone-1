@@ -328,23 +328,24 @@ mu + b_i_reg + b_u_reg + b_g_reg
 	<img src="/movielens/graphs/l1-tuning-square-fold-5.png" alt="L1 Tuning Fold 5" title="L1 Tuning Fold 5" style="float: left; margin-right: 10px; width: 19%;">
 </div>
 
-<div style="text-align: center;">
-    <div style="display: inline-block; margin-right: 10px; width: 19%;">
-        <img src="/movielens/graphs/l1-tuning-square-fold-1.png" alt="L1 Tuning Fold 1" title="L1 Tuning Fold 1" style="width: 100%;">
+<div style="display: flex;">
+    <div style="flex: 1;">
+        <img src="/movielens/graphs/l1-tuning-square-fold-1.png" alt="L1 Tuning Fold 1" style="width: 100%;">
     </div>
-    <div style="display: inline-block; margin-right: 10px; width: 19%;">
-        <img src="/movielens/graphs/l1-tuning-square-fold-2.png" alt="L1 Tuning Fold 2" title="L1 Tuning Fold 2" style="width: 100%;">
+    <div style="flex: 1;">
+        <img src="/movielens/graphs/l1-tuning-square-fold-2.png" alt="L1 Tuning Fold 2" style="width: 100%;">
     </div>
-    <div style="display: inline-block; margin-right: 10px; width: 19%;">
-        <img src="/movielens/graphs/l1-tuning-square-fold-3.png" alt="L1 Tuning Fold 3" title="L1 Tuning Fold 3" style="width: 100%;">
+    <div style="flex: 1;">
+        <img src="/movielens/graphs/l1-tuning-square-fold-3.png" alt="L1 Tuning Fold 3" style="width: 100%;">
     </div>
-    <div style="display: inline-block; margin-right: 10px; width: 19%;">
-        <img src="/movielens/graphs/l1-tuning-square-fold-4.png" alt="L1 Tuning Fold 4" title="L1 Tuning Fold 4" style="width: 100%;">
+    <div style="flex: 1;">
+        <img src="/movielens/graphs/l1-tuning-square-fold-4.png" alt="L1 Tuning Fold 4" style="width: 100%;">
     </div>
-    <div style="display: inline-block; width: 19%;">
-        <img src="/movielens/graphs/l1-tuning-square-fold-5.png" alt="L1 Tuning Fold 5" title="L1 Tuning Fold 5" style="width: 100%;">
+    <div style="flex: 1;">
+        <img src="/movielens/graphs/l1-tuning-square-fold-5.png" alt="L1 Tuning Fold 5" style="width: 100%;">
     </div>
 </div>
+
 
 ### Attempts to reduce residual values $r'$
 
