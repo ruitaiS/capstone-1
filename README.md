@@ -154,13 +154,13 @@ The results of these simple algorithms are tallied below:
 	
 | Algorithm | RMSE |
 | :-: | :-: |
-| Random Guess | 2.1553650|
-| Avg All | 1.0605995 |
-| Genre Avg | 1.0184635
-| User Avg | 0.9790682 |
-| Movie Avg | 0.9437667 |
-| User and Movie Avg, Equal Weight Ensemble | 0.9133540 |
-| User and Movie Avg Weighted Ensemble, w =  0.4062 | 0.9116089 |
+| Random Guess | 2.1575303|
+| Avg All | 1.0604283 |
+| Genre Avg | 1.0183814
+| User Avg | 0.9790523 |
+| Movie Avg | 0.9441866 |
+| User Movie Avg, Equal Weight Ensemble | 0.9137740 |
+| User Movie Avg Weighted Ensemble, w =  0.4069 | 0.9120644 |
 
 </div>
 
@@ -185,9 +185,9 @@ I layered the biasing effects onto the global average one at a time, and the res
 	
 | Algorithm | RMSE |
 | :-: | :-: |
-| mu + b_i_0 | 0.9437667 |
-| mu + b_i_0 + b_u_0 | 0.8661612 |
-| mu + b_i_0 + b_u_0 + b_g_0 | 0.8657986 |
+| mu + b_i_0 | 0.9441866 |
+| mu + b_i_0 + b_u_0 | 0.8665665 |
+| mu + b_i_0 + b_u_0 + b_g_0 | 0.8662257 |
 
 </div>
 
@@ -218,19 +218,133 @@ TODO:
 
 <div align = "center">
 
-| Fold | L1 | L2 | L3 |
-| :-: | :-: | :-: | :-: |
-| Fold 1 | 1.947 | 4.836 | 27.167 |
-| Fold 2 | 2.347 | 4.974 | 15.209 |
-| Fold 3 | 2.083 | 4.859 | 0 |
-| Fold 4 | 2.272 | 4.959 | 12.262 |
-| Fold 5 | 2.151 | 5.307 | 4.07 |
+| Fold | L1 | L2 | L3 | RMSE |
+| :-: | :-: | :-: | :-: | :-: |
+| Fold 1 | 1.947 | 4.836 | 27.167 | 0.8656432 |
+| Fold 2 | 2.347 | 4.974 | 15.209 | 0.8653785 |
+| Fold 3 | 2.083 | 4.859 | 0 | 0.8653743 |
+| Fold 4 | 2.272 | 4.959 | 12.262 | 0.8649200 |
+| Fold 5 | 2.151 | 5.307 | 4.07 | 0.8647899 |
 
 </div>
 
 $`{b}_{i_0} = \sum_{u\in R(i)} \frac{{r}{_u}{_i} - \mu}{|R(i)|}`$
 
 * K-Fold Cross Validation for Regularization Parameters
+fold 1
+mu + b_i_reg
+0.9441361
+mu + b_i_reg + b_u_reg
+0.8659429
+mu + b_i_reg + b_u_reg + b_g_reg
+0.8656432
+> print(l1)
+[1] 1.947
+> print(l2)
+[1] 4.836
+> print(l3)
+[1] 27.167
+
+fold2
+[1] 2.347
+> print(l2)
+[1] 4.974
+> print(l3)
+[1] 15.209
+
+mu + b_i_reg
+0.9437307
+mu + b_i_reg + b_u_reg
+0.8656964
+mu + b_i_reg + b_u_reg + b_g_reg
+0.8653785
+
+fold3
+[1] 2.083
+> print(l2)
+[1] 4.859
+> print(l3)
+[1] 0
+
+17
+mu + b_i_reg
+0.9438586
+3
+18
+mu + b_i_reg + b_u_reg
+0.8656873
+3
+19
+mu + b_i_reg + b_u_reg + b_g_reg
+0.8653743
+3
+
+fold 4
+> print(l1)
+[1] 2.272
+> print(l2)
+[1] 4.959
+> print(l3)
+[1] 12.262
+
+20
+mu + b_i_reg
+0.9432518
+4
+21
+mu + b_i_reg + b_u_reg
+0.8652172
+4
+22
+mu + b_i_reg + b_u_reg + b_g_reg
+0.8649200
+4
+
+fold 5
+[1] 2.151
+> print(l2)
+[1] 5.307
+> print(l3)
+[1] 4.07
+
+23
+mu + b_i_reg
+0.9432800
+5
+24
+mu + b_i_reg + b_u_reg
+0.8650870
+5
+25
+mu + b_i_reg + b_u_reg + b_g_reg
+0.8647899
+5
+
+<div style="display: inline-block;">
+	<img src="/movielens/graphs/l1-tuning-square-fold-1.png" alt="L1 Tuning Fold 1" title="L1 Tuning Fold 1" style="float: left; margin-right: 10px; width: 19%;">
+	<img src="/movielens/graphs/l1-tuning-square-fold-2.png" alt="L1 Tuning Fold 2" title="L1 Tuning Fold 2" style="float: left; margin-right: 10px; width: 19%;">
+	<img src="/movielens/graphs/l1-tuning-square-fold-3.png" alt="L1 Tuning Fold 3" title="L1 Tuning Fold 3" style="float: left; margin-right: 10px; width: 19%;">
+	<img src="/movielens/graphs/l1-tuning-square-fold-4.png" alt="L1 Tuning Fold 4" title="L1 Tuning Fold 4" style="float: left; margin-right: 10px; width: 19%;">
+	<img src="/movielens/graphs/l1-tuning-square-fold-5.png" alt="L1 Tuning Fold 5" title="L1 Tuning Fold 5" style="float: left; margin-right: 10px; width: 19%;">
+</div>
+
+<div style="text-align: center;">
+    <div style="display: inline-block; margin-right: 10px; width: 19%;">
+        <img src="/movielens/graphs/l1-tuning-square-fold-1.png" alt="L1 Tuning Fold 1" title="L1 Tuning Fold 1" style="width: 100%;">
+    </div>
+    <div style="display: inline-block; margin-right: 10px; width: 19%;">
+        <img src="/movielens/graphs/l1-tuning-square-fold-2.png" alt="L1 Tuning Fold 2" title="L1 Tuning Fold 2" style="width: 100%;">
+    </div>
+    <div style="display: inline-block; margin-right: 10px; width: 19%;">
+        <img src="/movielens/graphs/l1-tuning-square-fold-3.png" alt="L1 Tuning Fold 3" title="L1 Tuning Fold 3" style="width: 100%;">
+    </div>
+    <div style="display: inline-block; margin-right: 10px; width: 19%;">
+        <img src="/movielens/graphs/l1-tuning-square-fold-4.png" alt="L1 Tuning Fold 4" title="L1 Tuning Fold 4" style="width: 100%;">
+    </div>
+    <div style="display: inline-block; width: 19%;">
+        <img src="/movielens/graphs/l1-tuning-square-fold-5.png" alt="L1 Tuning Fold 5" title="L1 Tuning Fold 5" style="width: 100%;">
+    </div>
+</div>
 
 ### Attempts to reduce residual values $r'$
 
