@@ -7,9 +7,6 @@ tuning_df <- aggregate((rating-mu) ~ movieId, data = train_df, FUN = sum) %>%
 
 l1_plot <- data.frame(Lambda = character(), RMSE = numeric(), stringsAsFactors = FALSE)
 for (l1 in seq(1.5, 3.5, 0.001)){ # Fold 1; l1 = 1.947 | Fold 2; l1 = 2.347 | Fold 3; l1 = 2.083 | Fold 4 ; l1 = 2.272 | Fold 5; 2.151
-#for (l1 in seq(1, 10, 1)){ # Fold 3
-#for (l1 in seq(2, 3.5, 0.01)){ # Fold 4
-#for (l1 in seq(2, 3.5, 0.01)){ # Fold 5
   tuning_df$b_i <- tuning_df$sum / (tuning_df$count + l1)
   movie_bias <- tuning_df$b_i[match(test_df$movieId, tuning_df$movieId)]
   l1_plot <- rbind(l1_plot, data.frame(
@@ -33,13 +30,13 @@ plot <- qplot(l1_plot$Lambda, l1_plot$RMSE, geom = "line")+
   )
 
 #print(plot)
-#store_plot(paste0("l1-tuning-square-fold-", fold_index, ".png"), plot, h=6, w=6)
+store_plot(paste0("l1-tuning-square-fold-", fold_index, ".png"), plot, h=6, w=6)
 
 # Store + Cleanup
 l1 <- l1_plot$Lambda[which.min(l1_plot$RMSE)]
 movies$b_i_reg <- tuning_df$sum / (tuning_df$count + l1)
 train_df <- merge(train_df, movies[,c('movieId', 'b_i_reg')], by="movieId")
-rm(tuning_df, l1, l1_plot, movie_bias)
+rm(tuning_df, l1_plot, movie_bias)
 
 #--------
 # l2 tuning for user bias:
@@ -50,12 +47,6 @@ tuning_df <- aggregate((rating-(mu+b_i_reg)) ~ userId, data = train_df, FUN = su
 
 l2_plot <- data.frame(Lambda = character(), RMSE = numeric(), stringsAsFactors = FALSE)
 for (l2 in seq(4, 6, 0.001)){ # Fold 1; l2 = 4.836 | Fold 2; l2 = 4.974 | Fold 3; l2 = 4.859 | Fold 4; l2 = 4.959 | Fold 5; l2 = 5.307
-#for (l2 in seq(1, 10, 1)){
-#for (l2 in seq(1, 10, 1)){ # Fold 1;
-#for (l2 in seq(4.5, 6, 0.01)){ # Fold 2;
-#for (l2 in seq(4.5, 6, 0.01)){ # Fold 3;
-#for (l2 in seq(4.5, 6, 0.01)){ # Fold 4;
-#for (l2 in seq(4.5, 6, 0.01)){ # Fold 5;
   tuning_df$b_u <- tuning_df$sum / (tuning_df$count + l2)
   user_bias <- tuning_df$b_u[match(test_df$userId, tuning_df$userId)]
   l2_plot <- rbind(l2_plot, data.frame(
@@ -79,13 +70,13 @@ plot <- qplot(l2_plot$Lambda, l2_plot$RMSE, geom = "line")+
   )
 
 #print(plot)
-#store_plot(paste0("l2-tuning-square-fold-", fold_index, ".png"), plot, h= 6, w = 6)
+store_plot(paste0("l2-tuning-square-fold-", fold_index, ".png"), plot, h= 6, w = 6)
 
 # Store + Cleanup
 l2 <- l2_plot$Lambda[which.min(l2_plot$RMSE)]
 users$b_u_reg <- tuning_df$sum / (tuning_df$count + l2)
 train_df <- merge(train_df, users[,c('userId', 'b_u_reg')], by="userId")
-rm(tuning_df, l2, l2_plot, movie_bias, user_bias)
+rm(tuning_df, l2_plot, movie_bias, user_bias)
 
 # Note: Even though l2 is optimized at 0, b_u_reg != b_u_0
 # This is because we're basing it on b_i_reg, not b_i_0
@@ -131,13 +122,13 @@ plot <- qplot(l3_plot$Lambda, l3_plot$RMSE, geom = "line")+
   )
 
 #print(plot)
-#store_plot(paste0("l3-tuning-square-fold-", fold_index, ".png"), plot, h = 6, w=6)
+store_plot(paste0("l3-tuning-square-fold-", fold_index, ".png"), plot, h = 6, w=6)
 
 # Store and Cleanup
 l3 <- l3_plot$Lambda[which.min(l3_plot$RMSE)]
 genres$b_g_reg <- tuning_df$sum / (tuning_df$count + l3)
 train_df <- merge(train_df, genres[,c('genres', 'b_g_reg')], by="genres")
-rm(tuning_df, l3, l3_plot, movie_bias, user_bias, genre_bias)
+rm(tuning_df, l3_plot, movie_bias, user_bias, genre_bias)
 
 # Note: Like with l2, even though l3 is optimized at 0, b_g_reg != b_g_0
 # This is because we're basing it on b_i_reg and b_u_reg, not b_i_0 and b_u_0
@@ -173,4 +164,8 @@ rmse_df <- rbind(rmse_df, data.frame(
   Fold = fold_index))
 
 # Cleanup
+print(l1)
+print(l2)
+print(l3)
 rm(movie_bias, user_bias, genre_bias)
+rm(l1, l2, l3)

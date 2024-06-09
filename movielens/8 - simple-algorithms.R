@@ -18,6 +18,15 @@ rmse_df <- rbind(rmse_df, data.frame(
     test_df$rating),
   Fold = fold_index))
 
+# Genre Avg --------------------------------------------------
+predicted <- sapply(test_df$genres, function(genre_string){
+  return (genres[genres$genres == genre_string,]$avg_rating)
+})
+rmse_df <- rbind(rmse_df, data.frame(
+  Algorithm = "Genre Avg",
+  RMSE = calculate_rmse(predicted, test_df$rating),
+  Fold = fold_index))
+
 # User Avg ----------------------------------------
 # Always predict the user's average rating in the training set
 rmse_df <- rbind(rmse_df, data.frame(
@@ -34,15 +43,6 @@ rmse_df <- rbind(rmse_df, data.frame(
   RMSE = calculate_rmse(
     movies$avg_rating[match(test_df$movieId, movies$movieId)],
     test_df$rating),
-  Fold = fold_index))
-
-# Genre Avg --------------------------------------------------
-predicted <- sapply(test_df$genres, function(genre_string){
-  return (genres[genres$genres == genre_string,]$avg_rating)
-})
-rmse_df <- rbind(rmse_df, data.frame(
-  Algorithm = "Genre Avg",
-  RMSE = calculate_rmse(predicted, test_df$rating),
   Fold = fold_index))
 
 # Cleanup
