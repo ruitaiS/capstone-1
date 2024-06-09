@@ -228,8 +228,6 @@ TODO:
 
 </div>
 
-$`{b}_{i_0} = \sum_{u\in R(i)} \frac{{r}{_u}{_i} - \mu}{|R(i)|}`$
-
 ### Attempts to reduce residual values $r'$
 
 
@@ -260,6 +258,8 @@ https://grouplens.org/datasets/movielens/10m/
 
 
 ## Formulas and Notation:
+
+$`{b}_{i_0} = \sum_{u\in R(i)} \frac{{r}{_u}{_i} - \mu}{|R(i)|}`$
 
 Final holdout set $\mathcal{F}$
 
