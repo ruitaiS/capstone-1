@@ -1,11 +1,7 @@
 # Movie Recommendations:
 
 TODO:
-* Graphs, RMSE calculations, based on entire train set
-* Check the charts file references and filenames; make sure they are all updated with the correct datasets
-* Exploration graphs should be done on the whole edx set rather than one specific fold
 * Section explaining how test / train was selected, since the partition functionw as rewritten. Instead say the charts were developed using fold 1 of the K, and that the full K folds were used for regularization tuning. Then the entire edx set was used for lm and sgd training, and for final evaluation
-* Actually record results of RMSE calculation for all K folds while tuning regularization params, because you're retarded and didn't do that the first time :C
 * Mention the lm and matrix factorization approaches you took, which unfortunately did not yield positive results / took too far too long to run.
 * Fiddle with the heatmap graph spacing if you really want
 
@@ -111,7 +107,7 @@ As specified in the project instructions, the root mean squared error function w
 Let ${r}{_u}{_i}$ denote the observed rating of user $u$ for movie $i$ in some dataset, and let $\hat{r}{_u}{_i}$ signify an algorithm's prediction for how that user would rate the movie. The root mean squared error can then be written as
 
 ```math
-\sqrt{\frac{{\sum}_{u,i\in {D}_{val}}({r}{_u}{_i} - \hat{r}{_u}{_i})^2}{|{D}_{val}|}}
+RMSE = \sqrt{\frac{{\sum}_{u,i\in {D}_{val}}({r}{_u}{_i} - \hat{r}{_u}{_i})^2}{|{D}_{val}|}}
 ```
 
 where $`{D}_{val}`$ is our validation (eg. test) set. It is, as the name would suggest, the square root of the mean of the square of the error. Error is commonly defined as the difference between the predicted vs. actual values - for this reason RMSE is also frequently called RMSD, or Root Mean Squared Difference. In code this relationship is much clearer:
@@ -154,13 +150,13 @@ The results of these simple algorithms are tallied below:
 	
 | Algorithm | RMSE |
 | :-: | :-: |
-| Random Guess | 2.1553650|
-| Avg All | 1.0605995 |
-| Genre Avg | 1.0184635
-| User Avg | 0.9790682 |
-| Movie Avg | 0.9437667 |
-| User and Movie Avg, Equal Weight Ensemble | 0.9133540 |
-| User and Movie Avg Weighted Ensemble, w =  0.4062 | 0.9116089 |
+| Random Guess | 2.1575303|
+| Avg All | 1.0604283 |
+| Genre Avg | 1.0183814
+| User Avg | 0.9790523 |
+| Movie Avg | 0.9441866 |
+| User Movie Avg, Equal Weight Ensemble | 0.9137740 |
+| User Movie Avg Weighted Ensemble, w =  0.4069 | 0.9120644 |
 
 </div>
 
@@ -185,9 +181,9 @@ I layered the biasing effects onto the global average one at a time, and the res
 	
 | Algorithm | RMSE |
 | :-: | :-: |
-| mu + b_i_0 | 0.9437667 |
-| mu + b_i_0 + b_u_0 | 0.8661612 |
-| mu + b_i_0 + b_u_0 + b_g_0 | 0.8657986 |
+| mu + b_i_0 | 0.9441866 |
+| mu + b_i_0 + b_u_0 | 0.8665665 |
+| mu + b_i_0 + b_u_0 + b_g_0 | 0.8662257 |
 
 </div>
 
@@ -218,19 +214,15 @@ TODO:
 
 <div align = "center">
 
-| Fold | L1 | L2 | L3 |
-| :-: | :-: | :-: | :-: |
-| Fold 1 | 1.947 | 4.836 | 27.167 |
-| Fold 2 | 2.347 | 4.974 | 15.209 |
-| Fold 3 | 2.083 | 4.859 | 0 |
-| Fold 4 | 2.272 | 4.959 | 12.262 |
-| Fold 5 | 2.151 | 5.307 | 4.07 |
+| Fold | L1 | L2 | L3 | RMSE |
+| :-: | :-: | :-: | :-: | :-: |
+| Fold 1 | 1.947 | 4.836 | 27.167 | 0.8656432 |
+| Fold 2 | 2.347 | 4.974 | 15.209 | 0.8653785 |
+| Fold 3 | 2.083 | 4.859 | 0 | 0.8653743 |
+| Fold 4 | 2.272 | 4.959 | 12.262 | 0.8649200 |
+| Fold 5 | 2.151 | 5.307 | 4.07 | 0.8647899 |
 
 </div>
-
-$`{b}_{i_0} = \sum_{u\in R(i)} \frac{{r}{_u}{_i} - \mu}{|R(i)|}`$
-
-* K-Fold Cross Validation for Regularization Parameters
 
 ### Attempts to reduce residual values $r'$
 
@@ -262,6 +254,8 @@ https://grouplens.org/datasets/movielens/10m/
 
 
 ## Formulas and Notation:
+
+$`{b}_{i_0} = \sum_{u\in R(i)} \frac{{r}{_u}{_i} - \mu}{|R(i)|}`$
 
 Final holdout set $\mathcal{F}$
 
