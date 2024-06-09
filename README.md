@@ -230,7 +230,16 @@ As mentioned, the biasing effects are quite sensitive to the randomness of the t
 
 ### Attempts to reduce residual values $r'$
 
-The regularization parameters were averaged across all five folds, for final values of $\lamba_1 = 2.16$, $\lambda_2 = 4.987$, and $\lambda_3 = 11.7416$.
+The regularization parameters were averaged across all five folds, for final values of $\lambda_1 = 2.16$, $\lambda_2 = 4.987$, and $\lambda_3 = 11.7416$. Values for $\hat{r}{_u}{_i}$ were calculated for all ratings in the EdX dataset, and a residuals matrix of the remaining values was produced.
+
+An $m\times n$ residuals matrix $`\mathcal{E} = \begin{pmatrix}
+r'_{11} & r'_{12} & \cdots & r'_{1n} \\
+r'_{21} & r'_{22} & \cdots & r'_{2n} \\
+\vdots & \vdots & \ddots & \vdots \\
+r'_{m1} & r'_{m2} & \cdots & r'_{mn} \\
+\end{pmatrix}`$
+
+where $`m = |\{u\in \mathcal{D}\}|`$, $`n = |\{i\in \mathcal{D}\}|`$, and each entry $`{r'}{_u}{_i} = {r}{_u}{_i} - (\mu+{b}_{i_{reg}}+{b}_{u_{reg}}+{b}_{g_{reg}})`$
 
 
 
