@@ -232,6 +232,8 @@ As mentioned, the biasing effects are quite sensitive to the randomness of the t
 
 The regularization parameters were averaged across all five folds, for final values of $\lamba_1 = 2.16$, $\lambda_2 = 4.987$, and $\lambda_3 = 11.7416$.
 
+
+
 * Residuals Matrix
 * SGD on Residuals
 
