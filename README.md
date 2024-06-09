@@ -128,6 +128,8 @@ calculate_rmse <- function(predicted_ratings, actual_ratings) {
 
 ### Some Simple Algorithms to Start
 
+(TODO: These algorithms were all run using fold index 1 to create the training and test sets)
+
 A couple of very basic methods for rating prediction come to mind, and these were the ones I tried first while building out the testing framework. The code for them is in the ```simple-algorithms.R``` file. (TODO: Specify where the files are for each section)
 
 The most naive approach would be to randomly guess a rating - as one would expect, this gave a very poor RMSE of ~2.16. Next was to find the average of all the ratings in the training set, and to use that value as the prediction for every rating in the test set. If we look to the histogram plot of the ratings given in the training set, we see that whole number ratings are more common than ones rated at half integer increments - this I would attribute to user psychology more than anything else. Taken individually, the set of whole number ratings and the set of half-step ratings both form bell-curve shaped distributions centered roughly around the global mean, shown as the dashed vertical red line.
