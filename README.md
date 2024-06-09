@@ -2,6 +2,8 @@
 
 TODO:
 * Section explaining how test / train was selected, since the partition functionw as rewritten. Instead say the charts were developed using fold 1 of the K, and that the full K folds were used for regularization tuning. Then the entire edx set was used for lm and sgd training, and for final evaluation
+* mention how weights were tuned for w and lambda
+* Redo results and graphs for simple algorithms using fold_index 1
 * Mention the lm and matrix factorization approaches you took, which unfortunately did not yield positive results / took too far too long to run.
 * Fiddle with the heatmap graph spacing if you really want
 
@@ -187,7 +189,7 @@ I layered the biasing effects onto the global average one at a time, and the res
 
 </div>
 
-### Bias Regularization
+### Bias Regularization Tuning With K = 5 Fold Cross Validation
 (TODO)
 The variance of the mean value of a sample can be defined as $`Var(\bar{r}) = \frac{\sigma^2}{n}`$ for a sample of size $n$ taken from a population that has some variance $`\sigma^2`$. This equation shows that the variance of the sample mean is inversely proportional to the sample size - for movies, users, or genres with very few ratings in the training set, the calculated biasing effect (essentially a sample mean) will vary significantly based on the specific ratings randomly selected for inclusion.
 
@@ -201,16 +203,18 @@ To counteract this, I adopted Koren et al.'s approach by including a regularizat
 
 ```
 
+When the sample size $|R|$ is small, $\lambda$ significantly reduces the bias, while for larger sample sizes this effect diminishes, approaching 0 as $|R|$ increases. This reduces the influence of noisy biasing effects caused by small sample sizes, while preserving the bias effects we have greater confidence in.
 
+Similar to the weighted average parameter tuning process, (TODO: phrase better) values for $\lambda$ were stepped in 0.001 increments and plotted against the resulting RMSE on the test set. The value which minimized the RMSE was picked at each stage before moving on to the next parameter.
 
-When the sample size $|R|$ is small, $\lambda$ significantly reduces the bias, and for larger sample sets $|R|$, this effect diminishes, approaching 0 as $|R|$ approaches infinity. This reduces the influence of noisy biasing effects caused by small sample sizes, while preserving the bias effects we have greater confidence in.
+<div style="display: inline-block;">
+	<img src="/movielens/graphs/l1-tuning-square-fold-1.png" alt="L1 Tuning Fold 1" title="L1 Tuning Fold 1" style="float: left; margin-right: 5px; width: 30%;">
+	<img src="/movielens/graphs/l2-tuning-square-fold-1.png" alt="L2 Tuning Fold 1" title="L2 Tuning Fold 1" style="float: center; margin-left: 5px; margin-right: 5px; width: 30%;">
+	<img src="/movielens/graphs/l3-tuning-square-fold-1.png" alt="L3 Tuning Fold 1" title="L1 Tuning Fold 1" style="float: right; margin-left: 5px; width: 30%;">
+</div>
 
-
-### K Fold Cross Validation
-
-TODO:
-* Include RMSEs for each of these if you feel like wasting another 3 hours of your life
-* Put the graphs in here for at least a couple runs
+(TODO: Rephrase. Maybe talk more about what K-fold cross validation is.)
+As mentioned, the biasing effects are quite sensitive to the randomness of the training / test set split, and consequently so are their tuning parameters. To counteract this, the full dataset was split into 5 folds and the process was run once on each fold. The results of the first fold is shown above (plots for the other folds are included in the repository, but omitted for brevity), and a summary of the tuned values across all five folds, along with the resulting RMSE, is presented below.
 
 <div align = "center">
 
@@ -226,7 +230,7 @@ TODO:
 
 ### Attempts to reduce residual values $r'$
 
-
+The regularization parameters were averaged across all five folds, for final values of $\lamba_1 = 2.16$, $\lambda_2 = 4.987$, and $\lambda_3 = 11.7416$.
 
 * Residuals Matrix
 * SGD on Residuals
