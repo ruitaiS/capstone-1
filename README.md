@@ -1,11 +1,7 @@
 # Movie Recommendations:
 
 TODO:
-* Graphs, RMSE calculations, based on entire train set
-* Check the charts file references and filenames; make sure they are all updated with the correct datasets
-* Exploration graphs should be done on the whole edx set rather than one specific fold
 * Section explaining how test / train was selected, since the partition functionw as rewritten. Instead say the charts were developed using fold 1 of the K, and that the full K folds were used for regularization tuning. Then the entire edx set was used for lm and sgd training, and for final evaluation
-* Actually record results of RMSE calculation for all K folds while tuning regularization params, because you're retarded and didn't do that the first time :C
 * Mention the lm and matrix factorization approaches you took, which unfortunately did not yield positive results / took too far too long to run.
 * Fiddle with the heatmap graph spacing if you really want
 
