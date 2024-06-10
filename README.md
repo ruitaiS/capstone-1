@@ -31,40 +31,15 @@ Template code provided by the EdX team splits the data into a main dataset $\mat
 [1] 999999
 >
 ```
+(TODO: Phrase this better)
+Initial data analysis was performed on the main dataset, then the data was split into five equally sized subsets, indexed by `fold_index` one through five. Some simple algorithms were explored first to establish a performance benchmark, and for these models, only `fold_index = 1` was used as the test set. The other four sets were merged back together to form the training set. Cross-validation was not done for these models.
 
-Initial data analysis was performed on the main dataset as a whole, then the data was split into five equally sized subsets for model development. Each subset could be selected as a validation set, with the other four merged together to form a training set, allowing for k = 5 fold cross validation.
+The main model used in this project is a modified version of the approach outlined by Robert M. Bell, Yehuda Koren, and Chris, Volinsky in their 2009 paper "The BellKor Solution to the Netflix Grand Prize." An average $\mu$ of all movie ratings in the training set formed a baseline predictor, on top of which were added movie, user, and genre biases - $`{b}_{i}`$, $`{b}_{u}`$, $`{b}_{g}`$. Each bias had an associated regularization parameter, $\lambda_1$, $\lambda_2$, $\lambda_3$, which was tuned to minimize the error on the test set. This process was performed on all five folds for `k=5` fold cross validation. 
 
-In the early stages of the project, several straightforward modeling approaches were explored to establish a performance baseline. These simple models used `fold_index = 1` as the test set, and cross validation was not performed. I ultimately decided on a simplified version of the approach outlined by Robert M. Bell, Yehuda Koren, and Chris, Volinsky in their 2009 paper "The BellKor Solution to the Netflix Grand Prize."
+(TODO: Find another way to refer to the model other than biasing effect model.)
+Each parameter was finalized at the average of the values calculated during the five validation runs. A single pass was then made through the entire training set to find the remaining difference ${r'} = \hat{r} - r$ between the recorded ratings and the ratings predicted by the bias effect model. Two methods were tried to account for these residual values - a matrix factorization model using stochastic gradient descent, and a simple linear model - but neither showed an improvement over the biasing effect model, and were not used for the final RMSE calculation on the holdout set.
 
-
-
-v TODO:
-* Final approach was BellKor's, but touch on the simple versions too
-* The main dataset was split into five equally sized sets, indexed by the `fold_index` variable. Simple algorithms were tested exclusively on `fold_index = 1`, with the other four sets comprising the training set. For biasing effects, the process was repeated each time with the remaining folds, a k = 5 fold validation
-* RMSE used as the error function / heuristic for the success of each model
-* Optimal tuning parameters found for each set, then the average was set as their final value
-* residuals calculated on the entire dataest
-* SGD and linear models on the residuals; sgd was too time intensive to run and tune; linear models did not yield positive results.
-
-
-
-Simple models were trained and tested using `fold_index = 1` as the test set and the 
-
-, denoted by `fold_index` 1 through 5. Rows belonging to the selected index were designated the test set, and the remaining four sets recombined to form the training set. Some very simple algorithms were tried to start, and these algorithms used `fold_index = 1` exclusively as the test set. 
-
-The bulk of the testing (TODO: Modelling? Work?) was done using a simplified version of the approach outlined by Robert M. Bell, Yehuda Koren, and Chris, Volinsky in their 2009 paper "The BellKor Solution to the Netflix Grand Prize." (TODO: Add citation). For these (TODO: models, biasing effects, tuning), the tests were repeated once for each fold (k = 5 fold cross validation), and the average of the optimal values for each set was used moving forward.
-
-
-
-vvvvv Old Version vvvvv
-
-$\mathcal{D}$ was split into training and test sets with ```p = 0.8``` and ```0.2``` respectively. An average $\mu$ of all movie ratings in the training set formed a baseline predictor, on top of which were added movie, user, and genre biases - $`{b}_{i}`$, $`{b}_{u}`$, $`{b}_{g}`$. After tuning regularization parameters $\lambda_1$, $\lambda_2$, $\lambda_3$ for each of them, the root mean squared error (RMSE) was calculated on the test set.
-
-The training set was then split into four sets of ```p = 0.2``` each, and the process was repeated using each of these sets as the new test set, with the remaining three sets plus the original test set forming the new training set, effectively reproducing the results of a ```k=5``` K-fold cross validation test. The optimal parameter values (those which produced the lowest average RMSE across the 5 folds) were selected.
-
-Matrix factorization with stochastic gradient descent was used to account for the remaining residuals ${r'}$, but at the time of this writing have not yielded results better than the average + biasing effects alone.
-
-* Final Output
+The final RMSE on the holdout set was (TODO)
 
 ## Data Analysis / Preprocessing:
 
