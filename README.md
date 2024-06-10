@@ -9,9 +9,47 @@ TODO:
 
 ## Introduction:
 
-The goal of this project is to implement a machine learning based prediction system for ratings the MovieLens dataset. The full dataset consists of 10000054 ratings of 10681 movies by 71567 unique users, along with associated metadata. Template code provided by the EdX team splits the data into a main dataset $\mathcal{D}$ and a final holdout test set $\mathcal{F}$ to be used exclusively for a final error calculation at the end of the project. (TODO: How many row entries there are, what columns each entry has, how many entries in the main vs. final datasets, what you were trying to predict)
+This project implements a machine learning based prediction system for ratings the MovieLens dataset. The full dataset consists of 10,000,054 ratings of 10681 movies by 71567 unique users. Each row in the dataset has columns indicating the user who made the rating, the movie which was rated, the rating given, the timestamp at which it was given, the title of the movie, and the genres that the movie belongs to.
 
-The approach here is a modified version of the one outlined by Robert M. Bell, Yehuda Koren, and Chris, Volinsky in their 2009 paper "The BellKor Solution to the Netflix Grand Prize."
+```
+> nrow(movielens)
+[1] 10000054
+> length(unique(movielens$userId))
+[1] 69878
+> length(unique(movielens$movieId))
+[1] 10677
+> names(movielens)
+[1] "userId"    "movieId"   "rating"    "timestamp" "title"     "genres"
+```
+
+Template code provided by the EdX team splits the data into a main dataset $\mathcal{D}$ of 9,000,055 entries and a final holdout test set $\mathcal{F}$ of 999,999 entries to be used exclusively for a final error calculation at the end of the project. The goal is to train a machine learning model on the records in the main dataset which can predict the values in the `rating` column of the final holdout set, using the other column values as predictor variables. The root mean squared error function was used as a metric for the predictive power of the algorithm, with a target RMSE of less than 0.86490.
+
+```
+> nrow(edx)
+[1] 9000055
+> nrow(final_holdout_test)
+[1] 999999
+> ```
+
+
+v TODO:
+* Final approach was BellKor's, but touch on the simple versions too
+* Graphs and initial explorations were performed across the entire main dataset
+* The main dataset was split into five equally sized sets, indexed by the `fold_index` variable. Simple algorithms were tested exclusively on `fold_index = 1`, with the other four sets comprising the training set. For biasing effects, the process was repeated each time with the remaining folds, a k = 5 fold validation
+* RMSE used as the error function / heuristic for the success of each model
+* Optimal tuning parameters found for each set, then the average was set as their final value
+* residuals calculated on the entire dataest
+* SGD and linear models on the residuals; sgd was too time intensive to run and tune; linear models did not yield positive results.
+
+Initial data analysis was performed on the main dataset as a whole, then the data was split into five equally sized subsets for model development. Each subset could be selected as a validation set, with the other four merged together to form a training set. For the simple exploratory models, this process was done only once, using `fold_index = 1` as the test set.
+
+Simple models were trained and tested using `fold_index = 1` as the test set and the 
+
+, denoted by `fold_index` 1 through 5. Rows belonging to the selected index were designated the test set, and the remaining four sets recombined to form the training set. Some very simple algorithms were tried to start, and these algorithms used `fold_index = 1` exclusively as the test set. The bulk of the testing (TODO: Modelling? Work?) was done using a simplified version of the approach outlined by Robert M. Bell, Yehuda Koren, and Chris, Volinsky in their 2009 paper "The BellKor Solution to the Netflix Grand Prize." (TODO: Add citation). For these (TODO: models, biasing effects, tuning), the tests were repeated once for each fold (k = 5 fold cross validation), and the average of the optimal values for each set was used moving forward.
+
+
+
+vvvvv Old Version vvvvv
 
 $\mathcal{D}$ was split into training and test sets with ```p = 0.8``` and ```0.2``` respectively. An average $\mu$ of all movie ratings in the training set formed a baseline predictor, on top of which were added movie, user, and genre biases - $`{b}_{i}`$, $`{b}_{u}`$, $`{b}_{g}`$. After tuning regularization parameters $\lambda_1$, $\lambda_2$, $\lambda_3$ for each of them, the root mean squared error (RMSE) was calculated on the test set.
 
@@ -22,6 +60,8 @@ Matrix factorization with stochastic gradient descent was used to account for th
 * Final Output
 
 ## Data Analysis / Preprocessing:
+
+* splitting section used splitindex
 
 The main dataset was split into training and test sets with the ```partition(seed, subset_p = 1, test_p = 0.2)``` function. The function accepts as parameters a random seed value, as well as optional ```subset_p``` and ```test_p``` parameters. ```subset_p``` specifies how much of the main dataset is used, with a value of 1 indicating the entire dataset, and a value of 0 indicating none of it. This is useful in cases where using the full dataset might be too resource intensive, or for initial code testing. All the final results are reported with the full dataset. ```test_p``` specifies the proportion of the subsetted data to use for the test set ```test_df```; the remaining entries form the training set, ```train_df```.
 
@@ -267,6 +307,45 @@ https://grouplens.org/datasets/movielens/10m/
 (TODO: Other Papers)
 
 
+### Code Bits
+
+```
+
+
+test_index <- createDataPartition(y = movielens$rating, times = 1, p = 0.1, list = FALSE)
+edx <- movielens[-test_index,]
+temp <- movielens[test_index,]
+```
+
+```
+setup.R
+
+library(ggplot2)
+library(tidyr)
+library(dplyr)
+library(lubridate)
+library(purrr)
+library(reshape2)
+
+# Make sure the same movies and users are in both sets
+consistency_check <- function(test, train){...}
+
+# Create folds
+folds <- createFolds(edx$rating, k = 5, list = TRUE, returnTrain = FALSE)
+generate_splits <- function(index){
+  return (consistency_check(edx[folds[[index]],], edx[-folds[[index]],]))
+
+# Auxiliary Functions
+calculate_rmse <- function(predicted_ratings, actual_ratings) {...}
+store_plot<- function(filename, plot, h = 6, w = 12) {...}
+
+# Storing Results:
+rmse_df <- data.frame(Algorithm = character(),
+                      RMSE = numeric(),
+                      Fold = numeric(),
+                      stringsAsFactors = FALSE)
+}
+```
 
 
 ## Formulas and Notation:
