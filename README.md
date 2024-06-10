@@ -9,7 +9,7 @@ TODO:
 
 ## Introduction:
 
-This project implements a machine learning based prediction system for ratings the MovieLens dataset. The full dataset consists of 10,000,054 ratings of 10681 movies by 71567 unique users. Each row in the dataset has columns indicating the user who made the rating, the movie which was rated, the rating given, the timestamp at which it was given, the title of the movie, and the genres that the movie belongs to.
+This project implements a machine learning based prediction system for ratings in the MovieLens dataset. The full dataset consists of 10,000,054 ratings of 10681 movies by 71567 unique users. Each row in the dataset has columns indicating the user who made the rating, the movie which was rated, the rating given, the timestamp at which it was given, the title of the movie, and the genres that the movie belongs to.
 
 ```
 > nrow(movielens)
