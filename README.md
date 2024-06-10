@@ -29,23 +29,30 @@ Template code provided by the EdX team splits the data into a main dataset $\mat
 [1] 9000055
 > nrow(final_holdout_test)
 [1] 999999
-> ```
+>
+```
+
+Initial data analysis was performed on the main dataset as a whole, then the data was split into five equally sized subsets for model development. Each subset could be selected as a validation set, with the other four merged together to form a training set, allowing for k = 5 fold cross validation.
+
+In the early stages of the project, several straightforward modeling approaches were explored to establish a performance baseline. These simple models used `fold_index = 1` as the test set, and cross validation was not performed. I ultimately decided on a simplified version of the approach outlined by Robert M. Bell, Yehuda Koren, and Chris, Volinsky in their 2009 paper "The BellKor Solution to the Netflix Grand Prize."
+
 
 
 v TODO:
 * Final approach was BellKor's, but touch on the simple versions too
-* Graphs and initial explorations were performed across the entire main dataset
 * The main dataset was split into five equally sized sets, indexed by the `fold_index` variable. Simple algorithms were tested exclusively on `fold_index = 1`, with the other four sets comprising the training set. For biasing effects, the process was repeated each time with the remaining folds, a k = 5 fold validation
 * RMSE used as the error function / heuristic for the success of each model
 * Optimal tuning parameters found for each set, then the average was set as their final value
 * residuals calculated on the entire dataest
 * SGD and linear models on the residuals; sgd was too time intensive to run and tune; linear models did not yield positive results.
 
-Initial data analysis was performed on the main dataset as a whole, then the data was split into five equally sized subsets for model development. Each subset could be selected as a validation set, with the other four merged together to form a training set. For the simple exploratory models, this process was done only once, using `fold_index = 1` as the test set.
+
 
 Simple models were trained and tested using `fold_index = 1` as the test set and the 
 
-, denoted by `fold_index` 1 through 5. Rows belonging to the selected index were designated the test set, and the remaining four sets recombined to form the training set. Some very simple algorithms were tried to start, and these algorithms used `fold_index = 1` exclusively as the test set. The bulk of the testing (TODO: Modelling? Work?) was done using a simplified version of the approach outlined by Robert M. Bell, Yehuda Koren, and Chris, Volinsky in their 2009 paper "The BellKor Solution to the Netflix Grand Prize." (TODO: Add citation). For these (TODO: models, biasing effects, tuning), the tests were repeated once for each fold (k = 5 fold cross validation), and the average of the optimal values for each set was used moving forward.
+, denoted by `fold_index` 1 through 5. Rows belonging to the selected index were designated the test set, and the remaining four sets recombined to form the training set. Some very simple algorithms were tried to start, and these algorithms used `fold_index = 1` exclusively as the test set. 
+
+The bulk of the testing (TODO: Modelling? Work?) was done using a simplified version of the approach outlined by Robert M. Bell, Yehuda Koren, and Chris, Volinsky in their 2009 paper "The BellKor Solution to the Netflix Grand Prize." (TODO: Add citation). For these (TODO: models, biasing effects, tuning), the tests were repeated once for each fold (k = 5 fold cross validation), and the average of the optimal values for each set was used moving forward.
 
 
 
