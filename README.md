@@ -86,7 +86,7 @@ The final RMSE on the holdout set was (TODO)
 ## Preprocessing:
 (TODO: Talk about edx code if there's time)
 
-Five folds were created using `createFolds`, with the rating column of the main edx dataset set as the response vector to ensure rating values are equally distributed among each fold. The `generate_splits` function accepts a fold index parameter and extracts rows from the edx set to form testing and training sets for validation by `consistency_check`.
+Five folds were created using `createFolds`, with the response vector set to the rating column of the main EdX dataset to ensure rating values are equally distributed among each fold. The `generate_splits` function accepts a fold index parameter and extracts rows from the edx set to form testing and training sets for validation by `consistency_check`.
 
 The `consistency_check` function ensures that every movieId and userId which appears in the test set must also appear in the training set. The code to do this was borrowed from the provided template code, which performs a similar modification for the main edx data set in relation to the final holdout set. While this is a seemingly small detail, it makes the prediction task **significantly** easier, as it completely eliminates the possibility we would need to make predictions on users or movies which do not appear in the training set, also known as the [cold start problem](https://en.wikipedia.org/wiki/Cold_start_(recommender_systems)).
 
