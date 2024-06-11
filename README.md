@@ -6,10 +6,11 @@ TODO:
 * Redo results and graphs for simple algorithms using fold_index 1
 * Mention the lm and matrix factorization approaches you took, which unfortunately did not yield positive results / took too far too long to run.
 * Fiddle with the heatmap graph spacing if you really want
+* instead of saying edx or main dataset
 
 ## Introduction:
 
-This project implements a machine learning based prediction system for ratings in the MovieLens dataset. The full dataset consists of 10,000,054 ratings of 10681 movies by 71567 unique users. Each row in the dataset has columns indicating the user who made the rating, the movie which was rated, the rating given, the timestamp at which it was given, the title of the movie, and the genres that the movie belongs to.
+This project implements a machine learning based prediction system for ratings in the MovieLens dataset. The full dataset consists of 10,000,054 ratings of 10,677 movies by 69,878 unique users. Each row has columns indicating the ID of the user who made the rating, the ID of the movie which was rated, the rating given, the timestamp at which it was given, the title of the movie, and the genres that the movie belongs to.
 
 ```
 > nrow(movielens)
@@ -34,22 +35,19 @@ Template code provided by the EdX team splits the data into a main dataset $\mat
 (TODO: Phrase this better)
 Initial data analysis was performed on the main dataset, then the data was split into five equally sized subsets, indexed by `fold_index` one through five. Some simple algorithms were explored first to establish a performance benchmark, and for these models, only `fold_index = 1` was used as the test set. The other four sets were merged back together to form the training set. Cross-validation was not done for these models.
 
-The main model used in this project is a modified version of the approach outlined by Robert M. Bell, Yehuda Koren, and Chris, Volinsky in their 2009 paper "The BellKor Solution to the Netflix Grand Prize." An average $\mu$ of all movie ratings in the training set formed a baseline predictor, on top of which were added movie, user, and genre biases - $`{b}_{i}`$, $`{b}_{u}`$, $`{b}_{g}`$. Each bias had an associated regularization parameter, $\lambda_1$, $\lambda_2$, $\lambda_3$, which was tuned to minimize the error on the test set. This process was performed on all five folds for `k=5` fold cross validation. 
+The main model used in this project is a modified version of the approach outlined by Robert M. Bell, Yehuda Koren, and Chris, Volinsky in their 2009 paper "The BellKor Solution to the Netflix Grand Prize." An average $\mu$ of all movie ratings in the training set formed a baseline predictor, on top of which were added movie, user, and genre biases $`{b}_{i}`$, $`{b}_{u}`$, $`{b}_{g}`$. Each bias had an associated regularization parameter, $\lambda_1$, $\lambda_2$, $\lambda_3$, which was tuned to minimize the error on the test set. This process was performed on all five folds for `k=5` fold cross validation. 
 
 (TODO: Find another way to refer to the model other than biasing effect model.)
-Each parameter was finalized at the average of the values calculated during the five validation runs. A single pass was then made through the entire training set to find the remaining difference ${r'} = \hat{r} - r$ between the recorded ratings and the ratings predicted by the bias effect model. Two methods were tried to account for these residual values - a matrix factorization model using stochastic gradient descent, and a simple linear model - but neither showed an improvement over the biasing effect model, and were not used for the final RMSE calculation on the holdout set.
+Each parameter was finalized at the average of the values calculated during the five validation runs. A single pass was then made through the entire main dataset to find the remaining difference ${r'} = \hat{r} - r$ between the recorded ratings and the ratings predicted by the model. Two methods were tried to account for these residual values - a matrix factorization model using stochastic gradient descent, and a simple linear model - but neither showed improvement over the biasing effect model, and were not used for the final RMSE calculation on the holdout set.
 
 The final RMSE on the holdout set was (TODO)
 
-## Data Analysis / Preprocessing:
+## Preprocessing:
+(TODO: Talk about edx code if there's time)
 
-* splitting section used splitindex
+`2 - setup.R` and `3 - prepare_data.R` contain functions for splitting and preparing the data. Five folds were created using `createFolds`, with the rating column of the main edx dataset set as the response vector to ensure rating values are equally distributed among each fold. The `generate_splits` function accepts a fold index parameter and extracts rows from the edx set to form testing and training sets for validation by `consistency_check`.
 
-The main dataset was split into training and test sets with the ```partition(seed, subset_p = 1, test_p = 0.2)``` function. The function accepts as parameters a random seed value, as well as optional ```subset_p``` and ```test_p``` parameters. ```subset_p``` specifies how much of the main dataset is used, with a value of 1 indicating the entire dataset, and a value of 0 indicating none of it. This is useful in cases where using the full dataset might be too resource intensive, or for initial code testing. All the final results are reported with the full dataset. ```test_p``` specifies the proportion of the subsetted data to use for the test set ```test_df```; the remaining entries form the training set, ```train_df```.
-
-```test_p = 0.2``` was used exclusively throughout this project.
-
-The ```partition``` function also ensures that every movieId and userId which appears in the test set must appear in the training set - the code to do this was borrowed from the provided template code, which also performs a similar modification for the main data set in relation to the final holdout set. While this is a seemingly small detail, it makes the prediction task **significantly** easier, as it completely eliminates the need to deal with the possibility of making predictions for users or movies which do not appear in the training set, also known as the [cold start problem](https://en.wikipedia.org/wiki/Cold_start_(recommender_systems)).
+The `consistency_check` function ensures that every movieId and userId which appears in the test set must also appear in the training set. The code to do this was borrowed from the provided template code, which performs a similar modification for the main edx data set in relation to the final holdout set. While this is a seemingly small detail, it makes the prediction task **significantly** easier, as it completely eliminates the possibility we would need to make predictions on users or movies which do not appear in the training set, also known as the [cold start problem](https://en.wikipedia.org/wiki/Cold_start_(recommender_systems)).
 
 The training data was further processed to produce the ```genres```, ```users```, and ```movies``` dataframes. The column names are provided below, and should be mostly self-explanatory.
 
@@ -66,22 +64,23 @@ Note genres contains the full genre list string provided for a movie, not an ind
 ```
 > head(genres)
                                               genres count avg_rating
-1                                 (no genres listed)     4   3.250000
-2                                             Action 19548   2.942961
-3                                   Action|Adventure 54891   3.659671
-4         Action|Adventure|Animation|Children|Comedy  6005   3.969692
-5 Action|Adventure|Animation|Children|Comedy|Fantasy   149   3.043624
-6    Action|Adventure|Animation|Children|Comedy|IMAX    54   3.222222
+1                                 (no genres listed)     7   3.642857
+2                                             Action 24482   2.936321
+3                                   Action|Adventure 68688   3.659569
+4         Action|Adventure|Animation|Children|Comedy  7467   3.962770
+5 Action|Adventure|Animation|Children|Comedy|Fantasy   187   2.986631
+6    Action|Adventure|Animation|Children|Comedy|IMAX    66   3.295455
 ```
+
+## Data Analysis
 
 ### User Data Analysis:
 
-Initial data exploration showed very quickly that some users had rated much more movies than others, so much so that the discrepancy is difficult to visualize properly on a graph. Here is an attempt to do so using a box-whisker decile plot:
+Initial data exploration showed very quickly that some users had rated considerably more movies than others, so much so that the discrepancy is difficult to visualize properly on a graph. Here is an attempt to do so using a box-whisker decile plot:
 
 <div style="display: inline-block;">
   <img src="/movielens/graphs/box-whisker-decile_users.png" alt="User Rating Counts by Decile" title="User Rating Counts by Decile" style="float: center; width: 100%;">
 </div>
-
 
 As the plot shows, the most prolific 10% or so of users have rated so many movies that it immediately blows out the scale of the Y axis, making it difficult to even read the values for the other 90%. Cumulative density functions done on these two groups show that the cutoff for the top 10% of users is about 300 ratings, beyond which the counts begin to skyrocket.
 
@@ -90,16 +89,14 @@ As the plot shows, the most prolific 10% or so of users have rated so many movie
   <img src="/movielens/graphs/counts_cdf_top10_users.png" alt="Cumulative Density of Rating Counts (Top 10%)" title="Cumulative Density of Rating Counts (Top 10%)" style="float: left; margin-right: 10px; width: 45%;">
 </div>
 
-(TODO: If you have time, make mu, movie bias, and genre bias split along these two user groups)
-
 ### Genre Data Analysis:
 
-My initial approach for genres was to split apart the list of genres for each movie, and consider them individually. In total there are twenty unique genres, and similarly to what we saw with users, certain movie genres had a much higher number of ratings, and others very few. However the skew is not nearly as dramatic.
+In total there are twenty unique genres, and similar to what we saw with users, certain movie genres had a much higher number of ratings, and others very few. However the skew is not nearly as dramatic.
 
 <img src="/movielens/graphs/genre_counts_barplot.png" align="center" alt="Genre Counts"
 	title="Genre Counts"/>
 
-I was also curious to see which genres were most likely to appear together on the same movie, so I created the co-occurrence heatmap shown below. Each cell represents the number of movies which have both the genre on the X axis and the genre on the Y axis, with darker values indicating a higher number. Cells along the diagonal (where the X and Y genres are the same) are counts for movies with only that genre associated to it.
+I was curious to see which genres were most likely to appear together on the same movie, so I created the co-occurrence heatmap shown below. Each cell represents the number of movies which have both the genre on the X axis and the genre on the Y axis, with darker values indicating a higher number. Cells along the diagonal (where the X and Y genres are the same) are counts for movies with only that genre associated to it.
 
 <div style="display: inline-block; vertical-align: middle;">
 <p>
@@ -115,9 +112,28 @@ It is clear that there are certain genres which occur more frequently alongside 
 
 ### Movie Data Analysis
 
-(TODO: Fill this out more)
-There are 10677 unique movies in the dataset, with release dates from 1915 to 2008. 
-(TODO: Chronological effect, if there's time to do it)
+There are 10677 unique movies in the dataset, with release dates from 1915 to 2008. Like users and genres, there are some movies which are substantially more popular than others.
+
+```
+> head(movies[order(-movies$count), ])
+    movieId                            title year count avg_rating
+294     296              Pulp Fiction (1994) 1994 31362   4.154789
+353     356              Forrest Gump (1994) 1994 31079   4.012822
+588     593 Silence of the Lambs, The (1991) 1991 30382   4.204101
+477     480             Jurassic Park (1993) 1993 29360   3.663522
+316     318 Shawshank Redemption, The (1994) 1994 28015   4.455131
+109     110                Braveheart (1995) 1995 26212   4.081852
+> head(movies[order(movies$count), ])
+     movieId                          title year count avg_rating
+3107    3191             Quarry, The (1998) 1998     1        3.5
+3142    3226  Hellhounds on My Trail (1999) 1999     1        5.0
+3150    3234 Train Ride to Hollywood (1978) 1978     1        3.0
+3272    3356          Condo Painting (2000) 2000     1        3.0
+3298    3383               Big Fella (1937) 1937     1        3.0
+3473    3561         Stacy's Knights (1982) 1982     1        1.0
+```
+
+There is also some evidence of chronological effect on movie ratings as shown by the graph below. Older movies in general seem to have a higher average rating than newer movies, which show more spread. One possible explanation might be that older movies are more likely to only be viewed and rated by users who are fans of old movies, while newer movies get rated by a broader audience of viewers. It could also be the case that only the good movies from past decades are remembered and included in the MovieLens library, while the rest are lost to time.
 
 <img src="/movielens/graphs/movie_rating_by_release_year.png" align="center" alt="Average Movie Ratings By Release Year"
 	title="Average Movie Ratings By Release Year"/>
