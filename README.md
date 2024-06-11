@@ -74,21 +74,21 @@ Template code provided by the EdX team splits the data into a main dataset $\mat
 >
 ```
 (TODO: Phrase this better)
-Initial data analysis was performed on the main dataset, then the data was split into five equally sized subsets, indexed by `fold_index` one through five. Some simple algorithms were explored first to establish a performance benchmark, and for these models, only `fold_index = 1` was used as the test set. The other four sets were merged back together to form the training set. Cross-validation was not done for these models.
+Initial data analysis was performed on the main dataset as a whole. For model development, the data was split into five equally sized subsets, indexed by `fold_index` one through five. Some simple algorithms were explored first to establish a performance benchmark, and for these models, only `fold_index = 1` was used as the test set. The other four sets were merged back together to form the training set. Cross-validation was not done for these models.
 
-The main model used in this project is a modified version of the approach outlined by Robert M. Bell, Yehuda Koren, and Chris, Volinsky in their 2009 paper "The BellKor Solution to the Netflix Grand Prize." An average $\mu$ of all movie ratings in the training set formed a baseline predictor, on top of which were added movie, user, and genre biases $`{b}_{i}`$, $`{b}_{u}`$, $`{b}_{g}`$. Each bias had an associated regularization parameter, $\lambda_1$, $\lambda_2$, $\lambda_3$, which was tuned to minimize the error on the test set. This process was performed on all five folds for `k=5` fold cross validation. 
+The main model used in this project is a modified version of the approach outlined by Robert M. Bell, Yehuda Koren, and Chris Volinsky in their 2009 paper "The BellKor Solution to the Netflix Grand Prize." An average $\mu$ of all movie ratings in the training set formed a baseline predictor, on top of which were added movie, user, and genre biases - $`{b}_{i}`$, $`{b}_{u}`$, and $`{b}_{g}`$ respectively. Each bias has an associated regularization parameter, $\lambda_1$, $\lambda_2$, $\lambda_3$, which was tuned to minimize the error on the test set. This process was performed on all five folds for `k=5` fold cross validation. 
 
 (TODO: Find another way to refer to the model other than biasing effect model.)
-Each parameter was finalized at the average of the values calculated during the five validation runs. A single pass was then made through the entire main dataset to find the remaining difference ${r'} = \hat{r} - r$ between the recorded ratings and the ratings predicted by the model. Two methods were tried to account for these residual values - a matrix factorization model using stochastic gradient descent, and a simple linear model - but neither showed improvement over the biasing effect model, and were not used for the final RMSE calculation on the holdout set.
+Each parameter was finalized using the average of the optimal values calculated during each of the five validation runs. A single pass was then made through the entire main dataset to find the residual differences ${r'} = \hat{r} - r$ between the recorded ratings and the ratings predicted by the model. Two methods were attempted to reduce these residual values - a matrix factorization model using stochastic gradient descent, and a simple time factor linear model - but neither showed improvement over the base model, and were not used for the final RMSE calculation on the holdout set.
 
 The final RMSE on the holdout set was (TODO)
 
 ## Preprocessing:
 (TODO: Talk about edx code if there's time)
 
-Five folds were created using `createFolds`, with the response vector set to the rating column of the main EdX dataset to ensure rating values are equally distributed among each fold. The `generate_splits` function accepts a fold index parameter and extracts rows from the edx set to form testing and training sets for validation by `consistency_check`.
+Five folds were created using `createFolds`, with the response vector set to the rating column of the main EdX dataset to ensure rating values are equally distributed among each fold. The `generate_splits` function accepts a fold index parameter and extracts rows from the EdX set to form testing and training sets to be checked over by `consistency_check`.
 
-The `consistency_check` function ensures that every movieId and userId which appears in the test set must also appear in the training set. The code to do this was borrowed from the provided template code, which performs a similar modification for the main edx data set in relation to the final holdout set. While this is a seemingly small detail, it makes the prediction task **significantly** easier, as it completely eliminates the possibility we would need to make predictions on users or movies which do not appear in the training set, also known as the [cold start problem](https://en.wikipedia.org/wiki/Cold_start_(recommender_systems)).
+The `consistency_check` function ensures that every `movieId` and `userId` which appears in the test set also appears in the training set. The code to do this was borrowed from the provided template code, which performs a similar modification for the main dataset in relation to the final holdout set. While this is a seemingly small detail, it makes the prediction task **significantly** easier, as it completely eliminates the need to make predictions on users or movies which do not appear in the training set, also known as the [cold start problem](https://en.wikipedia.org/wiki/Cold_start_(recommender_systems)).
 
 The training data was further processed to produce the ```genres```, ```users```, and ```movies``` dataframes. The column names are provided below, and should be mostly self-explanatory.
 
@@ -101,7 +101,7 @@ The training data was further processed to produce the ```genres```, ```users```
 [1] "userId"     "count"      "avg_rating"
 ```
 
-Note genres contains the full genre list string provided for a movie, not an individual genre. This was done mainly for the sake of simplification - the section on genre relationships will touch further on this decision.
+Note `genres` contains the full genre list string provided for a movie, not an individual genre. This was done mainly for the sake of simplification - the section on genre relationships will touch further on this decision.
 ```
 > head(genres)
                                               genres count avg_rating
@@ -132,12 +132,12 @@ As the plot shows, the most prolific 10% or so of users have rated so many movie
 
 ### Genre Data Analysis:
 
-In total there are twenty unique genres, and similar to what we saw with users, certain movie genres had a much higher number of ratings, and others very few. However the skew is not nearly as dramatic.
+In total there are 20 unique genres, and similar to what we saw with users, certain movie genres had a much higher number of ratings, and others very few. However the skew is not nearly as dramatic:
 
 <img src="/movielens/graphs/genre_counts_barplot.png" align="center" alt="Genre Counts"
 	title="Genre Counts"/>
 
-I was curious to see which genres were most likely to appear together on the same movie, so I created the co-occurrence heatmap shown below. Each cell represents the number of movies which have both the genre on the X axis and the genre on the Y axis, with darker values indicating a higher number. Cells along the diagonal (where the X and Y genres are the same) are counts for movies with only that genre associated to it.
+I was curious to see which genres were most likely to appear together on the same movie, so I created the co-occurrence heatmap matrix shown below. Each cell represents the number of movies which have both the X-axis genre and Y-axis genre, with darker values indicating a higher number. Cells along the diagonal (where the X and Y genres are the same) are counts for movies with just that one genre associated to it.
 
 <div style="display: inline-block; vertical-align: middle;">
 <p>
@@ -145,7 +145,7 @@ I was curious to see which genres were most likely to appear together on the sam
 	title="Genre Heatmap"/>
 
 <br>
-It is clear that there are certain genres which occur more frequently alongside other ones, but, perhaps unsurprisingly, the most common genres are also the ones most likely to be associated with other genres, and the rarer ones less likely. I tried normalizing the matrix by dividing each row element by the sum of the values in that row, but the result wasn't any more insightful. I decided to stop my exploration into the genre data here, and stick to using the full genre string associated with each movie, rather than over-complicate things by subdividing them into individual genres. There are 797 unique genre strings, as opposed to only 20 unique individual genres, so while some resolution might be lost, in a training set of over 7 million ratings, I did not consider this loss of granularity to be worth the added complexity.
+It is clear that there are certain genres which occur more frequently alongside other ones, but, perhaps unsurprisingly, the most common genres are also the ones with the highest co-occurrence counts. I tried normalizing the matrix by dividing each row element by the sum of the values in that row, but the result wasn't any more insightful. I decided to stop my exploration into the genre data here, and stick to using the full genre string associated with each movie, rather than over-complicate things by subdividing them into individual genres. There are 797 unique genre strings, as opposed to only 20 unique individual genres, so while some resolution might be lost, in a dataset of over 9 million ratings, I did not consider this loss of granularity to be worth the added complexity.
 </p>
 </div>
 <br>
@@ -174,7 +174,7 @@ There are 10677 unique movies in the dataset, with release dates from 1915 to 20
 3473    3561         Stacy's Knights (1982) 1982     1        1.0
 ```
 
-There is also some evidence of chronological effect on movie ratings as shown by the graph below. Older movies in general seem to have a higher average rating than newer movies, which show more spread. One possible explanation might be that older movies are more likely to only be viewed and rated by users who are fans of old movies, while newer movies are rated by a broader audience. It could also be the case that only the good movies from past decades are remembered and included in the MovieLens library, while the rest are lost to time.
+There is also good evidence of chronological effect on movie ratings as shown by the graph below. Older movies in general seem to have a higher average rating than newer movies, which show more spread. One possible explanation might be that older movies are more likely to only be viewed and rated by users who are fans of old movies, while newer movies are rated by a broader audience. It could also be the case that only the good movies from past decades are remembered and included in the MovieLens library, while the rest are lost to time.
 
 <img src="/movielens/graphs/movie_rating_by_release_year.png" align="center" alt="Average Movie Ratings By Release Year"
 	title="Average Movie Ratings By Release Year"/>
@@ -186,10 +186,10 @@ As specified in the project instructions, the root mean squared error function w
 Let ${r}{_u}{_i}$ denote the observed rating of user $u$ for movie $i$ in some dataset, and let $\hat{r}{_u}{_i}$ signify an algorithm's prediction for how that user would rate the movie. The root mean squared error can then be written as
 
 ```math
-RMSE = \sqrt{\frac{{\sum}_{u,i\in {D}_{val}}({r}{_u}{_i} - \hat{r}{_u}{_i})^2}{|{D}_{val}|}}
+RMSE = \sqrt{\frac{{\sum}_{u,i\in {D}_{test}}({r}{_u}{_i} - \hat{r}{_u}{_i})^2}{|{D}_{test}|}}
 ```
 
-where $`{D}_{val}`$ is our validation (eg. test) set. It is, as the name would suggest, the square root of the mean of the square of the error. Error is commonly defined as the difference between the predicted vs. actual values - for this reason RMSE is also frequently called RMSD, or Root Mean Squared Difference. In code this relationship is much clearer:
+where $`{D}_{test}`$ is our test set. It is, as the name would suggest, the square **root** of the **mean** of the **square** of the **error**. Error is commonly defined as the difference between the predicted vs. actual values - for this reason RMSE is also frequently called RMSD, or Root Mean Squared Difference. In code this relationship is much clearer to see:
 
 ```
 calculate_rmse <- function(predicted_ratings, actual_ratings) {
@@ -200,22 +200,23 @@ calculate_rmse <- function(predicted_ratings, actual_ratings) {
   return(rmse)
 }
 ```
-Each algorithm produces a list of ratings of equal length to the `test_df$rating` column, and feeding these two lists into the `calculate_rmse` function returns a single RMSE value, which is then stored in `rmse_df` along with the algorithm's name and the `fold_index` value that the model was run on.
+Each algorithm produces a list of ratings of equal length to the `test_df$rating` column, and feeding these two lists into the `calculate_rmse` function returns a single RMSE value, which is then stored in `rmse_df` along with the algorithm's name and the `fold_index` that the model was run on.
 
 ### Some Simple Algorithms to Start
+(TODO: Double Check RMSEs for these)
 
 A couple of very basic methods for rating prediction come to mind, and these were the ones I tried first while building out the testing framework.
 
-The most naive approach would be to randomly guess a rating - as one would expect, this gave a very poor RMSE of ~2.16. Next was to find the average of all the ratings in the training set, and to use that value as the prediction for every rating in the test set. If we look to the histogram plot of the ratings given in the training set, we see that whole number ratings are more common than ones rated at half integer increments - this I would attribute to user psychology more than anything else. Taken individually, the set of whole number ratings and the set of half-step ratings both form bell-curve shaped distributions centered roughly around the global mean, shown as the dashed vertical red line.
+The most naive approach would be to randomly guess a rating - as one would expect, this gave a very poor RMSE of ~2.16. Next was to find the average of all the ratings in the training set, and to use that value as the prediction for every rating in the test set. If we look to the histogram plot of the ratings given in the training set, we see that whole number ratings are more common than ones rated at half integer increments (this I would attribute to user psychology more than anything else), but the set of whole number ratings and the set of half-step ratings both form bell-curve shaped distributions centered roughly around the global mean, shown as the dashed vertical red line.
 
 <img src="/movielens/graphs/rating_histogram.png" align="center" alt="Ratings Histogam"
 	title="Ratings Histogram"/>
 
-Always predicting the global mean might not be a very sophisticated approach, but it minimizes the distance from observed ratings more so than any other static value. In any case, it is much better than making random guesses, and gives a much improved RMSE of ~1.06.
+Predicting the training set mean for each rating in the test set might not be a very sophisticated approach, but it minimizes the distance from observed ratings more so than any other static value. In any case, it is much better than making random guesses, and gives a much improved RMSE of ~1.06.
 
-Per-genre average, per-user average, and per-movie average is a slightly more nuanced approach, producing a mean for each genre, user, or movie, and making that our guess, rather than the global average. This takes into account that some genres / users / movies might tend to rate higher or lower, and by taking the mean of specific subsets of ratings rather than the entire set, we capture slightly more detail and are able to incrementally improve the RMSE.
+Per-genre average, per-user average, and per-movie average is slightly more nuanced, producing a mean for each genre, user, or movie, and making that our guess, rather than the global average. This takes into account that some genres / users / movies tend to rate higher or lower, and by taking the mean of specific subsets of ratings, rather than the mean of the entire training set, we capture slightly more detail, and are able to incrementally improve the RMSE.
 
-Finally, I tried an ensemble of the user and movie averages. In the case where the two are equally weighted, the predicted value is defined as $`\hat{r}{_u}{_i} = \frac{(\bar{r}_{u} + \bar{r}_{i})}{2}`$, with the average rating for user $u$ and movie $i$ as $`\bar{r}_{u}`$ and $`\bar{r}_{i}`$ respectively. This yielded an RMSE of ~0.913, To see whether this could be improved by weighting the average, the prediction was redefined as $`\hat{r}{_u}{_i} = {w} * \bar{r}_{u} + (1 - {w}) * \bar{r}_{i}`$, with ${w}$ being the weight assigned to the user average, and $1-{w}$ the weight for the movie average. The plot below shows the RMSE across the test set plotted against values of ${w}$ ranging from 0.2 to 0.6.
+Finally, I tried an ensemble of the user and movie averages. If we weight the two equally, the predicted value is defined as $`\hat{r}{_u}{_i} = \frac{(\bar{r}_{u} + \bar{r}_{i})}{2}`$, with the average rating for user $u$ and movie $i$ as $`\bar{r}_{u}`$ and $`\bar{r}_{i}`$ respectively. This yielded an RMSE of ~0.913, To see whether this could be improved by weighting the average, the prediction was redefined as $`\hat{r}{_u}{_i} = {w} * \bar{r}_{u} + (1 - {w}) * \bar{r}_{i}`$, with ${w}$ being the weight assigned to the user average, and $1-{w}$ the weight for the movie average. To find the optimal weighting ${w}$, I plotted the RMSE across the test set against values of ${w}$ ranging from 0.2 to 0.6:
 
 <img src="/movielens/graphs/weighted_ensemble_tuning.png" align="center" alt="User / Movie Average Weighted Ensemble Optimization"
 	title="User / Movie Average Weighted Ensemble Optimization"/>
@@ -240,9 +241,9 @@ The results of these simple algorithms are tallied below:
 
 ### User, Movie, and Genre Biases
 
-A more sophisticated approach similar to the one found in Koren et al.'s (TODO: format) 2009 paper was tried next. Rather than taking the average rating for each movie, we instead find the biasing effect $`{b}_{i}`$ for each movie, defined as the average difference of the observed ratings for all users on that movie from the global average $\mu$ of all movie ratings, such that $`{b}_{i} = \frac{\sum_{u\in R(i)}{r}{_u}{_i} - \mu}{|R(i)|}`$, with ${u\in R(i)}$ being all users $u$ who have rated movie $i$, and $|R(i)|$ as the size of that set of users. We likewise define the user bias to be the average of the observed ratings, minus the global mean plus the movie bias: $`{b}_{u} = \frac{\sum_{i\in R(u)}{r}{_u}{_i} - (\mu+{b}_{i})}{|R(u)|}`$, and the genre bias to be the average of the observed, minus the global mean plus the user and movie biases: $`{b}_{g} = \frac{\sum_{u,i\in R(g)}{r}{_u}{_i} - (\mu+{b}_{i}+{b}_{u})}{|R(g)|}`$, where $`{u,i\in R(g)}`$ is some user $u$ rating a movie $i$ which has genre $g$, and $|R(g)|$ is the size of the set of all ratings for that genre.
+A more sophisticated approach is presented in Koren et al.'s (TODO: format) 2009 paper. Rather than taking the average rating for each movie, we instead find the biasing effect $`{b}_{i}`$ for each movie, defined as the average difference of the observed ratings for all users on that movie from the global average $\mu$ of all movie ratings, such that $`{b}_{i} = \frac{\sum_{u\in R(i)}{r}{_u}{_i} - \mu}{|R(i)|}`$, with ${u\in R(i)}$ being all users $u$ who have rated movie $i$, and $|R(i)|$ as the size of that set of users. We likewise define the user bias to be the average of the observed ratings, minus the sum of the global mean and the movie bias: $`{b}_{u} = \frac{\sum_{i\in R(u)}{r}{_u}{_i} - (\mu+{b}_{i})}{|R(u)|}`$, and the genre bias to be the average of the observed minus the sum of the global mean and the user and movie biases: $`{b}_{g} = \frac{\sum_{u,i\in R(g)}{r}{_u}{_i} - (\mu+{b}_{i}+{b}_{u})}{|R(g)|}`$, where $`{u,i\in R(g)}`$ is some user $u$ rating a movie $i$ which has genre $g$, and $|R(g)|$ is the size of the set of all ratings for that genre.
 
-Please note again that "genre" in this case refers to the entire genre list string attached to a given movie. As mentioned previously, I did not feel it was worth the added complexity of finding the biasing effects of each the 20 individual genres, and instead treated the entire genre list string as one item.
+(Please note again that "genre" in this case refers to the entire genre list string attached to a given movie. As mentioned previously, I did not feel it was worth the added complexity of finding the biasing effects of each the 20 individual genres, and instead treated the entire genre list string as one item.)
 
 These equations were implemented in code using R's `aggregate` function. Again, the code might be easier to understand than the mathematical equations, so I've included a shortened version below (the `_0` suffix indicates that these are unregularized biases - more on that in the Bias Regularization section).:
 ```
@@ -251,8 +252,11 @@ users <- aggregate((rating-(mu+b_i_0)) ~ userId, data = train_df, FUN = mean)
 genres <- aggregate((rating-(mu+b_i_0+b_u_0)) ~ genres, data = train_df, FUN = mean)
 ```
 
-Once the biasing effects $`{b}_{i}`$, $`{b}_{u}`$, and $`{b}_{g}`$ are calculated for each movie, user, and list of genres, we simply add them on top of the global rating average $\mu$ to find the predicted rating $`\hat{r}{_u}{_i} = \mu + {b}_{i} + {b}_{u} + {b}_{g}`$,
+Once the biasing effects $`{b}_{i}`$, $`{b}_{u}`$, and $`{b}_{g}`$ are calculated for each movie, user, and list of genres, we simply add them on top of the global rating average $\mu$ to find the predicted rating:
 
+```math
+\hat{r}{_u}{_i} = \mu + {b}_{i} + {b}_{u} + {b}_{g}`
+```
 I layered the biasing effects onto the global average one at a time, and the results are shown below:
 
 <div align = "center">
@@ -266,10 +270,10 @@ I layered the biasing effects onto the global average one at a time, and the res
 </div>
 
 ### Bias Regularization Tuning With K = 5 Fold Cross Validation
-(TODO)
-The variance of the mean value of a sample can be defined as $`Var(\bar{r}) = \frac{\sigma^2}{n}`$ for a sample of size $n$ taken from a population that has some variance $`\sigma^2`$. This equation shows that the variance of the sample mean is inversely proportional to the sample size - for movies, users, or genres with very few ratings in the training set, the calculated biasing effect (essentially a sample mean) will vary significantly based on the specific ratings randomly selected for inclusion.
 
-To counteract this, I adopted Koren et al.'s approach by including a regularization in the bias calculation:
+The variance of the mean value for a sample can be defined as $`Var(\bar{r}) = \frac{\sigma^2}{n}`$ for a sample of size $n$ taken from a population that has some variance $`\sigma^2`$. This equation shows that the variance of the sample mean is inversely proportional to the sample size. In our context, when movies, users, or genres have very few ratings in the training set, the calculated biasing effect (which is essentially a sample mean) will vary significantly based on the specific ratings randomly selected for inclusion.
+
+To counteract this, I adopted Koren et al.'s approach by including a regularization parameter $\lambda$ into each bias calculation:
 
 ```math
 	
@@ -281,7 +285,7 @@ To counteract this, I adopted Koren et al.'s approach by including a regularizat
 
 When the sample size $|R|$ is small, $\lambda$ significantly reduces the bias, while for larger sample sizes this effect diminishes, approaching 0 as $|R|$ increases. This reduces the influence of noisy biasing effects caused by small sample sizes, while preserving the bias effects we have greater confidence in.
 
-Similar to the weighted average parameter tuning process, (TODO: phrase better) values for $\lambda$ were stepped in 0.001 increments and plotted against the resulting RMSE on the test set. The value which minimized the RMSE was picked at each stage before moving on to the next parameter.
+Similar to the tuning process for the weighted average parameter, values for $\lambda$ were stepped in 0.001 increments and plotted against the resulting RMSE on the test set. The value which minimized the RMSE was picked at each stage before moving on to the next parameter.
 
 <div style="display: inline-block;">
 	<img src="/movielens/graphs/l1-tuning-square-fold-1.png" alt="L1 Tuning Fold 1" title="L1 Tuning Fold 1" style="float: left; margin-right: 5px; width: 30%;">
@@ -290,7 +294,7 @@ Similar to the weighted average parameter tuning process, (TODO: phrase better) 
 </div>
 
 (TODO: Rephrase. Maybe talk more about what K-fold cross validation is.)
-As mentioned, the biasing effects are quite sensitive to the randomness of the training / test set split, and consequently so are their tuning parameters. To counteract this, the full dataset was split into 5 folds and the process was run once on each fold. The results of the first fold is shown above (plots for the other folds are included in the repository, but omitted for brevity), and a summary of the tuned values across all five folds, along with the resulting RMSE, is presented below.
+As mentioned, the biasing effects are quite sensitive to the randomness of the training / test set split, and consequently so are their tuning parameters. To counteract this, the full dataset was split into 5 folds and the tuning process was run on each fold. The plots for the first fold are shown above (plots for the other folds are included in the repository, but omitted for brevity), and a summary of the tuned values across all five folds, along with the resulting RMSE, is presented below:
 
 <div align = "center">
 
