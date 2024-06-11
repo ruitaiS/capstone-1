@@ -7,6 +7,48 @@ TODO:
 * Fiddle with the heatmap graph spacing if you really want
 * instead of saying edx or main dataset
 
+### Regarding the Files:
+
+This project is split into several `.R` files, and are prefixed to indicate the proper running order. Each file corresponds to a section in this report, and includes the code necessary to generate the graphs shown.
+
+`1 - edx_template.R` is the template code provided by the EdX team, and is only very slightly modified to change the directory structure. It should be run in it's entirety, and will produce the `edx` and `final_holdout_test` dataframes from the MovieLens data.
+
+`2 - setup.R` downloads additional library dependencies, and provides some auxiliary functions used by the other files in the project. It also creates the `rmse_df` dataframe for storing the results of each algorithm, and `folds`, which contains five lists of indices, each corresponding to one fifth of the indices in the edx dataset. This also only needs to be run once in its entirety.
+
+`3 - prepare_data.R` contains code to prepare the datasets for analysis and training, and consists of three subsections.
+
+The first subsection assigns the entire edx set to `train_df`. This is mainly used for data analysis in sections 4-7, but is also used in section 12 to calculate the residual values on the entire dataset.
+
+The second subsection assigns a specific fold as the test set, and merges the remaining folds into a training set. For section 8, 9, and 10, please use `fold_index = 1` to replicate the results in this report. Section 11 should be run five times with `fold_index` 1 through 5.
+
+The third subsection should be always be run. It calculates the global rating average `mu` across the assigned training set, and creates the `users`, `movies`, and `genres` dataframes based on the training set.
+
+The code is set up this way so that you can optionally run the analysis code on each fold instead of the full dataset without needing to change any of the variable names in those sections.
+
+`4 - user_analysis.R` contains code to generate the graphs shown in the User Data Analysis section of the report. Please run each subsection one at a time, as the plot data is removed at the end of each subsection and you will not see the graphs if the entire file is run.
+
+`5 - genre_analysis.R` generates the genre barplot and co-occurrence heatmap in the Genre Data Analyis section. Again, please run the barplot and the heatmap subsections individually, because otherwise you will not be able to see the graphs. There is optionally a section which will row-normalize the values in the heatmap, if you're interested in seeing that plot, which is mentioned but not included in the report.
+
+`6 - movie_analysis.R` creates the Average Rating Vs. Release Year plot shown in the Movie Data Analysis section.
+
+`6 - movie_analysis_extra.R` contains some extra plots about movie data that were ultimately left out of the report. They are in a similar format to the user data plots.
+
+`7 - ratings_analysis.R` creates the ratings histogram plot shown in the Simple Algorithms section.
+
+`8 - simple_algorithms.R` generates the outputs from the algorithms discussed in the Simple Algorithms section. This code can be run all at once. The results will be stored in `rmse_df` and can be viewed there.
+
+`9 - ensemble_tuning.R` is the code for tuning the weights on the user / movie rating ensemble algorithm. The first subsection creates the graph shown in the Simple Algorithms section, and the second subsection stores into `rmse_df` the results obtained from using the tuned weights. Please run these individually.
+
+This section also contains some commented out code for dropping users / movies from the average if they have less than some minimum number of ratings. This exploration was ultimately a dead end because it only seemed to increase the error, and is not included in the report. The code is there for those who are curious.
+
+`10 - unregularized_biasing_effects.R` can be run all at once, and contains code for generating the output of the unregularized biasing effects model discussed in the User, Movie, and Genre Biases section. The results will be stored in `rmse_df`.
+
+`11 - bias_regularization_tuning.R` is the code for tuning the regularization parameters mentioned in the User, Movie, and Genre Biases section. Prior to each run, please make sure to run `3 - prepare_data.R` using a new `fold_index` value from 1 to 5. I would recommend for just the first run to do the plotting sections individually to see the plots, then comment out the `print(plot)` portions and run the file in its entirely for subsequent runs.
+
+`12 - residuals.R` calculates the residual values mentioned in the Residuals section of the report. Please run `3 - prepare_data.R` to assign the entire edx set as `train_df` prior to running this file. Everything here can be run all at once.
+
+(TODO: LM, Matrix Factorization Models)
+
 ## Introduction:
 
 This project implements a machine learning based prediction system for ratings in the MovieLens dataset. The full dataset consists of 10,000,054 ratings of 10,677 movies by 69,878 unique users. Each row has columns indicating the ID of the user who made the rating, the ID of the movie which was rated, the rating given, the timestamp at which it was given, the title of the movie, and the genres that the movie belongs to.
