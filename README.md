@@ -140,8 +140,6 @@ There is also some evidence of chronological effect on movie ratings as shown by
 
 ## Methods:
 
-Initial tests were done with training and test sets produced by ```partition(seed = 1, subset_p = 1)```
-
 As specified in the project instructions, the root mean squared error function was used as a measure for each algorithms effectiveness.
 
 Let ${r}{_u}{_i}$ denote the observed rating of user $u$ for movie $i$ in some dataset, and let $\hat{r}{_u}{_i}$ signify an algorithm's prediction for how that user would rate the movie. The root mean squared error can then be written as
@@ -164,9 +162,7 @@ calculate_rmse <- function(predicted_ratings, actual_ratings) {
 
 ### Some Simple Algorithms to Start
 
-(TODO: These algorithms were all run using fold index 1 to create the training and test sets)
-
-A couple of very basic methods for rating prediction come to mind, and these were the ones I tried first while building out the testing framework. The code for them is in the ```simple-algorithms.R``` file. (TODO: Specify where the files are for each section)
+A couple of very basic methods for rating prediction come to mind, and these were the ones I tried first while building out the testing framework.
 
 The most naive approach would be to randomly guess a rating - as one would expect, this gave a very poor RMSE of ~2.16. Next was to find the average of all the ratings in the training set, and to use that value as the prediction for every rating in the test set. If we look to the histogram plot of the ratings given in the training set, we see that whole number ratings are more common than ones rated at half integer increments - this I would attribute to user psychology more than anything else. Taken individually, the set of whole number ratings and the set of half-step ratings both form bell-curve shaped distributions centered roughly around the global mean, shown as the dashed vertical red line.
 
