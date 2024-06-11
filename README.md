@@ -3,8 +3,8 @@
 TODO:
 * Check results and graphs for simple algorithms using fold_index 1
 * Mention the lm and matrix factorization approaches you took, which unfortunately did not yield positive results / took too far too long to run.
-* Figure out a synoynm for "initially"
-* instead of saying edx or main dataset
+* Figure out a synoynm for "initially." Or control F it and see how many times you used it (feels like a lot)
+* ctrl f 'edx' and 'main'. Make sure it's styled properly.
 
 ### Regarding the Files:
 
@@ -50,7 +50,7 @@ This section also contains some commented out code for dropping users / movies f
 
 ## Introduction:
 
-This project implements a machine learning based prediction system for ratings in the MovieLens dataset. The full dataset consists of 10,000,054 ratings of 10,677 movies by 69,878 unique users. Each row has columns indicating the ID of the user who made the rating, the ID of the movie which was rated, the rating given, the timestamp at which it was given, the title of the movie, and the genres that the movie belongs to.
+This project implements a machine learning based prediction system for ratings in the MovieLens dataset. The full dataset consists of 10,000,054 ratings of 10,677 movies by 69,878 unique users. Each row has columns indicating the ID of the user who made the rating, the ID of the movie which was rated, the rating given, the timestamp at which it was given, the title of the movie, and the genres that the movie belongs to. Ratings can range from 0 to 5, at half-integer increments.
 
 ```
 > nrow(movielens)
@@ -63,7 +63,7 @@ This project implements a machine learning based prediction system for ratings i
 [1] "userId"    "movieId"   "rating"    "timestamp" "title"     "genres"
 ```
 
-Template code provided by the EdX team splits the data into a main dataset $\mathcal{D}$ of 9,000,055 entries and a final holdout test set $\mathcal{F}$ of 999,999 entries to be used exclusively for a final error calculation at the end of the project. The goal is to train a machine learning model on the records in the main dataset which can predict the values in the `rating` column of the final holdout set, using the other column values as predictor variables. The root mean squared error function was used as a metric for the predictive power of the algorithm, with a target RMSE of less than 0.86490.
+Template code provided by the EdX team splits the data into a main dataset of 9,000,055 entries and a final holdout test set of 999,999 entries to be used exclusively for a final error calculation at the end of the project. The goal is to train a machine learning model on the records in the main dataset which can predict values in the `rating` column of the final holdout set, using the other column values as predictor variables. The root mean squared error function was used as a metric for the predictive power of the algorithm, with a target RMSE of less than 0.86490.
 
 ```
 > nrow(edx)
@@ -73,7 +73,7 @@ Template code provided by the EdX team splits the data into a main dataset $\mat
 >
 ```
 (TODO: Phrase this better)
-Initial data analysis was performed on the main dataset as a whole. For model development, the data was split into five equally sized subsets, indexed by `fold_index` one through five. Some simple algorithms were explored first to establish a performance benchmark, and for these models, only `fold_index = 1` was used as the test set. The other four sets were merged back together to form the training set. Cross-validation was not done for these models.
+Initial data analysis was performed on the main dataset as a whole. For model development, the data was split into five equally sized subsets, indexed by `fold_index` one through five. Some simple algorithms were explored first to establish a performance benchmark, and for these models, only `fold_index = 1` was used as the test set; the other four sets were merged back together to form the training set. Cross-validation was not done for these models.
 
 The main model used in this project is a modified version of the approach outlined by Robert M. Bell, Yehuda Koren, and Chris Volinsky in their 2009 paper "The BellKor Solution to the Netflix Grand Prize." An average $\mu$ of all movie ratings in the training set formed a baseline predictor, on top of which were added movie, user, and genre biases - $`{b}_{i}`$, $`{b}_{u}`$, and $`{b}_{g}`$ respectively. Each bias has an associated regularization parameter, $\lambda_1$, $\lambda_2$, $\lambda_3$, which was tuned to minimize the error on the test set. This process was performed on all five folds for `k=5` fold cross validation. 
 
@@ -83,13 +83,15 @@ Each parameter was finalized using the average of the optimal values calculated 
 The final RMSE on the holdout set was (TODO)
 
 ## Preprocessing:
-(TODO: Talk about edx code if there's time)
+The provided template code downloads the MovieLens dataset and splits the data into `edx` and `final_holdout_test` dataframes, with a proportion of `p = 0.1` for the latter. (TODO: Expound if time)
 
-Five folds were created using `createFolds`, with the response vector set to the rating column of the main EdX dataset to ensure rating values are equally distributed among each fold. The `generate_splits` function accepts a fold index parameter and extracts rows from the EdX set to form testing and training sets to be checked over by `consistency_check`.
+The `edx` set is split into five folds using `createFolds`, with the `rating` column assigned as the response vector to ensure that rating values are equally distributed among each fold. Each fold is an equal length list of unique, non-overlapping indices for rows from the `edx` set.
 
-The `consistency_check` function ensures that every `movieId` and `userId` which appears in the test set also appears in the training set. The code to do this was borrowed from the provided template code, which performs a similar modification for the main dataset in relation to the final holdout set. While this is a seemingly small detail, it makes the prediction task **significantly** easier, as it completely eliminates the need to make predictions on users or movies which do not appear in the training set, also known as the [cold start problem](https://en.wikipedia.org/wiki/Cold_start_(recommender_systems)).
+The `generate_splits` function accepts a `fold_index` parameter designating which of the five folds will be used as the test set; the remaining folds are merged together to form the training set. The corresponding rows are extracted from the `edx` set, and passed to the `consistency_check` function before being assigned as the `test_df` and `train_df` dataframes.
 
-The training data was further processed to produce the ```genres```, ```users```, and ```movies``` dataframes. The column names are provided below, and should be mostly self-explanatory.
+`consistency_check` ensures that every `movieId` and `userId` which appears in the test set also appears in the training set. The code to do this was borrowed from the provided template code, which performs a similar modification for the main dataset in relation to the final holdout set. While this is a seemingly minor detail, it makes the prediction task **significantly** easier, as it completely eliminates the need to make predictions on users or movies which do not appear in the training set, also known as the [cold start problem](https://en.wikipedia.org/wiki/Cold_start_(recommender_systems)).
+
+The training set was further processed to produce the ```genres```, ```users```, and ```movies``` dataframes. The column names are provided below, and should be mostly self-explanatory.
 
 ```
 > names(genres)
