@@ -1,10 +1,9 @@
 # Movie Recommendations:
 
 TODO:
-* mention how weights were tuned for w and lambda
-* Redo results and graphs for simple algorithms using fold_index 1
+* Check results and graphs for simple algorithms using fold_index 1
 * Mention the lm and matrix factorization approaches you took, which unfortunately did not yield positive results / took too far too long to run.
-* Fiddle with the heatmap graph spacing if you really want
+* Figure out a synoynm for "initially"
 * instead of saying edx or main dataset
 
 ### Regarding the Files:
