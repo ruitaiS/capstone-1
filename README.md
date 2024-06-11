@@ -1,7 +1,6 @@
 # Movie Recommendations:
 
 TODO:
-* Section explaining how test / train was selected, since the partition functionw as rewritten. Instead say the charts were developed using fold 1 of the K, and that the full K folds were used for regularization tuning. Then the entire edx set was used for lm and sgd training, and for final evaluation
 * mention how weights were tuned for w and lambda
 * Redo results and graphs for simple algorithms using fold_index 1
 * Mention the lm and matrix factorization approaches you took, which unfortunately did not yield positive results / took too far too long to run.
@@ -133,7 +132,7 @@ There are 10677 unique movies in the dataset, with release dates from 1915 to 20
 3473    3561         Stacy's Knights (1982) 1982     1        1.0
 ```
 
-There is also some evidence of chronological effect on movie ratings as shown by the graph below. Older movies in general seem to have a higher average rating than newer movies, which show more spread. One possible explanation might be that older movies are more likely to only be viewed and rated by users who are fans of old movies, while newer movies get rated by a broader audience. It could also be the case that only the good movies from past decades are remembered and included in the MovieLens library, while the rest are lost to time.
+There is also some evidence of chronological effect on movie ratings as shown by the graph below. Older movies in general seem to have a higher average rating than newer movies, which show more spread. One possible explanation might be that older movies are more likely to only be viewed and rated by users who are fans of old movies, while newer movies are rated by a broader audience. It could also be the case that only the good movies from past decades are remembered and included in the MovieLens library, while the rest are lost to time.
 
 <img src="/movielens/graphs/movie_rating_by_release_year.png" align="center" alt="Average Movie Ratings By Release Year"
 	title="Average Movie Ratings By Release Year"/>
@@ -159,6 +158,7 @@ calculate_rmse <- function(predicted_ratings, actual_ratings) {
   return(rmse)
 }
 ```
+Each algorithm produces a list of ratings of equal length to the `test_df$rating` column, and feeding these two lists into the `calculate_rmse` function returns a single RMSE value, which is then stored in `rmse_df` along with the algorithm's name and the `fold_index` value that the model was run on.
 
 ### Some Simple Algorithms to Start
 
