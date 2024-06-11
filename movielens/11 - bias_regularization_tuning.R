@@ -29,8 +29,8 @@ plot <- qplot(l1_plot$Lambda, l1_plot$RMSE, geom = "line")+
     axis.text = element_text(size = unit(10, "mm"))
   )
 
-#print(plot)
-store_plot(paste0("l1-tuning-square-fold-", fold_index, ".png"), plot, h=6, w=6)
+print(plot)
+#store_plot(paste0("l1-tuning-square-fold-", fold_index, ".png"), plot, h=6, w=6)
 
 # Store + Cleanup
 l1 <- l1_plot$Lambda[which.min(l1_plot$RMSE)]
@@ -69,17 +69,14 @@ plot <- qplot(l2_plot$Lambda, l2_plot$RMSE, geom = "line")+
     axis.text = element_text(size = unit(10, "mm"))
   )
 
-#print(plot)
-store_plot(paste0("l2-tuning-square-fold-", fold_index, ".png"), plot, h= 6, w = 6)
+print(plot)
+#store_plot(paste0("l2-tuning-square-fold-", fold_index, ".png"), plot, h= 6, w = 6)
 
 # Store + Cleanup
 l2 <- l2_plot$Lambda[which.min(l2_plot$RMSE)]
 users$b_u_reg <- tuning_df$sum / (tuning_df$count + l2)
 train_df <- merge(train_df, users[,c('userId', 'b_u_reg')], by="userId")
 rm(tuning_df, l2_plot, movie_bias, user_bias)
-
-# Note: Even though l2 is optimized at 0, b_u_reg != b_u_0
-# This is because we're basing it on b_i_reg, not b_i_0
 #--------
 
 # l3 tuning for genre bias:
@@ -94,11 +91,20 @@ l3_plot <- data.frame(Lambda = character(),
                       RMSE = numeric(),
                       stringsAsFactors = FALSE)
 
+l3_sequences <- list(
+  seq(26, 28, 0.001), # Fold 1 ; l3 = 27.167
+  seq(14, 16, 0.001), # Fold 2 ; l3 = 15.209
+  seq(0, 2, 0.001),    # Fold 3; l3 = 0# Fold 3
+  seq(11.5, 13.5, 0.001), # Fold 4; l3 = 12.262
+  seq(3, 5, 0.001)     # Fold 5; l3 = 4.07
+)
+
 #for (l3 in seq(26, 28, 0.001)){ # Fold 1 ; l3 = 27.167
 #for (l3 in seq(14, 16, 0.001)){ # Fold 2 ; l3 = 15.209
 #for (l3 in seq(0, 2, 0.001)){ # Fold 3; l3 = 0
 #for (l3 in seq(11.5, 13.5, 0.001)){ # Fold 4; l3 = 12.262
-for (l3 in seq(3, 5, 0.001)){ # Fold 5; l3 = 4.07
+#for (l3 in seq(3, 5, 0.001)){ # Fold 5; l3 = 4.07
+for (l3 in l3_sequnces[[fold_index]]){
   tuning_df$b_g <- tuning_df$sum / (tuning_df$count + l3)
   genre_bias <- tuning_df$b_g[match(test_df$genres, tuning_df$genres)]
   l3_plot <- rbind(l3_plot, data.frame(
@@ -121,18 +127,14 @@ plot <- qplot(l3_plot$Lambda, l3_plot$RMSE, geom = "line")+
     axis.text = element_text(size = unit(10, "mm"))
   )
 
-#print(plot)
-store_plot(paste0("l3-tuning-square-fold-", fold_index, ".png"), plot, h = 6, w=6)
+print(plot)
+#store_plot(paste0("l3-tuning-square-fold-", fold_index, ".png"), plot, h = 6, w=6)
 
 # Store and Cleanup
 l3 <- l3_plot$Lambda[which.min(l3_plot$RMSE)]
 genres$b_g_reg <- tuning_df$sum / (tuning_df$count + l3)
 train_df <- merge(train_df, genres[,c('genres', 'b_g_reg')], by="genres")
 rm(tuning_df, l3_plot, movie_bias, user_bias, genre_bias)
-
-# Note: Like with l2, even though l3 is optimized at 0, b_g_reg != b_g_0
-# This is because we're basing it on b_i_reg and b_u_reg, not b_i_0 and b_u_0
-
 #----------
 # Predict with Regularized Biases
 movie_bias <- movies$b_i_reg[match(test_df$movieId, movies$movieId)]

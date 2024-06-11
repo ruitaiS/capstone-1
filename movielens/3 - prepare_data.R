@@ -1,5 +1,9 @@
-# Run This For K-Fold: (Pick New Index Each Run) -------------------
-
+# ------------------------------------------------------------------
+# Run This to use full Edx Set
+# (Used for sections 4 - 7, 12)
+#train_df <- edx
+# ------------------------------------------------------------------
+# Run This For K-Fold: (Pick New Index Each Run)
 fold_index = 1
 
 splits <- generate_splits(fold_index)
@@ -7,11 +11,6 @@ test_df <- splits[[1]]
 train_df <- splits[[2]]
 rm(splits, mu, users, movies, genres)
 # ------------------------------------------------------------------
-# Run This to use full Edx Set
-# For sections 4, 5, 12
-#train_df <- edx
-# ------------------------------------------------------------------
-
 # Always Run The Below Code:
 
 # Average of All Ratings

@@ -1,5 +1,3 @@
-# It's ugly but it runs
-
 # Individual Genres 
 genres_individual <- as.data.frame(table(unlist(strsplit(train_df$genres, "\\|"))))
 colnames(genres_individual) <- c("genre", "count")

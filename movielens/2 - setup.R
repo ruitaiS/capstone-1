@@ -39,6 +39,7 @@ calculate_rmse <- function(predicted_ratings, actual_ratings) {
   return(rmse)
 }
 
+# Function to write plots to file
 store_plot<- function(filename, plot, h = 6, w = 12) {
   res <- 300
   height <- h * res

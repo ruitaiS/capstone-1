@@ -1,18 +1,7 @@
 user_avg <- users$avg_rating[match(test_df$userId, users$userId)]
 movie_avg <- movies$avg_rating[match(test_df$movieId, movies$movieId)]
 
-# User Movie Ensemble -----------------------------------------------------
-
-# Equal weighting from User Avg. and the Movie Avg.
-predicted <- (user_avg + movie_avg) / 2
-rmse_df <- rbind(rmse_df, data.frame(
-  Algorithm = "User and Movie Avg, Equal Weight Ensemble",
-  RMSE = calculate_rmse(predicted, test_df$rating),
-  Fold = fold_index))
-
-# User Movie Weighted Ensemble Exploration -------------------------------
-
-# Check which weight optimizes the RMSE
+# Tune weight to optimize the RMSE
 w_plot <- data.frame(w = numeric(), RMSE = numeric())
 for (w in seq(0.2, 0.6, 0.0001)) {
   predicted <- w*user_avg + (1-w)*movie_avg
@@ -36,7 +25,7 @@ plot <- qplot(w_plot$w, w_plot$RMSE, geom = "line")+
 print(plot)
 #store_plot("weighted_ensemble_tuning.png", plot)
 
-# Store RMSE for Optimized Weighting
+# Store RMSE for Optimized Weighting -----------------------------------------
 # w = 0.4255 gives RMSE 0.9076019
 w <- w_plot$w[which.min(w_plot$RMSE)]
 predicted <- (w*user_avg + (1-w)*movie_avg)

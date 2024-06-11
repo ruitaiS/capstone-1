@@ -45,5 +45,14 @@ rmse_df <- rbind(rmse_df, data.frame(
     test_df$rating),
   Fold = fold_index))
 
+# User Movie Equal Weight Ensemble -----------------------------------------------------
+user_avg <- users$avg_rating[match(test_df$userId, users$userId)]
+movie_avg <- movies$avg_rating[match(test_df$movieId, movies$movieId)]
+predicted <- (user_avg + movie_avg) / 2
+rmse_df <- rbind(rmse_df, data.frame(
+  Algorithm = "User and Movie Avg, Equal Weight Ensemble",
+  RMSE = calculate_rmse(predicted, test_df$rating),
+  Fold = fold_index))
+
 # Cleanup
-rm(predicted)
+rm(user_avg, movie_avg, predicted)

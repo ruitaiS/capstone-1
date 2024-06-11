@@ -11,5 +11,6 @@ plot <- ggplot(train_df, aes(x = rating)) +
     axis.title = element_text(size = unit(15, "mm")),
     axis.text = element_text(size = unit(10, "mm"))
   )
-store_plot("rating_histogram.png", plot)
+print(plot)
+#store_plot("rating_histogram.png", plot)
 rm(plot)

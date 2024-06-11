@@ -1,5 +1,4 @@
 # Find residuals after using tuned values for l1, l2, l3
-# TODO: Consider doing the entire edx set, instead of just the training set
 
 l1 <- (1.947 + 2.347 + 2.083 + 2.272 + 2.151) / 5
 l2 <- (4.836 + 4.974 + 4.859 + 4.959 + 5.307) / 5
@@ -33,7 +32,7 @@ genre_bias <- genres$b_g_reg[match(train_df$genres, genres$genres)]
 train_df$r <- train_df$rating - (mu + movie_bias + user_bias + genre_bias)
 rm(movie_bias, user_bias, genre_bias)
 
-# Fun Functions (Do Not Run) -----------------------------
+#-----------------------------
 
 # Plotting the Residuals Density Plot
 #density_values <- density(train_df$r)
