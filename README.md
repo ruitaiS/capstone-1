@@ -342,14 +342,36 @@ a results section that presents the modeling results and discusses the model per
 
 Final results calculations were peformed with regularization parameters $\lambda_1 = 2.16$, $\lambda_2 = 4.987$, and $\lambda_3 = 11.7416$. The biasing effects were recalculated using these values on the `fold_index=1` fold. This was actually done by mistake - I had intended to apply it to the entire training set, but my local R environment was not set up properly. Having already calculated the RMSE on the final holdout set using these incorrectly set biasing effects, I felt I should accept the mistake rather than run the final RMSE calculation more than once, which we were explicitly told not to do. The final RMSE, and the RMSEs of all the algorithms produced in the course of this project are shown below.
 
-(TODO)
 <div align = "center">
 	
-| Algorithm | RMSE |
-| :-: | :-: |
-| mu + b_i_0 | 0.9441866 |
-| mu + b_i_0 + b_u_0 | 0.8665665 |
-| mu + b_i_0 + b_u_0 + b_g_0 | 0.8662257 |
+| Algorithm | RMSE | Fold |
+| :-: | :-: | :-: |
+| Random Guess | 2.1575303 | 1 |
+| Avg All | 1.0604283 | 1 |
+| Genre Avg | 1.0183814 | 1 |
+| User Avg | 0.9790523 | 1 |
+| Movie Avg | 0.9441866 | 1 |
+| User and Movie Avg, Equal Weight Ensemble | 0.9137740 | 1 |
+| User Movie Avg Weighted Ensemble, w =  0.4069 | 0.9120644 | 1 |
+| mu + b_i_0 | 0.9441866 | 1 |
+| mu + b_i_0 + b_u_0 | 0.8665665 | 1 |
+| mu + b_i_0 + b_u_0 + b_g_0 | 0.8662257 | 1 |
+| mu + b_i_reg | 0.9441361 | 1 |
+| mu + b_i_reg + b_u_reg | 0.8659429 | 1 |
+| mu + b_i_reg + b_u_reg + b_g_reg | 0.8656432 | 1 |
+| mu + b_i_reg | 0.9437307 | 2 |
+| mu + b_i_reg + b_u_reg | 0.8656964 | 2 |
+| mu + b_i_reg + b_u_reg + b_g_reg | 0.8653785 | 2 |
+| mu + b_i_reg | 0.9438586 | 3 |
+| mu + b_i_reg + b_u_reg | 0.8656873 | 3 |
+| mu + b_i_reg + b_u_reg + b_g_reg | 0.8653743 | 3 |
+| mu + b_i_reg | 0.9432518 | 4 |
+| mu + b_i_reg + b_u_reg | 0.8652172 | 4 |
+| mu + b_i_reg + b_u_reg + b_g_reg | 0.8649200 | 4 |
+| mu + b_i_reg | 0.9432800 | 5 |
+| mu + b_i_reg + b_u_reg | 0.8650870 | 5 |
+| mu + b_i_reg + b_u_reg + b_g_reg | 0.8647899 | 5 |
+| Final RMSE | 0.8653710 | X |
 
 </div>
 
@@ -357,7 +379,7 @@ Even though the biasing effects were calculated on only a subset of the full tra
 
 ## Conclusion
 
-This project demonstrated the potential of applying machine learning techniques in predicting ratings on the MovieLens dataset. Data analysis on the users, movies and genres revealed important insights into the dataset. Some simple algorithms were used to establish a baseline for model performance, and the final model presented uses a combination of the global mean rating average and the biasing effects of users, movies, and genres to predict the observed outcome. Two very promising methods of further refining the predictive model - matrix factorization and time based modelling - were explored in the course of this project, but ultimately abandoned due to time constraints. These will for now remain areas for future investigation. 
+This project demonstrated the potential of applying machine learning techniques in predicting ratings on the MovieLens dataset. Data analysis on the users, movies and genres revealed important insights into the dataset. Some simple algorithms and an ensemble model were used to establish a baseline for model performance. The final model presented uses a combination of the global mean rating average and the biasing effects of users, movies, and genres to predict the observed outcome. Regularization parameters were tuned using K-fold cross validation, and the average of the optimal values on the five folds was used to obtain a final RMSE value of 0.8653710 on the holdout test set. Two very promising methods of further refining the predictive model - matrix factorization and time based modelling - were explored in the course of this project, but ultimately abandoned due to time constraints. These will for now remain areas for future investigation. 
 
 ## References
 
