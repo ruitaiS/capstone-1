@@ -3,6 +3,7 @@
 l1 <- (1.947 + 2.347 + 2.083 + 2.272 + 2.151) / 5
 l2 <- (4.836 + 4.974 + 4.859 + 4.959 + 5.307) / 5
 l3 <- (27.167 + 15.209 + 12.262 + 4.07) / 5
+mu <- mean(train_df$rating)
 
 tuning_df <- aggregate((rating-mu) ~ movieId, data = train_df, FUN = sum) %>%
   setNames(c("movieId", "sum")) %>%

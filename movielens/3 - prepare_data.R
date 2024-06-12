@@ -1,6 +1,6 @@
 # ------------------------------------------------------------------
 # Run This to use full Edx Set
-# (Used for sections 4 - 7, 12)
+# (Used for user, genre, movie analysis sections
 #train_df <- edx
 # ------------------------------------------------------------------
 # Run This For K-Fold: (Pick New Index Each Run)
