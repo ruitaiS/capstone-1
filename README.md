@@ -132,7 +132,7 @@ As the plot shows, the most prolific 10% or so of users have rated so many movie
 
 ### Genre Data Analysis:
 
-In total there are 20 unique genres, and similar to what we saw with users, certain movie genres had a much higher number of ratings, and others very few. However the skew is not nearly as dramatic:
+In total there are 20 unique genres, and similarly to what we saw with users, certain movie genres had a much higher number of ratings, and others very few. However the skew is not nearly as dramatic:
 
 <img src="/movielens/graphs/genre_counts_barplot.png" align="center" alt="Genre Counts"
 	title="Genre Counts"/>
