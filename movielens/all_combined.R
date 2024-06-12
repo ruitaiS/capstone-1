@@ -69,7 +69,9 @@ edx <- rbind(edx, removed)
 # Slightly Modified Cleanup
 rm(ratings, movies, test_index, temp, movielens, removed, movies_file, ratings_file)
 
-# setup.R ----------------------------------------------------------------------------
+#################################################################################
+# setup.R
+#################################################################################
 
 if(!require(ggplot2)) install.packages("ggplot2", repos = "http://cran.us.r-project.org")
 if(!require(tidyr)) install.packages("tidyr", repos = "http://cran.us.r-project.org")
@@ -128,11 +130,11 @@ rmse_df <- data.frame(Algorithm = character(),
                       Fold = numeric(),
                       stringsAsFactors = FALSE)
 
-# prepare_data.R ----------------------------------------------------------------------------
+#################################################################################
+# prepare_data.R
+#################################################################################
 
-# ------------------------------------------------------------------
 # Use full Edx Set
-# (Used for user, genre, movie analysis sections)
 train_df <- edx
 
 # Average of All Ratings
@@ -168,32 +170,15 @@ genres <- aggregate(data = train_df, rating ~ genres, FUN = mean) %>%
   setNames(c("genres", "avg_rating")) %>%
   merge(genres, ., by = "genres", all.x = TRUE)
 
-#---------------------------------------------------------------------------
-
+#################################################################################
 # user_analysis.R
+#################################################################################
 
 user_percentiles <- users %>%
   mutate(count_percentile = percent_rank(count) * 100) %>%
   mutate(rating_percentile = percent_rank(avg_rating)*100) %>%
   mutate(decile = ntile(count, 10))%>%
   mutate(user_percentile_group = ifelse(decile == 10, "upper", "lower"))
-
-# Plot Count Percentiles-------------------------------------------------------------------
-#plot <- ggplot(users, aes(x = count)) +
-#  stat_ecdf(aes(y = after_stat(..y..) * 100), geom = "step", color = "blue") +
-#  labs(title = "Cumulative Density of Rating Counts",
-#       x = "Count",
-#       y = "Percentile of Users") +
-#  theme_minimal()+
-#  theme(
-#    text = element_text(size = unit(2, "mm")),
-#    plot.title = element_text(size = unit(20, "mm")),
-#    axis.title = element_text(size = unit(15, "mm")),
-#    axis.text = element_text(size = unit(10, "mm"))
-#  )
-#print(plot)
-#store_plot("cum_density.png", plot)
-#rm(plot)
 
 # Create a box-and-whisker plot for each decile--------------------------------------------
 plot <- ggplot(user_percentiles, aes(x = as.factor(decile), y = count)) +
@@ -246,20 +231,12 @@ print(plot)
 #store_plot("counts_cdf_top10_users.png", plot, h = 6, w = 6)
 rm(plot)
 
-# Average Rating Density Plot----------------------------------------------------------------------------
-#density_values <- density(users$avg_rating)
-#store_plot("avg_rating_density_users.png", {
-#  plot(density_values, main = "Density Plot of User's Average Ratings", xlab = "Average Rating", ylab = "Density")
-#  polygon(density_values, col = "lightblue", border = "black")  
-#})
-#rm(density_values)
-
 # Cleanup
 rm(user_percentiles)
 
-# ------------------------------------------------------------------------------
-
+#################################################################################
 # genre_analysis.R
+#################################################################################
 
 # Individual Genres 
 genres_individual <- as.data.frame(table(unlist(strsplit(train_df$genres, "\\|"))))
