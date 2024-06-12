@@ -28,13 +28,12 @@ Data analysis was performed on the main dataset as a whole. For model developmen
 
 The main model used in this project is a modified version of the approach outlined by Robert M. Bell, Yehuda Koren, and Chris Volinsky in their 2009 paper "The BellKor Solution to the Netflix Grand Prize." An average $\mu$ of all movie ratings in the training set formed a baseline predictor, on top of which were added movie, user, and genre biases: $`{b}_{i}`$, $`{b}_{u}`$, and $`{b}_{g}`$ respectively. Each bias has an associated regularization parameter, $\lambda_1$, $\lambda_2$, $\lambda_3$, which was tuned to minimize the error on the test set. This process was performed on all five folds for `k=5` fold cross validation. 
 
-(TODO: Find another way to refer to the model other than biasing effect model.)
 The tuning parameters were finalized using the average of the optimal values calculated during each of the five validation runs. A single pass was then made through the entire main dataset to find the residual differences ${r'} = \hat{r} - r$ between the recorded ratings and the ratings predicted by the model. Two methods were attempted to account for these residual values - a matrix factorization model using stochastic gradient descent, and a simple time factor linear model - but neither showed improvement over the base model, and were not used for the final RMSE calculation on the holdout set.
 
-The final RMSE on the holdout set was (TODO)
+The final RMSE on the holdout set was 0.8653710.
 
 ## Preprocessing:
-The provided template code downloads the MovieLens dataset and splits the data into `edx` and `final_holdout_test` dataframes, with a proportion of `p = 0.1` for the latter. (TODO: Expound if time)
+The provided template code downloads the MovieLens dataset and splits the data into `edx` and `final_holdout_test` dataframes, with a proportion of `p = 0.1` for the latter.
 
 The `edx` set is split into five folds using `createFolds`, with the `rating` column assigned as the response vector to ensure that rating values are equally distributed among each fold. Each fold is an equal length list of unique, non-overlapping indices for rows from the `edx` set.
 
@@ -192,7 +191,7 @@ The results of these simple algorithms are tallied below:
 
 ### User, Movie, and Genre Biases
 
-A more sophisticated approach is presented in Koren et al.'s (TODO: format) 2009 paper. Rather than taking the average rating for each movie, we instead find the biasing effect $`{b}_{i}`$ for each movie, defined as the average difference of the observed ratings for all users on that movie from the global average $\mu$ of all movie ratings, such that $`{b}_{i} = \frac{\sum_{u\in R(i)}{r}{_u}{_i} - \mu}{|R(i)|}`$, with ${u\in R(i)}$ being all users $u$ who have rated movie $i$, and $|R(i)|$ as the size of that set of users. We likewise define the user bias to be the average of the observed ratings, minus the sum of the global mean and the movie bias: $`{b}_{u} = \frac{\sum_{i\in R(u)}{r}{_u}{_i} - (\mu+{b}_{i})}{|R(u)|}`$, and the genre bias to be the average of the observed minus the sum of the global mean and the user and movie biases: $`{b}_{g} = \frac{\sum_{u,i\in R(g)}{r}{_u}{_i} - (\mu+{b}_{i}+{b}_{u})}{|R(g)|}`$, where $`{u,i\in R(g)}`$ is some user $u$ rating a movie $i$ which has genre $g$, and $|R(g)|$ is the size of the set of all ratings for that genre.
+A more sophisticated approach is presented in Koren et al.'s 2009 paper. Rather than taking the average rating for each movie, we instead find the biasing effect $`{b}_{i}`$ for each movie, defined as the average difference of the observed ratings for all users on that movie from the global average $\mu$ of all movie ratings, such that $`{b}_{i} = \frac{\sum_{u\in R(i)}{r}{_u}{_i} - \mu}{|R(i)|}`$, with ${u\in R(i)}$ being all users $u$ who have rated movie $i$, and $|R(i)|$ as the size of that set of users. We likewise define the user bias to be the average of the observed ratings, minus the sum of the global mean and the movie bias: $`{b}_{u} = \frac{\sum_{i\in R(u)}{r}{_u}{_i} - (\mu+{b}_{i})}{|R(u)|}`$, and the genre bias to be the average of the observed minus the sum of the global mean and the user and movie biases: $`{b}_{g} = \frac{\sum_{u,i\in R(g)}{r}{_u}{_i} - (\mu+{b}_{i}+{b}_{u})}{|R(g)|}`$, where $`{u,i\in R(g)}`$ is some user $u$ rating a movie $i$ which has genre $g$, and $|R(g)|$ is the size of the set of all ratings for that genre.
 
 (Please note again that "genre" in this case refers to the entire genre list string attached to a given movie. As mentioned previously, I did not feel it was worth the added complexity of finding the biasing effects of each the 20 individual genres, and instead treated the entire genre list string as one item.)
 
@@ -244,7 +243,6 @@ Similar to the tuning process for the weighted average parameter, values for $\l
 	<img src="/movielens/graphs/l3-tuning-square-fold-1.png" alt="L3 Tuning Fold 1" title="L1 Tuning Fold 1" style="float: right; margin-left: 5px; width: 30%;">
 </div>
 
-(TODO: Rephrase. Maybe talk more about what K-fold cross validation is.)
 As mentioned, the biasing effects are quite sensitive to the randomness of the training / test set split, and consequently so are their tuning parameters. To counteract this, the full dataset was split into 5 folds and the tuning process was run on each fold. The plots for the first fold are shown above (plots for the other folds are included in the repository, but omitted for brevity), and a summary of the tuned values across all five folds, along with the resulting RMSE, is presented below:
 
 <div align = "center">
@@ -261,7 +259,6 @@ As mentioned, the biasing effects are quite sensitive to the randomness of the t
 
 ### Attempts to reduce residual values $r'$
 
-(TODO: Write better)
 The regularization parameters were averaged across all five folds, for final values of $\lambda_1 = 2.16$, $\lambda_2 = 4.987$, and $\lambda_3 = 11.7416$. Values for $\hat{r}{_u}{_i}$ were calculated for all ratings in the EdX dataset, and a list of residual values was produced.
 
 ```
