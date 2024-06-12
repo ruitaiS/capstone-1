@@ -314,22 +314,28 @@ As mentioned, the biasing effects are quite sensitive to the randomness of the t
 The regularization parameters were averaged across all five folds, for final values of $\lambda_1 = 2.16$, $\lambda_2 = 4.987$, and $\lambda_3 = 11.7416$. Values for $\hat{r}{_u}{_i}$ were calculated for all ratings in the EdX dataset, and a list of residual values was produced.
 
 ```
-train_df$r <- train_df$rating - (mu + movie_bias + user_bias + genre_bias)
+edx$r <- edx$rating - (mu + movie_bias + user_bias + genre_bias)
 ```
 
 These residual values represent portion of the ratings which the sum of the global average and the biasing effects are unable to account for. I attempted two methods to model the residuals, with the goal of adding the predicted residuals on top of the predicted ratings to reduce the final RMSE calculation. Both models were unfortunately unsuccessful in this regard, so I will only touch on them briefly. Code related to them is included in the repository, but should not be considered part of the main project.
 
-The first attempt was to use Stochastic Gradient Descent to create `k=2` latent factor matrices for both the users and movies. Matrix factorization is a process by which a large matrix is decomposed into a product of two smaller matrices. In our case, I intended to produce an ${m} X {2}$ matrix ${P}$ for the users, and an ${n} X {2}$ matrix ${Q}$ for movies, where $`m = |\{u\in \mathcal{D}\}|`$, $`n = |\{i\in \mathcal{D}\}|`$, such that the product ${P}*{Q}^T$ would produce the $m\times n$ residuals matrix $`\mathcal{E} = \begin{pmatrix}
+The first attempt was to use Stochastic Gradient Descent to create `k=2` latent factor matrices for both the users and movies. Matrix factorization is a process by which a large matrix is decomposed into a product of two smaller matrices. In our case, I intended to produce an ${m} X {2}$ matrix ${P}$ for the users, and an ${n} X {2}$ matrix ${Q}$ for movies, where $`m = |\{u\in \mathcal{D}\}|`$, $`n = |\{i\in \mathcal{D}\}|`$, such that the product ${P}*{Q}^T$ would approximate the $m\times n$ residuals matrix $\mathcal{E}$.
+
+```math
+\mathcal{E} = \begin{pmatrix}
 r'_{11} & r'_{12} & \cdots & r'_{1n} \\
 r'_{21} & r'_{22} & \cdots & r'_{2n} \\
 \vdots & \vdots & \ddots & \vdots \\
 r'_{m1} & r'_{m2} & \cdots & r'_{mn} \\
-\end{pmatrix}`$
+\end{pmatrix}
+```
 
- and each entry $`{r'}{_u}{_i} = {r}{_u}{_i} - (\mu+{b}_{i_{reg}}+{b}_{u_{reg}}+{b}_{g_{reg}})`$
+ where each entry $`{r'}{_u}{_i} = {r} - (\mu+{b}_{i_{reg}}+{b}_{u_{reg}}+{b}_{g_{reg}})`$. The factorization algorithm I wrote took far too long to make even single pass through the training data, and I was unable to increase the learning rate without causing the algorithm to diverge rather than converge. This is definitely an area of further research I would like to spend more time on in the future, but this started to turn into a mini-project in itself, and in the end I decided to focus on using the techniques we learned during the course.
 
-* Residuals Matrix
-* SGD on Residuals
+<img src="/movielens/graphs/learning_rate.png" align="center" alt="Learning Rate"
+	title="Learning Rate"/>
+
+Having spent far too long trying and failing to tune the SGD code, I decided to try a very simple time factor model for the movie residuals. A linear model was produced for each movie to predict the residuals as a factor of the timestamp. This was admittedly far too simple of an approach; I should have spent more time analyzing the chronological effects on ratings, instead of throwing everything into the `lm` function and hoping for the best, but I was feeling quite discourged from the wasted effort on the SGD model, and also running out of time to complete the project. These models did not yield positive results on the test sets produced by `createFolds`.
 
 
 ## Results
