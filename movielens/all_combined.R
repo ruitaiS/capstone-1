@@ -1649,6 +1649,7 @@ print(l3)
 rm(movie_bias, user_bias, genre_bias)
 rm(l1, l2, l3)
 
+rm(l3_sequences, plot)
 #################################################################################
 # Reset Data for Final Residuals and Results Calculation
 # Note as mentioned in the report, training was accidentally done on fold_index 1
@@ -1662,7 +1663,6 @@ test_df <- splits[[1]]
 train_df <- splits[[2]]
 rm(splits, mu, users, movies, genres)
 
-# Reset for fold 2
 # Average of All Ratings
 mu <- mean(train_df$rating)
 
@@ -1742,3 +1742,8 @@ genre_bias <- genres$b_g_reg[match(final_holdout_test$genres, genres$genres)]
 predictions <- mu + movie_bias + user_bias + genre_bias
 
 rmse <- calculate_rmse(predictions, final_holdout_test$rating)
+
+rmse_df <- rbind(rmse_df, data.frame(
+  Algorithm = "Final RMSE",
+  RMSE = rmse,
+  Fold = fold_index))
