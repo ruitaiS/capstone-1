@@ -201,7 +201,6 @@ calculate_rmse <- function(predicted_ratings, actual_ratings) {
 Each algorithm produces a list of ratings of equal length to the `test_df$rating` column, and feeding these two lists into the `calculate_rmse` function returns a single RMSE value, which is then stored in `rmse_df` along with the algorithm's name and the `fold_index` that the model was run on.
 
 ### Some Simple Algorithms to Start
-(TODO: Double Check RMSEs for these)
 
 A couple of very basic methods for rating prediction come to mind, and these were the ones I tried first while building out the testing framework.
 
