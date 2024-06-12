@@ -357,20 +357,14 @@ Even though the biasing effects were calculated on only a subset of the full tra
 
 ## Conclusion
 
-This project demonstrated the potential of machine learning techniques in predicting ratings on the MovieLens dataset. By employing a combination of data preprocessing, feature engineering, and bias prediction algorithms, we were able to achieve a reasonably high level of predictive accuracy. Two very promising methods of further refining the predictive model - matrix factorization and time based modelling - were explored in the course of this project, but ultimately abandoned due to time constraints. These will for now remain areas for future investigation. 
-
-a conclusion section that gives a brief summary of the report, its limitations and future work
-* Chrono Biasing
-* Per-Genre Analysis
-* Better Matrix Factorization
-
+This project demonstrated the potential of applying machine learning techniques in predicting ratings on the MovieLens dataset. Data analysis on the users, movies and genres revealed important insights into the dataset. Some simple algorithms were used to establish a baseline for model performance, and the final model presented uses a combination of the global mean rating average and the biasing effects of users, movies, and genres to predict the observed outcome. Two very promising methods of further refining the predictive model - matrix factorization and time based modelling - were explored in the course of this project, but ultimately abandoned due to time constraints. These will for now remain areas for future investigation. 
 
 ## References
+
+Koren, Y. (2009). The BellKor Solution to the Netflix Grand Prize. . https://www2.seas.gwu.edu/~simhaweb/champalg/cf/papers/KorenBellKor2009.pdf
+
 Movielens Dataset:
 https://grouplens.org/datasets/movielens/10m/
-
-(TODO: Other Papers)
-
 
 ### Code Bits
 
