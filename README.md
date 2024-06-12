@@ -1,8 +1,6 @@
 # Movie Recommendations:
 
 TODO:
-* Check results and graphs for simple algorithms using fold_index 1
-* Mention the lm and matrix factorization approaches you took, which unfortunately did not yield positive results / took too far too long to run.
 * Figure out a synoynm for "initially." Or control F it and see how many times you used it (feels like a lot)
 * ctrl f 'edx' and 'main'. Make sure it's styled properly.
 
@@ -342,9 +340,24 @@ Having spent far too long trying and failing to tune the SGD code, I decided to 
 
 a results section that presents the modeling results and discusses the model performance
 
+Final results calculations were peformed with regularization parameters $\lambda_1 = 2.16$, $\lambda_2 = 4.987$, and $\lambda_3 = 11.7416$. The biasing effects were recalculated using these values on the `fold_index=1` fold. This was actually done by mistake - I had intended to apply it to the entire training set, but my local R environment was not set up properly. Having already calculated the RMSE on the final holdout set using these incorrectly set biasing effects, I felt I should accept the mistake rather than run the final RMSE calculation more than once, which we were explicitly told not to do. The final RMSE, and the RMSEs of all the algorithms produced in the course of this project are shown below.
 
+(TODO)
+<div align = "center">
+	
+| Algorithm | RMSE |
+| :-: | :-: |
+| mu + b_i_0 | 0.9441866 |
+| mu + b_i_0 + b_u_0 | 0.8665665 |
+| mu + b_i_0 + b_u_0 + b_g_0 | 0.8662257 |
+
+</div>
+
+Even though the biasing effects were calculated on only a subset of the full training set, the results were in line with what I expected given what I saw in previous runs. I regretfully was not able to trim the values in the residuals matrix with a functioning SGD or LM model, so the final RMSE falls a little short of the original target. Overall however, I am satisfied with my results.
 
 ## Conclusion
+
+This project demonstrated the potential of machine learning techniques in predicting ratings on the MovieLens dataset. By employing a combination of data preprocessing, feature engineering, and bias prediction algorithms, we were able to achieve a reasonably high level of predictive accuracy. Two very promising methods of further refining the predictive model - matrix factorization and time based modelling - were explored in the course of this project, but ultimately abandoned due to time constraints. These will for now remain areas for future investigation. 
 
 a conclusion section that gives a brief summary of the report, its limitations and future work
 * Chrono Biasing
