@@ -311,18 +311,22 @@ As mentioned, the biasing effects are quite sensitive to the randomness of the t
 ### Attempts to reduce residual values $r'$
 
 (TODO: Write better)
-The regularization parameters were averaged across all five folds, for final values of $\lambda_1 = 2.16$, $\lambda_2 = 4.987$, and $\lambda_3 = 11.7416$. Values for $\hat{r}{_u}{_i}$ were calculated for all ratings in the EdX dataset, and a residuals matrix of the remaining values was produced.
+The regularization parameters were averaged across all five folds, for final values of $\lambda_1 = 2.16$, $\lambda_2 = 4.987$, and $\lambda_3 = 11.7416$. Values for $\hat{r}{_u}{_i}$ were calculated for all ratings in the EdX dataset, and a list of residual values was produced.
 
-An $m\times n$ residuals matrix $`\mathcal{E} = \begin{pmatrix}
+```
+train_df$r <- train_df$rating - (mu + movie_bias + user_bias + genre_bias)
+```
+
+These residual values represent portion of the ratings which the sum of the global average and the biasing effects are unable to account for. I attempted two methods to model the residuals, with the goal of adding the predicted residuals on top of the predicted ratings to reduce the final RMSE calculation. Both models were unfortunately unsuccessful in this regard, so I will only touch on them briefly. Code related to them is included in the repository, but should not be considered part of the main project.
+
+The first attempt was to use Stochastic Gradient Descent to create `k=2` latent factor matrices for both the users and movies. Matrix factorization is a process by which a large matrix is decomposed into a product of two smaller matrices. In our case, I intended to produce an ${m} X {2}$ matrix ${P}$ for the users, and an ${n} X {2}$ matrix ${Q}$ for movies, where $`m = |\{u\in \mathcal{D}\}|`$, $`n = |\{i\in \mathcal{D}\}|`$, such that the product ${P}*{Q}^T$ would produce the $m\times n$ residuals matrix $`\mathcal{E} = \begin{pmatrix}
 r'_{11} & r'_{12} & \cdots & r'_{1n} \\
 r'_{21} & r'_{22} & \cdots & r'_{2n} \\
 \vdots & \vdots & \ddots & \vdots \\
 r'_{m1} & r'_{m2} & \cdots & r'_{mn} \\
 \end{pmatrix}`$
 
-where $`m = |\{u\in \mathcal{D}\}|`$, $`n = |\{i\in \mathcal{D}\}|`$, and each entry $`{r'}{_u}{_i} = {r}{_u}{_i} - (\mu+{b}_{i_{reg}}+{b}_{u_{reg}}+{b}_{g_{reg}})`$
-
-These residuals represent the discrepancy between the predicted and observed values which the biasing effects did not account for. Several methods were attempted on the residuals matrix to further reduce the RMSE - unfortunately none of them were successful in reducing the RMSE.
+ and each entry $`{r'}{_u}{_i} = {r}{_u}{_i} - (\mu+{b}_{i_{reg}}+{b}_{u_{reg}}+{b}_{g_{reg}})`$
 
 * Residuals Matrix
 * SGD on Residuals
