@@ -1,7 +1,5 @@
 # Movie Recommendations:
 
-Note: The graphs and images do not render properly in the pdf. Please visit [this github repo](https://github.com/ruitaiS/capstone-1/) to view them.
-
 ## Introduction:
 
 This project implements a machine learning based prediction system for ratings in the MovieLens dataset. The full dataset consists of 10,000,054 ratings of 10,677 movies by 69,878 unique users. Each row has columns indicating the ID of the user who made the rating, the ID of the movie which was rated, the rating given, the timestamp at which it was given, the title of the movie, and the genres that the movie belongs to. Ratings can range from 0 to 5, at half-integer increments.
