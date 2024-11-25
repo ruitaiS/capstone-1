@@ -288,9 +288,7 @@ Having spent far too long trying and failing to tune the SGD code, I decided to 
 
 ## Results
 
-a results section that presents the modeling results and discusses the model performance
-
-Final results calculations were peformed with regularization parameters $\lambda_1 = 2.16$, $\lambda_2 = 4.987$, and $\lambda_3 = 11.7416$. The biasing effects were recalculated using these values on the `fold_index=1` fold. This was actually done by mistake - I had intended to apply it to the entire training set, but my local R environment was not set up properly. Having already calculated the RMSE on the final holdout set using these incorrectly set biasing effects, I felt I should accept the mistake rather than run the final RMSE calculation more than once, which we were explicitly told not to do. The final RMSE, and the RMSEs of all the algorithms produced in the course of this project are shown below.
+Final result calculations were peformed with regularization parameters $\lambda_1 = 2.16$, $\lambda_2 = 4.987$, and $\lambda_3 = 11.7416$. The biasing effects were recalculated using these values on the `fold_index=1` fold. This was actually done by mistake - I had intended to apply it to the entire training set, but my local R environment was not set up properly. Having already calculated the RMSE on the final holdout set using these incorrectly set biasing effects, I felt I should accept the mistake rather than run the final RMSE calculation more than once, which we were explicitly told not to do. The final RMSE, and the RMSEs of all the algorithms produced in the course of this project are shown below.
 
 <div align = "center">
 	
