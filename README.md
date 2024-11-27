@@ -2,7 +2,7 @@
 
 ## Introduction:
 
-This project implements a machine learning based prediction system for ratings in the MovieLens dataset. The full dataset consists of 10,000,054 ratings of 10,677 movies by 69,878 unique users. Each row has columns indicating the ID of the user who made the rating, the ID of the movie which was rated, the rating given, the timestamp at which it was given, the title of the movie, and the genres that the movie belongs to. Ratings can range from 0 to 5, at half-integer increments.
+This project is a machine learning based prediction system for movie ratings in the MovieLens dataset. The full dataset consists of 10,000,054 ratings, 10,677 movies, and 69,878 unique users. Each row has columns indicating the ID of the user who made the rating, the ID of the movie which was rated, the rating given, the timestamp at which it was given, the title of the movie, and the genres that the movie belongs to. Ratings can range from 0 to 5, at half-integer increments.
 
 ```
 > nrow(movielens)
@@ -15,7 +15,7 @@ This project implements a machine learning based prediction system for ratings i
 [1] "userId"    "movieId"   "rating"    "timestamp" "title"     "genres"
 ```
 
-Template code provided by the EdX team splits the data into a main dataset of 9,000,055 entries and a final holdout test set of 999,999 entries to be used exclusively for a final error calculation at the end of the project. The goal is to train a machine learning model on the records in the main dataset which can predict values in the `rating` column of the final holdout set, using the other column values as predictor variables. The root mean squared error function was used as a metric for the predictive power of the algorithm, with a target RMSE of less than 0.86490.
+Template code provided by the EdX team splits the data into a main dataset of 9,000,055 entries and a final holdout test set of 999,999 entries to be used exclusively for a final error calculation at the end of the project. The goal is to train a machine learning model on the records in the main dataset which can reliably predict values in the `rating` column of the final holdout set, using the other column values as predictor variables. The root mean squared error function is used as a metric for the predictive power of the algorithm, with a target RMSE of less than 0.86490.
 
 ```
 > nrow(edx)
@@ -24,24 +24,24 @@ Template code provided by the EdX team splits the data into a main dataset of 9,
 [1] 999999
 >
 ```
-Data analysis was performed on the main dataset as a whole. For model development, the data was split into five equally sized subsets, indexed by `fold_index` one through five. Some simple algorithms were explored first to establish a performance benchmark, and for these models, only `fold_index = 1` was used as the test set; the other four sets were merged back together to form the training set. Cross-validation was not done for these models.
+Data analysis was performed on the main dataset as a whole. For model development, the data was split into five equally sized subsets, indexed by `fold_index` one through five. Some simple algorithms were explored first to establish a performance benchmark - for these models, `fold_index = 1` was used as the test set and the other four sets were merged back together to form the training set. Cross-validation was not done on these models.
 
 The main model used in this project is a modified version of the approach outlined by Robert M. Bell, Yehuda Koren, and Chris Volinsky in their 2009 paper "The BellKor Solution to the Netflix Grand Prize." An average $\mu$ of all movie ratings in the training set formed a baseline predictor, on top of which were added movie, user, and genre biases: $`{b}_{i}`$, $`{b}_{u}`$, and $`{b}_{g}`$ respectively. Each bias has an associated regularization parameter, $\lambda_1$, $\lambda_2$, $\lambda_3$, which was tuned to minimize the error on the test set. This process was performed on all five folds for `k=5` fold cross validation. 
 
-The tuning parameters were finalized using the average of the optimal values calculated during each of the five validation runs. A single pass was then made through the entire main dataset to find the residual differences ${r'} = \hat{r} - r$ between the recorded ratings and the ratings predicted by the model. Two methods were attempted to account for these residual values - a matrix factorization model using stochastic gradient descent, and a simple time factor linear model - but neither showed improvement over the base model, and were not used for the final RMSE calculation on the holdout set.
+The tuning parameters were finalized using the average of the optimal values calculated during each of the five validation runs. A single pass was then made through the entire main dataset to find the residual differences ${r'} = \hat{r} - r$ between the recorded ratings and the ratings predicted by the model. Two methods were attempted to model these residual values - a matrix factorization model using stochastic gradient descent, and a simple time factor linear model - but neither showed improvement over the base model, and were not used for the final RMSE calculation on the holdout set.
 
 The final RMSE on the holdout set was 0.8653710.
 
 ## Preprocessing:
 The provided template code downloads the MovieLens dataset and splits the data into `edx` and `final_holdout_test` dataframes, with a proportion of `p = 0.1` for the latter.
 
-The `edx` set is split into five folds using `createFolds`, with the `rating` column assigned as the response vector to ensure that rating values are equally distributed among each fold. Each fold is an equal length list of unique, non-overlapping indices for rows from the `edx` set.
+The `edx` set is split into five folds using `createFolds`, with the `rating` column assigned as the response vector to ensure that rating values are equally distributed among each fold. Each fold is an equal length list of unique, non-overlapping indices corresponding to rows from the `edx` set.
 
-The `generate_splits` function accepts a `fold_index` parameter designating which of the five folds will be used as the test set; the remaining folds are merged together to form the training set. The corresponding rows are extracted from the `edx` set, and passed to the `consistency_check` function before being assigned as the `test_df` and `train_df` dataframes.
+The `generate_splits` function accepts a `fold_index` parameter designating one of the five folds as the test set, and the remaining folds are merged together to form the training set. The two sets are passed to the `consistency_check` function before being assigned as the `test_df` and `train_df` dataframes.
 
-`consistency_check` ensures that every `movieId` and `userId` which appears in the test set also appears in the training set. The code to do this was borrowed from the provided template code, which performs a similar modification for the main dataset in relation to the final holdout set. While this is a seemingly minor detail, it makes the prediction task **significantly** easier, as it completely eliminates the need to make predictions on users or movies which do not appear in the training set, also known as the [cold start problem](https://en.wikipedia.org/wiki/Cold_start_(recommender_systems)).
+`consistency_check` ensures that every `movieId` and `userId` which appears in the test set also appears in the training set. The code to do this was borrowed from the provided template code, which performs a similar modification for the main dataset in relation to the final holdout set. While this may seem to be a minor detail, it makes the prediction task **significantly** easier, as it completely eliminates the need to make predictions on users or movies which do not appear in the training set, also known as the [cold start problem](https://en.wikipedia.org/wiki/Cold_start_(recommender_systems)).
 
-The training set was further processed to produce the ```genres```, ```users```, and ```movies``` dataframes. The column names are provided below, and should be mostly self-explanatory.
+The training set was further processed to produce the ```genres```, ```users```, and ```movies``` dataframes. The column names for these dataframes are shown below, and should be self-explanatory.
 
 ```
 > names(genres)
