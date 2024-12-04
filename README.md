@@ -110,7 +110,7 @@ It is clear that there are certain genres which occur more frequently alongside 
 
 ### Movie Data Analysis
 
-There are 10677 unique movies in the dataset, with release dates from 1915 to 2008. Like users and genres, there are some movies which are substantially more popular than others.
+There are 10,677 unique movies in the dataset, with release dates ranging from 1915 to 2008. As with users and genres, there are some movies which are substantially more popular than others.
 
 ```
 > head(movies[order(-movies$count), ])
@@ -131,7 +131,7 @@ There are 10677 unique movies in the dataset, with release dates from 1915 to 20
 3473    3561         Stacy's Knights (1982) 1982     1        1.0
 ```
 
-There is also good evidence of chronological effect on movie ratings as shown by the graph below. Older movies in general seem to have a higher average rating than newer movies, which show more spread. One possible explanation might be that older movies are more likely to only be viewed and rated by users who are fans of old movies, while newer movies are rated by a broader audience. It could also be the case that only the good movies from past decades are remembered and included in the MovieLens library, while the rest are lost to time.
+There is also good evidence of chronological effect on movie ratings. Older movies tend to recieve higher average ratings than newer movies, which generally show greater variation in user ratings. One possible explanation might be that older movies are more likely to only be viewed and rated by users who are fans of old movies, while newer movies are rated by a broader audience. It could also be the case that only the good movies from past decades are remembered and included in the MovieLens library, while the rest are lost to time.
 
 <img src="/movielens/graphs/movie_rating_by_release_year.png" align="center" alt="Average Movie Ratings By Release Year"
 	title="Average Movie Ratings By Release Year"/>
