@@ -102,9 +102,6 @@ It is clear that there are certain genres which occur more frequently alongside 
 <br>
 <br>
 <br>
-
----
-
 <br>
 
 ### Movie Data Analysis
