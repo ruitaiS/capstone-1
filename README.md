@@ -102,7 +102,9 @@ It is clear that there are certain genres which occur more frequently alongside 
 <br>
 <br>
 <br>
+
 ---
+
 ### Movie Data Analysis
 
 There are 10677 unique movies in the dataset, with release dates from 1915 to 2008. Like users and genres, there are some movies which are substantially more popular than others.
