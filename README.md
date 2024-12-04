@@ -81,6 +81,8 @@ As the plot shows, the most prolific 10% or so of users have rated so many movie
   <img src="/movielens/graphs/counts_cdf_top10_users.png" alt="Cumulative Density of Rating Counts (Top 10%)" title="Cumulative Density of Rating Counts (Top 10%)" style="float: left; margin-right: 10px; width: 45%;">
 </div>
 
+---
+
 ### Genre Data Analysis:
 
 In total there are 20 unique genres, and similarly to what we saw with users, certain movie genres had a much higher number of ratings, and others very few. However the skew is not nearly as dramatic:
@@ -103,6 +105,8 @@ It is clear that there are certain genres which occur more frequently alongside 
 <br>
 <br>
 <br>
+
+---
 
 ### Movie Data Analysis
 
