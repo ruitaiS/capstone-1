@@ -88,7 +88,7 @@ In total there are 20 unique genres, and similarly to what we saw with users, ce
 <img src="/movielens/graphs/genre_counts_barplot.png" align="center" alt="Genre Counts"
 	title="Genre Counts"/>
 
-I was curious to see which genres were most likely to appear together on the same movie, so I created the co-occurrence heatmap matrix shown below. Each cell represents the number of movies which have both the X-axis genre and Y-axis genre, with darker values indicating a higher number. Cells along the diagonal (where the X and Y genres are the same) are counts for movies with just that one genre associated to it.
+I was curious to see which genres were most likely to appear together on the same movie, so I created the co-occurrence heatmap matrix shown below. Each cell represents the number of movies which have both the X-axis genre and the Y-axis genre, with darker values indicating more. Cells along the diagonal (where the X and Y genres are the same) are counts for movies with just that one genre associated to it.
 
 <div style="display: inline-block; vertical-align: middle;">
 <p>
@@ -96,7 +96,7 @@ I was curious to see which genres were most likely to appear together on the sam
 	title="Genre Heatmap"/>
 
 <br>
-It is clear that there are certain genres which occur more frequently alongside other ones, but, perhaps unsurprisingly, the most common genres are also the ones with the highest co-occurrence counts. I tried normalizing the matrix by dividing each row element by the sum of the values in that row, but the result wasn't any more insightful. I decided to stop my exploration into the genre data here, and stick to using the full genre string associated with each movie, rather than over-complicate things by subdividing them into individual genres. There are 797 unique genre strings, as opposed to only 20 unique individual genres, so while some resolution might be lost, in a dataset of over 9 million ratings, I did not consider this loss of granularity to be worth the added complexity.
+It is clear that there are certain genres which occur more frequently alongside others, but, perhaps unsurprisingly, this can largely be attributed to popularity - the most common genres also tend to have the highest co-occurrence counts. I tried normalizing the matrix by dividing each row element by the sum of the values in that row, but the result wasn't any more insightful. I decided to stop my exploration into the genre data here, and stick to using the full genre string associated with each movie, rather than over-complicate things by subdividing them into individual genres. There are 797 unique genre strings, as opposed to only 20 unique individual genres, so while some resolution might be lost, in a dataset of over 9 million ratings, I did not consider this loss of granularity to be worth the added complexity.
 </p>
 </div>
 <br>
