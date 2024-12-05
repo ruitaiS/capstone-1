@@ -35,7 +35,7 @@ The final RMSE on the holdout set was 0.8653710.
 ## Preprocessing:
 The provided template code downloads the MovieLens dataset and splits the data into `edx` and `final_holdout_test` dataframes, with a proportion of `p = 0.1` for the latter.
 
-The `edx` set is split into five folds using `createFolds`, with the `rating` column assigned as the response vector to ensure that rating values are equally distributed among each fold. Each fold is an equal length list of unique, non-overlapping indices corresponding to rows from the `edx` set.
+The `edx` set is then split into five folds using `createFolds`, with the `rating` column assigned as the response vector to ensure that rating values are equally distributed among each fold. Each fold is an equal length list of unique, non-overlapping indices corresponding to rows from the `edx` set.
 
 The `generate_splits` function accepts a `fold_index` parameter designating one of the five folds as the test set, and the remaining folds are merged together to form the training set. The two sets are passed to the `consistency_check` function before being assigned as the `test_df` and `train_df` dataframes.
 
@@ -138,7 +138,7 @@ There is also good evidence of chronological effect on movie ratings. Older movi
 
 ## Methods:
 
-As specified in the project instructions, the root mean squared error function was used as a measure for each algorithms effectiveness.
+The project instructions specify using the root mean squared error function as the measure for each algorithms effectiveness. It is, as the name would suggest, calculated by taking the square **root** of the **mean** of the **square** of the **error** (error in this case being the difference between the predicted and observed values. For this reason, the RMSE is also frequently referred to as the RMSD, or root mean squared **difference**). Mathematically, we define it with the following formula:
 
 Let ${r}{_u}{_i}$ denote the observed rating of user $u$ for movie $i$ in some dataset, and let $\hat{r}{_u}{_i}$ signify an algorithm's prediction for how that user would rate the movie. The root mean squared error can then be written as
 
@@ -146,7 +146,9 @@ Let ${r}{_u}{_i}$ denote the observed rating of user $u$ for movie $i$ in some d
 RMSE = \sqrt{\frac{{\sum}_{u,i\in {D}_{test}}({r}{_u}{_i} - \hat{r}{_u}{_i})^2}{|{D}_{test}|}}
 ```
 
-where $`{D}_{test}`$ is our test set. It is, as the name would suggest, the square **root** of the **mean** of the **square** of the **error**. Error is commonly defined as the difference between the predicted vs. actual values - for this reason RMSE is also frequently called RMSD, or Root Mean Squared Difference. In code this relationship is much clearer to see:
+where $`{D}_{test}`$ is our test set.
+
+Each algorithm produces a list of predicted ratings of equal length to the `rating` column in `test_df`, which contains the actual observed ratings in the test set. Feeding these two lists into the `calculate_rmse` function returns a single RMSE value for the algorithm, which is then stored in `rmse_df` dataframe along with the algorithm's name and the `fold_index` that the model was run on.
 
 ```
 calculate_rmse <- function(predicted_ratings, actual_ratings) {
@@ -157,7 +159,6 @@ calculate_rmse <- function(predicted_ratings, actual_ratings) {
   return(rmse)
 }
 ```
-Each algorithm produces a list of ratings of equal length to the `test_df$rating` column, and feeding these two lists into the `calculate_rmse` function returns a single RMSE value, which is then stored in `rmse_df` along with the algorithm's name and the `fold_index` that the model was run on.
 
 ### Some Simple Algorithms to Start
 
