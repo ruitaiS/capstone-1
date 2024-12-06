@@ -138,15 +138,12 @@ There is also good evidence of chronological effect on movie ratings. Older movi
 
 ## Methods:
 
-The project instructions specify using the root mean squared error function as the measure for each algorithms effectiveness. As the name would suggest, it is calculated by taking the square **root** of the **mean** of the **square** of the **error** (error in this case being the difference between the predicted and observed values. For this reason, the RMSE is also frequently referred to as the **RMSD**, or root mean squared **difference**). Mathematically, we define it as follows:
-
-Let ${r}{_u}{_i}$ denote the observed rating of user $u$ for movie $i$ in some dataset, and let $\hat{r}{_u}{_i}$ signify an algorithm's prediction for how that user would rate the movie. The root mean squared error can then be written as
+The project instructions specify using the root mean squared error function as the measure for each algorithms effectiveness. As the name would suggest, it is calculated by taking the square **root** of the **mean** of the **square** of the **error** (error in this case being the difference between the predicted and observed values. For this reason, the RMSE is also frequently referred to as the **RMSD**, or root mean squared **difference**). Mathematically, we can write it as:
 
 ```math
 RMSE = \sqrt{\frac{{\sum}_{u,i\in {D}_{test}}({r}{_u}{_i} - \hat{r}{_u}{_i})^2}{|{D}_{test}|}}
 ```
-
-where $`{D}_{test}`$ is our test set.
+where ${r}{_u}{_i}$ is the observed rating in the training set of user $u$ for movie $i$, $\hat{r}{_u}{_i}$ is the algorithm's prediction for the user's rating of that movie, and $`{D}_{test}`$ is our test set.
 
 Each algorithm produces a list of predicted ratings of equal length to the `rating` column in `test_df`, which contains the actual observed ratings in the test set. Feeding these two lists into the `calculate_rmse` function returns a single RMSE value for the algorithm, which is then stored in `rmse_df` dataframe along with the algorithm's name and the `fold_index` that the model was run on.
 
