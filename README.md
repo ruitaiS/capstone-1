@@ -190,14 +190,14 @@ This approach yields an RMSE of ~0.913, To see whether this could be improved by
 `\hat{r}_{ui} = {w} * \bar{r}_{u} + (1 - {w}) * \bar{r}_{i}`
 ```
 
-In this new formulation, ${w}$ is the weight assigned to the user average, and $1-{w}$ is the weight for the movie average. To find the optimal weighting ${w}$, we can plot the RMSE across the test set against values of ${w}$ ranging from 0.2 to 0.6:
+In this new formulation, ${w}$ is the weight assigned to the user average, and $1-{w}$ is the weight for the movie average. To find the optimal value for ${w}$, we can plot the RMSE across the test set against values of ${w}$ ranging from 0.2 to 0.6:
 
 <img src="/movielens/graphs/weighted_ensemble_tuning.png" align="center" alt="User / Movie Average Weighted Ensemble Optimization"
 	title="User / Movie Average Weighted Ensemble Optimization"/>
 
 The minima occurs at $`{w} = 0.4062`$, and yields a very slightly improved RMSE of ~0.912 on the test set.
 
-The results of these simple algorithms are tallied below:
+The results of all these simple algorithms are tallied below:
 
 <div align = "center">
 	
