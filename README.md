@@ -138,7 +138,7 @@ There is also good evidence of chronological effect on movie ratings. Older movi
 
 ## Methods:
 
-The project instructions specify using the root mean squared error function as the measure for each algorithms effectiveness. It is, as the name would suggest, calculated by taking the square **root** of the **mean** of the **square** of the **error** (error in this case being the difference between the predicted and observed values. For this reason, the RMSE is also frequently referred to as the RMSD, or root mean squared **difference**). Mathematically, we define it with the following formula:
+The project instructions specify using the root mean squared error function as the measure for each algorithms effectiveness. It is, as the name would suggest, calculated by taking the square **root** of the **mean** of the **square** of the **error** (error in this case being the difference between the predicted and observed values. For this reason, the RMSE is also frequently referred to as the RMSD, or root mean squared **difference**). Mathematically, we define it with the following:
 
 Let ${r}{_u}{_i}$ denote the observed rating of user $u$ for movie $i$ in some dataset, and let $\hat{r}{_u}{_i}$ signify an algorithm's prediction for how that user would rate the movie. The root mean squared error can then be written as
 
@@ -164,7 +164,7 @@ calculate_rmse <- function(predicted_ratings, actual_ratings) {
 
 A couple of very basic methods for rating prediction come to mind, and these were the ones I tried first while building out the testing framework.
 
-The most naive approach would be to randomly guess a rating - as one would expect, this gave a very poor RMSE of ~2.16. Next was to find the average of all the ratings in the training set, and to use that value as the prediction for every rating in the test set. If we look to the histogram plot of the ratings given in the training set, we see that whole number ratings are more common than ones rated at half integer increments (this I would attribute to user psychology more than anything else), but the set of whole number ratings and the set of half-step ratings both form bell-curve shaped distributions centered roughly around the global mean, shown as the dashed vertical red line.
+The most naive approach would be to randomly guess a rating. Naturally, this gave a very poor RMSE of ~2.16. The next method was to find the average of all ratings in the training set, and to use that value as the prediction for every rating in the test set. If we look to the histogram plot of the ratings given in the training set, we see that whole number ratings are more common than ones rated at half integer increments (this I would attribute to user psychology more than anything else), but the set of whole number ratings and the set of half-step ratings both form bell-curve shaped distributions centered roughly around the global mean, shown as the dashed vertical red line.
 
 <img src="/movielens/graphs/rating_histogram.png" align="center" alt="Ratings Histogam"
 	title="Ratings Histogram"/>
@@ -198,11 +198,11 @@ The results of these simple algorithms are tallied below:
 
 ### User, Movie, and Genre Biases
 
-A more sophisticated approach is presented in Koren et al.'s 2009 paper. Rather than taking the average rating for each movie, we instead find the biasing effect $`{b}_{i}`$ for each movie, defined as the average difference of the observed ratings for all users on that movie from the global average $\mu$ of all movie ratings, such that $`{b}_{i} = \frac{\sum_{u\in R(i)}{r}{_u}{_i} - \mu}{|R(i)|}`$, with ${u\in R(i)}$ being all users $u$ who have rated movie $i$, and $|R(i)|$ as the size of that set of users. We likewise define the user bias to be the average of the observed ratings, minus the sum of the global mean and the movie bias: $`{b}_{u} = \frac{\sum_{i\in R(u)}{r}{_u}{_i} - (\mu+{b}_{i})}{|R(u)|}`$, and the genre bias to be the average of the observed minus the sum of the global mean and the user and movie biases: $`{b}_{g} = \frac{\sum_{u,i\in R(g)}{r}{_u}{_i} - (\mu+{b}_{i}+{b}_{u})}{|R(g)|}`$, where $`{u,i\in R(g)}`$ is some user $u$ rating a movie $i$ which has genre $g$, and $|R(g)|$ is the size of the set of all ratings for that genre.
+A more sophisticated approach is presented in Koren et al.'s 2009 paper, The BellKor Solution to the Netflix Grand Prize. Rather than taking the average rating for each movie, we instead find the biasing effect $`{b}_{i}`$ for each movie, defined as the average difference of the observed ratings for all users on that movie from the global average $\mu$ of all movie ratings, such that $`{b}_{i} = \frac{\sum_{u\in R(i)}{r}{_u}{_i} - \mu}{|R(i)|}`$, with ${u\in R(i)}$ being all users $u$ who have rated movie $i$, and $|R(i)|$ as the size of that set of users. We likewise define the user bias to be the average of the observed ratings, minus the sum of the global mean and the movie bias: $`{b}_{u} = \frac{\sum_{i\in R(u)}{r}{_u}{_i} - (\mu+{b}_{i})}{|R(u)|}`$, and the genre bias to be the average of the observed minus the sum of the global mean and the user and movie biases: $`{b}_{g} = \frac{\sum_{u,i\in R(g)}{r}{_u}{_i} - (\mu+{b}_{i}+{b}_{u})}{|R(g)|}`$, where $`{u,i\in R(g)}`$ is some user $u$ rating a movie $i$ which has genre $g$, and $|R(g)|$ is the size of the set of all ratings for that genre.
 
 (Please note again that "genre" in this case refers to the entire genre list string attached to a given movie. As mentioned previously, I did not feel it was worth the added complexity of finding the biasing effects of each the 20 individual genres, and instead treated the entire genre list string as one item.)
 
-These equations were implemented in code using R's `aggregate` function. Again, the code might be easier to understand than the mathematical equations, so I've included a shortened version below (the `_0` suffix indicates that these are unregularized biases - more on that in the Bias Regularization section).:
+These equations were implemented in code using R's `aggregate` function. The code might be easier to understand than the mathematical equations, so I've included a shortened version below (the `_0` suffix indicates that these are unregularized biases - more on that in the Bias Regularization section).:
 ```
 movies <- aggregate((rating-mu) ~ movieId, data = train_df, FUN = mean)
 users <- aggregate((rating-(mu+b_i_0)) ~ userId, data = train_df, FUN = mean)
@@ -228,9 +228,9 @@ I layered the biasing effects onto the global average one at a time, and the res
 
 ### Bias Regularization Tuning With K = 5 Fold Cross Validation
 
-The variance of the mean value for a sample can be defined as $`Var(\bar{r}) = \frac{\sigma^2}{n}`$ for a sample of size $n$ taken from a population that has some variance $`\sigma^2`$. This equation shows that the variance of the sample mean is inversely proportional to the sample size. In our context, when movies, users, or genres have very few ratings in the training set, the calculated biasing effect (which is essentially a sample mean) will vary significantly based on the specific ratings randomly selected for inclusion.
+The variance of the mean value for a sample can be defined as $`Var(\bar{r}) = \frac{\sigma^2}{n}`$ for a sample of size $n$ taken from a population that has some variance $`\sigma^2`$. This equation shows that the variance of the sample mean is inversely proportional to the sample size, so in our context, when movies, users, or genres have very few ratings in the training set, the calculated biasing effect (which is essentially a sample mean) will vary significantly based on the specific ratings randomly selected for inclusion.
 
-To counteract this, I adopted Koren et al.'s approach by including a regularization parameter $\lambda$ into each bias calculation:
+I adopted Koren et al.'s approach to mitigating this problem by including a regularization parameter $\lambda$ into each bias calculation:
 
 ```math
 	
@@ -240,7 +240,7 @@ To counteract this, I adopted Koren et al.'s approach by including a regularizat
 
 ```
 
-When the sample size $|R|$ is small, $\lambda$ significantly reduces the bias, while for larger sample sizes this effect diminishes, approaching 0 as $|R|$ increases. This reduces the influence of noisy biasing effects caused by small sample sizes, while preserving the bias effects we have greater confidence in.
+When the sample size $|R|$ is small, $\lambda$ significantly reduces the bias, and for larger sample sizes this effect diminishes, approaching 0 as $|R|$ increases. This reduces the influence of noisy biasing effects caused by small sample sizes, while preserving the bias effects we have greater confidence in.
 
 Similar to the tuning process for the weighted average parameter, values for $\lambda$ were stepped in 0.001 increments and plotted against the resulting RMSE on the test set. The value which minimized the RMSE was picked at each stage before moving on to the next parameter.
 
@@ -250,7 +250,7 @@ Similar to the tuning process for the weighted average parameter, values for $\l
 	<img src="/movielens/graphs/l3-tuning-square-fold-1.png" alt="L3 Tuning Fold 1" title="L1 Tuning Fold 1" style="float: right; margin-left: 5px; width: 30%;">
 </div>
 
-As mentioned, the biasing effects are quite sensitive to the randomness of the training / test set split, and consequently so are their tuning parameters. To counteract this, the full dataset was split into 5 folds and the tuning process was run on each fold. The plots for the first fold are shown above (plots for the other folds are included in the repository, but omitted for brevity), and a summary of the tuned values across all five folds, along with the resulting RMSE, is presented below:
+Since the biasing effects are sensitive to the randomness of the training / test set split, so are their tuning parameters. To counteract this, the full dataset was split into 5 folds and the tuning process was run on each fold. The plots for the first fold are shown above (plots for the other folds are included in the repository, but omitted for brevity), and a summary of the tuned values across all five folds, along with the resulting RMSE, is presented below:
 
 <div align = "center">
 
@@ -264,7 +264,7 @@ As mentioned, the biasing effects are quite sensitive to the randomness of the t
 
 </div>
 
-### Attempts to reduce residual values $r'$
+### Attempts to further reduce residual values $r'$
 
 The regularization parameters were averaged across all five folds, for final values of $\lambda_1 = 2.16$, $\lambda_2 = 4.987$, and $\lambda_3 = 11.7416$. Values for $\hat{r}{_u}{_i}$ were calculated for all ratings in the EdX dataset, and a list of residual values was produced.
 
