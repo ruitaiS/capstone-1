@@ -26,7 +26,7 @@ Template code provided by the EdX team splits the data into a main dataset of 9,
 ```
 Data analysis was performed on the main dataset as a whole. For model development, the data was split into five equally sized subsets, indexed by `fold_index` one through five. Some simple algorithms were explored first to establish a performance benchmark - for these models, `fold_index = 1` was used as the test set and the other four sets were merged back together to form the training set. Cross-validation was not done on these models.
 
-The main model used in this project is a modified version of the approach outlined by Robert M. Bell, Yehuda Koren, and Chris Volinsky in their 2009 paper "The BellKor Solution to the Netflix Grand Prize." An average $\mu$ of all movie ratings in the training set formed a baseline predictor, on top of which were added movie, user, and genre biases: $`{b}_{i}`$, $`{b}_{u}`$, and $`{b}_{g}`$ respectively. Each bias has an associated regularization parameter, $\lambda_1$, $\lambda_2$, $\lambda_3$, which was tuned to minimize the error on the test set. This process was performed on all five folds for `k=5` fold cross validation. 
+The main model used in this project is a modified version of the approach outlined by Robert M. Bell, Yehuda Koren, and Chris Volinsky in their 2009 paper "The BellKor Solution to the Netflix Grand Prize." An average $\mu$ of all movie ratings in the training set formed a baseline predictor, on top of which were added movie, user, and genre biases: $`{b}_{i}`$, $`{b}_{u}`$, and $`{b}_{g}`$ respectively. Each bias has an associated regularization parameter, $\lambda_1$, $\lambda_2$, $\lambda_3$, which was tuned to minimize the error on the test set. This process was repeated on all five folds for `k=5` fold cross validation. 
 
 The tuning parameters were finalized using the average of the optimal values calculated during each of the five validation runs. A single pass was then made through the entire main dataset to find the residual differences ${r'} = \hat{r} - r$ between the recorded ratings and the ratings predicted by the model. Two methods were attempted to model these residual values - a matrix factorization model using stochastic gradient descent, and a simple time factor linear model - but neither showed improvement over the base model, and were not used for the final RMSE calculation on the holdout set.
 
@@ -39,7 +39,7 @@ The `edx` set is then split into five folds using `createFolds`, with the `ratin
 
 The `generate_splits` function accepts a `fold_index` parameter designating one of the five folds as the test set, and the remaining folds are merged together to form the training set. The two sets are passed to the `consistency_check` function before being assigned as the `test_df` and `train_df` dataframes.
 
-`consistency_check` ensures that every `movieId` and `userId` which appears in the test set also appears in the training set. The code to do this was borrowed from the provided template code, which performs a similar modification for the main dataset in relation to the final holdout set. While this may seem to be a minor detail, it makes the prediction task **significantly** easier, as it completely eliminates the need to make predictions on users or movies which do not appear in the training set, also known as the [cold start problem](https://en.wikipedia.org/wiki/Cold_start_(recommender_systems)).
+`consistency_check` ensures that every `movieId` and `userId` which appears in the test set also appears in the training set. The code to do this was borrowed from the provided template code, which handles a similar modification for the main dataset in relation to the final holdout set. While this may seem to be a minor detail, it makes the prediction task **significantly** easier, as it completely eliminates the need to make predictions on users or movies which do not appear in the training set, also known as the [cold start problem](https://en.wikipedia.org/wiki/Cold_start_(recommender_systems)).
 
 The training set was further processed to produce the ```genres```, ```users```, and ```movies``` dataframes. The column names for these dataframes are shown below, and should be self-explanatory.
 
@@ -164,14 +164,14 @@ calculate_rmse <- function(predicted_ratings, actual_ratings) {
 
 ### Some Simple Algorithms to Start
 
-A couple of very basic methods for rating prediction come to mind, and these were the ones I tried first while building out the testing framework.
+Let's start with some very basic methods for rating prediction.
 
 The most naive approach would be to randomly guess a rating. Naturally, this gave a very poor RMSE of ~2.16. The next method was to find the average of all ratings in the training set, and to use that value as the prediction for every rating in the test set. If we look to the histogram plot of the ratings given in the training set, we see that whole number ratings are more common than ones rated at half integer increments (this I would attribute to user psychology more than anything else), but the set of whole number ratings and the set of half-step ratings both form bell-curve shaped distributions centered roughly around the global mean, shown as the dashed vertical red line.
 
 <img src="/movielens/graphs/rating_histogram.png" align="center" alt="Ratings Histogam"
 	title="Ratings Histogram"/>
 
-Predicting the training set mean for each rating in the test set might not be a very sophisticated approach, but it minimizes the distance from observed ratings more so than any other static value. In any case, it is much better than making random guesses, and gives a much improved RMSE of ~1.06.
+Predicting the training set mean for each rating in the test set might not be a very sophisticated approach, but it minimizes the distance from observed ratings more so than any other static value. It is much better than making random guesses, and gives a much improved RMSE of ~1.06.
 
 Per-genre average, per-user average, and per-movie average is slightly more nuanced, producing a mean for each genre, user, or movie, and making that our guess, rather than the global average. This takes into account that some genres / users / movies tend to rate higher or lower, and by taking the mean of specific subsets of ratings, rather than the mean of the entire training set, we capture slightly more detail, and are able to incrementally improve the RMSE.
 
