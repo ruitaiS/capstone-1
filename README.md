@@ -150,7 +150,7 @@ where:
 
 - $`{D}_{test}`$ is the test set
 
-Each algorithm produces a list of predicted ratings of equal length to the `rating` column in `test_df`, which contains the actual observed ratings in the test set. Feeding these two lists into the `calculate_rmse` function returns a single RMSE value for the algorithm, which is then stored in `rmse_df` dataframe along with the algorithm's name and the `fold_index` that the model was run on.
+Each algorithm generates a list of predicted ratings that correspond to the values in the `rating` column of `test_df`, which contains the actual observed ratings from the test set. Feeding these two lists into the `calculate_rmse` function returns a single RMSE value for the entire algorithm.
 
 ```
 calculate_rmse <- function(predicted_ratings, actual_ratings) {
