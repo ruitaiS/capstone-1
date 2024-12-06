@@ -176,7 +176,7 @@ Predicting the training set mean for each rating in the test set might not be a 
 Finally, lets try an ensemble of the user and movie averages. When the two are equally weighted, we can define the predicted value with the equation
 
 ```math
-$`\hat{r}{_ui} = \frac{(\bar{r}_{u} + \bar{r}_{i})}{2}`$
+`\hat{r}_{ui} = \frac{(\bar{r}_{u} + \bar{r}_{i})}{2}`
 ```
 
 where:
@@ -187,7 +187,7 @@ where:
 This approach yields an RMSE of ~0.913, To see whether this could be improved by weighting the average, let's redefine the the prediction function to include a tunable weight parameter ${w}$, such that
 
 ```math
-$`\hat{r}_{ui} = {w} * \bar{r}_{u} + (1 - {w}) * \bar{r}_{i}`$
+`\hat{r}_{ui} = {w} * \bar{r}_{u} + (1 - {w}) * \bar{r}_{i}`
 ```
 
 In this new formulation, ${w}$ is the weight assigned to the user average, and $1-{w}$ is the weight for the movie average. To find the optimal weighting ${w}$, we can plot the RMSE across the test set against values of ${w}$ ranging from 0.2 to 0.6:
