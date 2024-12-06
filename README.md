@@ -173,7 +173,20 @@ The most naive approach would be to randomly guess a rating. Naturally, this gav
 
 Predicting the training set mean for each rating in the test set might not be a very sophisticated approach, but it minimizes the distance from observed ratings more so than any other static value. It fares much better than making random guesses, giving an RMSE of ~1.06. For added nuance, consider that certain genres, users, or movies tend to have consistently higher or lower ratings. By segmenting the data and taking the mean of each subset, we capture more detail and can incrementally improve the RMSE.
 
-Finally, lets try an ensemble of the user and movie averages. When the two are equally weighted, we can define the predicted value as $`\hat{r}{_u}{_i} = \frac{(\bar{r}_{u} + \bar{r}_{i})}{2}`$, with the average rating for user $u$ and movie $i$ as $`\bar{r}_{u}`$ and $`\bar{r}_{i}`$ respectively. This yields an RMSE of ~0.913, To see whether this could be improved by weighting the average, the prediction function is redefined as $`\hat{r}{_u}{_i} = {w} * \bar{r}_{u} + (1 - {w}) * \bar{r}_{i}`$, with ${w}$ being the weight assigned to the user average, and $1-{w}$ the weight for the movie average. To find the optimal weighting ${w}$, we can plot the RMSE across the test set against values of ${w}$ ranging from 0.2 to 0.6:
+Finally, lets try an ensemble of the user and movie averages. When the two are equally weighted, we can define the predicted value with the equation
+
+$`\hat{r}{_ui} = \frac{(\bar{r}_{u} + \bar{r}_{i})}{2}`$
+
+where:
+
+- $`\bar{r}_{u}`$ is the average rating in the training set for user $u$
+- $`\bar{r}_{i}`$ is the average rating in the training set for movie $i$
+
+This approach yields an RMSE of ~0.913, To see whether this could be improved by weighting the average, let's redefine the the prediction function to include a tunable weight parameter ${w}$, such that
+
+$`\hat{r}{_ui} = {w} * \bar{r}_{u} + (1 - {w}) * \bar{r}_{i}`$
+
+Here, in this new formulation, ${w}$ is the weight assigned to the user average, and $1-{w}$ is the weight for the movie average. To find the optimal weighting ${w}$, we can plot the RMSE across the test set against values of ${w}$ ranging from 0.2 to 0.6:
 
 <img src="/movielens/graphs/weighted_ensemble_tuning.png" align="center" alt="User / Movie Average Weighted Ensemble Optimization"
 	title="User / Movie Average Weighted Ensemble Optimization"/>
