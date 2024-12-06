@@ -138,7 +138,7 @@ There is also good evidence of chronological effect on movie ratings. Older movi
 
 ## Methods:
 
-The project instructions specify using the root mean squared error function as the measure for each algorithms effectiveness. As the name would suggest, it is calculated by taking the square **root** of the **mean** of the **square** of the **error** (error in this case being the difference between the predicted and observed values. For this reason, the RMSE is also frequently referred to as the **RMSD**, or root mean squared **difference**). Mathematically, we define it with the following:
+The project instructions specify using the root mean squared error function as the measure for each algorithms effectiveness. As the name would suggest, it is calculated by taking the square **root** of the **mean** of the **square** of the **error** (error in this case being the difference between the predicted and observed values. For this reason, the RMSE is also frequently referred to as the **RMSD**, or root mean squared **difference**). Mathematically, we define it as follows:
 
 Let ${r}{_u}{_i}$ denote the observed rating of user $u$ for movie $i$ in some dataset, and let $\hat{r}{_u}{_i}$ signify an algorithm's prediction for how that user would rate the movie. The root mean squared error can then be written as
 
