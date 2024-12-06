@@ -146,7 +146,7 @@ RMSE = \sqrt{\frac{{\sum}_{u,i\in {D}_{test}}({r}{_u}{_i} - \hat{r}{_u}{_i})^2}{
 where:
 - ${r}_{ui}$ is the observed rating in the training set of user $u$ for movie $i$,
 
-- $\hat{r}{ui}$ is the algorithm's predicted value for $r_{ui}$.
+- $\hat{r}_{ui}$ is the algorithm's predicted value for $r_{ui}$.
 
 - $`{D}_{test}`$ is the test set
 
