@@ -143,7 +143,11 @@ The project instructions specify using the root mean squared error function as t
 ```math
 RMSE = \sqrt{\frac{{\sum}_{u,i\in {D}_{test}}({r}{_u}{_i} - \hat{r}{_u}{_i})^2}{|{D}_{test}|}}
 ```
-where ${r}{_u}{_i}$ is the observed rating in the training set of user $u$ for movie $i$, $\hat{r}{_u}{_i}$ is the algorithm's prediction for the user's rating of that movie, and $`{D}_{test}`$ is our test set.
+where ${r}{_u}{_i}$ is the observed rating in the training set of user $u$ for movie $i$,
+
+$\hat{r}{_u}{_i}$ is the algorithm's prediction for the user's rating of that movie,
+
+and $`{D}_{test}`$ is our test set.
 
 Each algorithm produces a list of predicted ratings of equal length to the `rating` column in `test_df`, which contains the actual observed ratings in the test set. Feeding these two lists into the `calculate_rmse` function returns a single RMSE value for the algorithm, which is then stored in `rmse_df` dataframe along with the algorithm's name and the `fold_index` that the model was run on.
 
