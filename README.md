@@ -176,18 +176,18 @@ Predicting the training set mean for each rating in the test set might not be a 
 Finally, lets try an ensemble of the user and movie averages. When the two are equally weighted, we can define the predicted value with the equation
 
 ```math
-`\hat{r}_{ui} = \frac{(\bar{r}_{u} + \bar{r}_{i})}{2}`
+\hat{r}_{ui} = \frac{(\bar{r}_{u} + \bar{r}_{i})}{2}
 ```
 
 where:
 
-- $`\bar{r}_{u}`$ is the average rating in the training set for user $u$
-- $`\bar{r}_{i}`$ is the average rating in the training set for movie $i$
+- $\bar{r}_{u}$ is the average rating in the training set for user $u$
+- $\bar{r}_{i}$ is the average rating in the training set for movie $i$
 
 This approach yields an RMSE of ~0.913, To see whether this could be improved by weighting the average, let's redefine the the prediction function to include a tunable weight parameter ${w}$, such that
 
 ```math
-`\hat{r}_{ui} = {w} * \bar{r}_{u} + (1 - {w}) * \bar{r}_{i}`
+\hat{r}_{ui} = {w} * \bar{r}_{u} + (1 - {w}) * \bar{r}_{i}
 ```
 
 In this new formulation, ${w}$ is the weight assigned to the user average, and $1-{w}$ is the weight for the movie average. To find the optimal value for ${w}$, we plot the RMSE across the test set against values of ${w}$ ranging from 0.2 to 0.6:
@@ -195,7 +195,7 @@ In this new formulation, ${w}$ is the weight assigned to the user average, and $
 <img src="/movielens/graphs/weighted_ensemble_tuning.png" align="center" alt="User / Movie Average Weighted Ensemble Optimization"
 	title="User / Movie Average Weighted Ensemble Optimization"/>
 
-The minima occurs at $`{w} = 0.4062`$, and yields a very slightly improved RMSE of ~0.912 on the test set.
+The minima occurs at ${w} = 0.4062$, and yields a very slightly improved RMSE of ~0.912 on the test set.
 
 The results of all these simple algorithms are tallied below:
 
@@ -223,7 +223,7 @@ A more sophisticated approach is presented in Koren et al.'s 2009 paper, *The Be
 
 where
 
-- $`{b}_{i}`$ is the biasing effect for movie $i$
+- ${b}_{i}$ is the biasing effect for movie $i$
 - $\mu$ is the global average of all movie ratings in the training set
 - ${u\in R(i)}$ is some user $u$ who has rated movie $i$
 - $|R(i)|$ is size of the set of all users who have rated movie $i$
