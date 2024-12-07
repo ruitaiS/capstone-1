@@ -218,7 +218,7 @@ The results of all these simple algorithms are tallied below:
 A more sophisticated approach is presented in Koren et al.'s 2009 paper, *The BellKor Solution to the Netflix Grand Prize*, and an adaptation of their method serves as the main algorithm used in this project. Rather than taking the average rating for each movie, we instead find the biasing effect for each movie, defined as the average difference of the observed ratings for all users on that movie from the global average of all movie ratings, such that
 
 ```math
-$`{b}_{i} = \frac{\sum_{u\in R(i)}{r}{_u}{_i} - \mu}{|R(i)|}`$
+{b}_{i} = \frac{\sum_{u\in R(i)}{r}{_u}{_i} - \mu}{|R(i)|}
 ```
 
 where
