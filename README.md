@@ -190,7 +190,7 @@ This approach yields an RMSE of ~0.913, To see whether this could be improved by
 `\hat{r}_{ui} = {w} * \bar{r}_{u} + (1 - {w}) * \bar{r}_{i}`
 ```
 
-In this new formulation, ${w}$ is the weight assigned to the user average, and $1-{w}$ is the weight for the movie average. To find the optimal value for ${w}$, we can plot the RMSE across the test set against values of ${w}$ ranging from 0.2 to 0.6:
+In this new formulation, ${w}$ is the weight assigned to the user average, and $1-{w}$ is the weight for the movie average. To find the optimal value for ${w}$, we plot the RMSE across the test set against values of ${w}$ ranging from 0.2 to 0.6:
 
 <img src="/movielens/graphs/weighted_ensemble_tuning.png" align="center" alt="User / Movie Average Weighted Ensemble Optimization"
 	title="User / Movie Average Weighted Ensemble Optimization"/>
@@ -215,7 +215,20 @@ The results of all these simple algorithms are tallied below:
 
 ### User, Movie, and Genre Biases
 
-A more sophisticated approach is presented in Koren et al.'s 2009 paper, The BellKor Solution to the Netflix Grand Prize. Rather than taking the average rating for each movie, we instead find the biasing effect $`{b}_{i}`$ for each movie, defined as the average difference of the observed ratings for all users on that movie from the global average $\mu$ of all movie ratings, such that $`{b}_{i} = \frac{\sum_{u\in R(i)}{r}{_u}{_i} - \mu}{|R(i)|}`$, with ${u\in R(i)}$ being all users $u$ who have rated movie $i$, and $|R(i)|$ as the size of that set of users. We likewise define the user bias to be the average of the observed ratings, minus the sum of the global mean and the movie bias: $`{b}_{u} = \frac{\sum_{i\in R(u)}{r}{_u}{_i} - (\mu+{b}_{i})}{|R(u)|}`$, and the genre bias to be the average of the observed minus the sum of the global mean and the user and movie biases: $`{b}_{g} = \frac{\sum_{u,i\in R(g)}{r}{_u}{_i} - (\mu+{b}_{i}+{b}_{u})}{|R(g)|}`$, where $`{u,i\in R(g)}`$ is some user $u$ rating a movie $i$ which has genre $g$, and $|R(g)|$ is the size of the set of all ratings for that genre.
+A more sophisticated approach is presented in Koren et al.'s 2009 paper, *The BellKor Solution to the Netflix Grand Prize*, and an adaptation of their method serves as the main algorithm used in this project. Rather than taking the average rating for each movie, we instead find the biasing effect for each movie, defined as the average difference of the observed ratings for all users on that movie from the global average of all movie ratings, such that
+
+```math
+$`{b}_{i} = \frac{\sum_{u\in R(i)}{r}{_u}{_i} - \mu}{|R(i)|}`$
+```
+
+where
+
+- $`{b}_{i}`$ is the biasing effect for movie $i$
+- $\mu$ is the global average of all movie ratings in the training set
+- ${u\in R(i)}$ is the set of all users $u$ who have rated movie $i$
+- $|R(i)|$ is size of that set of users
+
+We likewise define the user bias to be the average of the observed ratings, minus the sum of the global mean and the movie bias: $`{b}_{u} = \frac{\sum_{i\in R(u)}{r}{_u}{_i} - (\mu+{b}_{i})}{|R(u)|}`$, and the genre bias to be the average of the observed minus the sum of the global mean and the user and movie biases: $`{b}_{g} = \frac{\sum_{u,i\in R(g)}{r}{_u}{_i} - (\mu+{b}_{i}+{b}_{u})}{|R(g)|}`$, where $`{u,i\in R(g)}`$ is some user $u$ rating a movie $i$ which has genre $g$, and $|R(g)|$ is the size of the set of all ratings for that genre.
 
 (Please note again that "genre" in this case refers to the entire genre list string attached to a given movie. As mentioned previously, I did not feel it was worth the added complexity of finding the biasing effects of each the 20 individual genres, and instead treated the entire genre list string as one item.)
 
