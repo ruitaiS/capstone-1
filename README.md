@@ -143,12 +143,10 @@ The project instructions specify using the root mean squared error function as t
 ```math
 RMSE = \sqrt{\frac{{\sum}_{u,i\in {D}_{test}}({r}{_u}{_i} - \hat{r}{_u}{_i})^2}{|{D}_{test}|}}
 ```
-where:
-- ${r}_{ui}$ is the observed rating in the training set of user $u$ for movie $i$
-
-- $\hat{r}\_{ui}$ is the algorithm's predicted value for $r_{ui}$
-
-- $`{D}_{test}`$ is the test set
+$\quad$ where:
+$\quad$ - ${r}_{ui}$ is the observed rating in the training set of user $u$ for movie $i$
+$\quad$ - $\hat{r}\_{ui}$ is the algorithm's predicted value for $r_{ui}$
+$\quad$ - $`{D}_{test}`$ is the test set
 
 Each algorithm generates a list of predicted ratings that correspond to the values in the `rating` column of `test_df`, which contains the actual observed ratings from the test set. Feeding these two lists into the `calculate_rmse` function returns a single RMSE value for the entire algorithm.
 
@@ -215,7 +213,7 @@ The results of all these simple algorithms are tallied below:
 
 ### User, Movie, and Genre Biases
 
-A more sophisticated approach is presented in Koren et al.'s 2009 paper, *The BellKor Solution to the Netflix Grand Prize*, and an adaptation of their method serves as the main algorithm used in this project. Rather than taking the average rating for each movie, we instead find the biasing effect for each movie, defined as the average difference of the observed ratings for all users on that movie from the global average of all movie ratings, such that
+A more sophisticated approach is presented in Koren et al.'s 2009 paper, *The BellKor Solution to the Netflix Grand Prize*, and an adaptation of their method serves as the main algorithm used in this project. Rather than taking the average rating for each movie, we instead find the biasing effect for each movie, defined as the average difference of the observed ratings for all users on that movie from the global average of all movie ratings, such that:
 
 ```math
 {b}_{i} = \frac{\sum_{u\in R(i)}{r}{_u}{_i} - \mu}{|R(i)|}
@@ -229,7 +227,7 @@ where
 - $|R(i)|$ is size of the set of all users who have rated movie $i$
 
 
-We likewise define the user bias to be the average of the observed ratings, minus the sum of the global mean and the movie bias, and the genre bias to be the average of the observed minus the sum of the global mean and the user and movie biases
+We likewise define the user bias to be the average of the observed ratings, minus the sum of the global mean and the movie bias, and the genre bias to be the average of the observed minus the sum of the global mean and the user and movie biases:
 
 ```math
 {b}_{u} = \frac{\sum_{i\in R(u)}{r}{_u}{_i} - (\mu+{b}_{i})}{|R(u)|}
