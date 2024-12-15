@@ -233,6 +233,7 @@ We likewise define the user bias to be the average of the observed ratings, minu
 
 ```math
 {b}_{u} = \frac{\sum_{i\in R(u)}{r}{_u}{_i} - (\mu+{b}_{i})}{|R(u)|}
+
 {b}_{g} = \frac{\sum_{u,i\in R(g)}{r}{_u}{_i} - (\mu+{b}_{i}+{b}_{u})}{|R(g)|}
 ```
 
