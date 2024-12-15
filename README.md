@@ -265,7 +265,7 @@ I layered the biasing effects onto the global average one at a time, and the res
 
 ### Bias Regularization Tuning With K = 5 Fold Cross Validation
 
-The variance of the mean value for a sample can be defined as $`Var(\bar{r}) = \frac{\sigma^2}{n}`$ for a sample of size $n$ taken from a population that has some variance $`\sigma^2`$. This equation shows that the variance of the sample mean is inversely proportional to the sample size, so in our context, when movies, users, or genres have very few ratings in the training set, the calculated biasing effect (which is essentially a sample mean) will vary significantly based on the specific ratings randomly selected for inclusion.
+The variance of the mean value for a sample can be defined as $`Var(\bar{r}) = \frac{\sigma^2}{n}`$ for a sample of size $n$ taken from a population that has some variance $`\sigma^2`$. This equation shows that the variance of the sample mean is inversely proportional to the sample size - in our context, when movies, users, or genres have very few ratings in the training set, the calculated biasing effect (essentially a sample mean) will vary significantly based on the specific ratings randomly selected for inclusion.
 
 I adopted Koren et al.'s approach to mitigating this problem by including a regularization parameter $\lambda$ into each bias calculation:
 
@@ -277,7 +277,7 @@ I adopted Koren et al.'s approach to mitigating this problem by including a regu
 
 ```
 
-When the sample size $|R|$ is small, $\lambda$ significantly reduces the bias, and for larger sample sizes this effect diminishes, approaching 0 as $|R|$ increases. This reduces the influence of noisy biasing effects caused by small sample sizes, while preserving the bias effects we have greater confidence in.
+When the sample size $|R|$ is small, $\lambda$ significantly reduces the bias, and for larger sample sizes this effect approaches 0 as $|R|$ increases. This reduces the influence of noisy biasing effects caused by small sample sizes, while preserving the bias effects we have greater confidence in.
 
 Similar to the tuning process for the weighted average parameter, values for $\lambda$ were stepped in 0.001 increments and plotted against the resulting RMSE on the test set. The value which minimized the RMSE was picked at each stage before moving on to the next parameter.
 
@@ -287,7 +287,7 @@ Similar to the tuning process for the weighted average parameter, values for $\l
 	<img src="/movielens/graphs/l3-tuning-square-fold-1.png" alt="L3 Tuning Fold 1" title="L1 Tuning Fold 1" style="float: right; margin-left: 5px; width: 30%;">
 </div>
 
-Since the biasing effects are sensitive to the randomness of the training / test set split, so are their tuning parameters. To counteract this, the full dataset was split into 5 folds and the tuning process was run on each fold. The plots for the first fold are shown above (plots for the other folds are included in the repository, but omitted for brevity), and a summary of the tuned values across all five folds, along with the resulting RMSE, is presented below:
+Since the biasing effects are sensitive to the randomness of the training / test set split, so are their tuning parameters. To counteract this, the full dataset was split into 5 folds and the tuning process was run on each fold. The plots for the first fold are shown above (plots for the other folds are included in the repository, but omitted from the report for brevity), and a summary of the tuned values across all five folds, along with the resulting RMSE, is presented below:
 
 <div align = "center">
 
@@ -327,7 +327,7 @@ r'_{m1} & r'_{m2} & \cdots & r'_{mn} \\
 <img src="/movielens/graphs/learning_rate.png" align="center" alt="Learning Rate"
 	title="Learning Rate"/>
 
-Having spent far too long trying and failing to tune the SGD code, I decided to try a very simple time factor model for the movie residuals. A linear model was produced for each movie to predict the residuals as a factor of the timestamp. This was admittedly far too simple of an approach; I should have spent more time analyzing the chronological effects on ratings, instead of throwing everything into the `lm` function and hoping for the best, but I was feeling quite discourged from the wasted effort on the SGD model, and also running out of time to complete the project. These models did not yield positive results on the test sets produced by `createFolds`.
+Having spent far too long trying and failing to tune the SGD code, I decided to try a very simple time factor model for the movie residuals. A linear model was produced for each movie to predict the residuals as a factor of the timestamp. This was admittedly far too simple of an approach; I should have spent more time analyzing the chronological effects on ratings, instead of throwing everything into the `lm` function and hoping for the best, but I was feeling quite discourged from the wasted effort on the SGD model, and also running out of time to complete the project. These models also did not yield positive results on the test sets produced by `createFolds`.
 
 
 ## Results
