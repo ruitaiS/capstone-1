@@ -237,9 +237,9 @@ We likewise define the user bias to be the average of the observed ratings, minu
 
 where $`{u,i\in R(g)}`$ is some user $u$ rating a movie $i$ which has genre $g$, and $|R(g)|$ is the size of the set of all ratings for that genre.
 
-(Please note again that "genre" in this case refers to the entire genre list string attached to a given movie. As mentioned previously, I did not feel it was worth the added complexity of finding the biasing effects of each the 20 individual genres, and instead treated the entire genre list string as one item.)
+(Please note again that "genre" in this case refers to the entire genre list string attached to a given movie. As previously mentioned, I did not feel it was worth the added complexity of finding the biasing effects of each the 20 individual genres, and instead treated the entire genre list string as one item.)
 
-These equations were implemented in code using R's `aggregate` function. The code might be easier to understand than the mathematical equations, so I've included a shortened version below (the `_0` suffix indicates that these are unregularized biases - more on that in the Bias Regularization section).:
+These equations were implemented in code using R's `aggregate` function. The code might be easier to understand than the mathematical equations, so I've included a shortened version below (the `_0` suffix indicates that these are unregularized biases - more on that in the Bias Regularization section):
 ```
 movies <- aggregate((rating-mu) ~ movieId, data = train_df, FUN = mean)
 users <- aggregate((rating-(mu+b_i_0)) ~ userId, data = train_df, FUN = mean)
