@@ -228,6 +228,16 @@ where
 - ${u\in R(i)}$ is some user $u$ who has rated movie $i$
 - $|R(i)|$ is size of the set of all users who have rated movie $i$
 
+
+We likewise define the user bias to be the average of the observed ratings, minus the sum of the global mean and the movie bias, and the genre bias to be the average of the observed minus the sum of the global mean and the user and movie biases
+
+```math
+{b}_{u} = \frac{\sum_{i\in R(u)}{r}{_u}{_i} - (\mu+{b}_{i})}{|R(u)|}
+{b}_{g} = \frac{\sum_{u,i\in R(g)}{r}{_u}{_i} - (\mu+{b}_{i}+{b}_{u})}{|R(g)|}
+```
+
+where $`{u,i\in R(g)}`$ is some user $u$ rating a movie $i$ which has genre $g$, and $|R(g)|$ is the size of the set of all ratings for that genre.
+
 We likewise define the user bias to be the average of the observed ratings, minus the sum of the global mean and the movie bias: $`{b}_{u} = \frac{\sum_{i\in R(u)}{r}{_u}{_i} - (\mu+{b}_{i})}{|R(u)|}`$, and the genre bias to be the average of the observed minus the sum of the global mean and the user and movie biases: $`{b}_{g} = \frac{\sum_{u,i\in R(g)}{r}{_u}{_i} - (\mu+{b}_{i}+{b}_{u})}{|R(g)|}`$, where $`{u,i\in R(g)}`$ is some user $u$ rating a movie $i$ which has genre $g$, and $|R(g)|$ is the size of the set of all ratings for that genre.
 
 (Please note again that "genre" in this case refers to the entire genre list string attached to a given movie. As mentioned previously, I did not feel it was worth the added complexity of finding the biasing effects of each the 20 individual genres, and instead treated the entire genre list string as one item.)
